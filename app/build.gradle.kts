@@ -57,4 +57,17 @@ dependencies {
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // Retrofit - Biblioteca para hacer peticiones HTTP y parsear JSON
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
+    // OkHttp Logging - Para ver las peticiones en Logcat
+    implementation("com.squareup.okhttp3:logging-interceptor:4.12.0")
+
+    // Coroutines - Para operaciones asíncronas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+
+    // Lifecycle - Para usar lifecycleScope
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
 }
