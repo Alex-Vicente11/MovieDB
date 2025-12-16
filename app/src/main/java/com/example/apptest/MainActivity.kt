@@ -1,47 +1,69 @@
 package com.example.apptest
 
+import com.example.apptest.data.repository.MovieRepository
 import android.os.Bundle
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.example.apptest.ui.theme.AppTestTheme
+import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+
+    companion object {
+        private const val TAG = "MainActivity"
+    }
+
+    private val repository = MovieRepository()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            AppTestTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+        setContentView(R.layout.activity_main)
+
+        // Probar búsqueda de películas
+        searchMovies("Jack Reacher")
+
+        // Probar películas populares
+        getPopularMovies()
+    }
+
+    private fun searchMovies(query: String) {
+        lifecycleScope.launch {
+            Log.d(TAG, "=== SEARCHING MOVIES ===")
+            val movies = repository.searchMovies(query)
+
+            if (movies != null) {
+                Log.d(TAG, "Found ${movies.size} movies for '$query':")
+                movies.forEach { movie ->
+                    Log.d(TAG, """
+                        ---
+                        Title: ${movie.title}
+                        Original: ${movie.originalTitle}
+                        Rating: ${movie.voteAverage}/10 (${movie.voteCount} votes)
+                        Release: ${movie.releaseDate}
+                        Overview: ${movie.overview.take(100)}...
+                        Poster: ${movie.getPosterURL()}
+                        ---
+                    """.trimIndent())
                 }
+            } else {
+                Log.e(TAG, "Failed to get movies")
             }
         }
     }
-}
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
+    private fun getPopularMovies() {
+        lifecycleScope.launch {
+            Log.d(TAG, "=== POPULAR MOVIES ===")
+            val movies = repository.getPopularMovies()
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    AppTestTheme {
-        Greeting("Android")
+            movies?.let {
+                Log.d(TAG, "Top 5 popular movies:")
+                it.take(5).forEach { movie ->
+                    Log.d(TAG, "${movie.title} - ${movie.voteAverage}/10")
+                }
+            } ?: run {
+                Log.e(TAG, "Failed to get popular movies")
+            }
+        }
     }
 }
