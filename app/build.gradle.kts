@@ -71,4 +71,7 @@ dependencies {
 
     // Lifecycle - Para usar lifecycleScope
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    // ConstraintLayout
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 }
