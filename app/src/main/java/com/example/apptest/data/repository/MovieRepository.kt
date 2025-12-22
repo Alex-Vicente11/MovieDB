@@ -3,7 +3,11 @@ package com.example.apptest.data.repository
 import android.util.Log
 import com.example.apptest.data.api.RetrofitClient
 import com.example.apptest.data.model.Movie
+import com.example.apptest.data.network.NetworkResult
 import com.google.gson.GsonBuilder
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import okhttp3.Dispatcher
 
 class MovieRepository {
 
@@ -17,77 +21,63 @@ class MovieRepository {
         .setPrettyPrinting()
         .create()
 
-    suspend fun searchMovies(query: String): List<Movie>? {
-        return try {
-            Log.d(TAG, "Searching movies with query : $query")
+    suspend fun searchMovies(query: String): NetworkResult<List<Movie>> {
+        // withContext: Cambia el dispatcher (thread)
+        // Dispatchers.IO: Thread pool optimizado para operaciones I/O
+        return withContext(Dispatchers.IO) {
+            try {
+                Log.d(TAG, " Searching: '$query'")
 
-            val response = apiService.searchMovies(query)
-
-            if (response.isSuccessful) {
-                val body = response.body()
-
-                val jsonFormatted =  responseJson.toJson(body)
-                Log.d(TAG, "RESPONSE JSON:\n$jsonFormatted")
-                Log.d(TAG, "  °Page: ${body?.page}")
-                Log.d(TAG, "  °Results: ${body?.results?.size} movies")
-                Log.d(TAG, "Total pages: ${body?.totalPages}")
-                Log.d(TAG, "Total results: ${body?.totalResults}")
-                Log.d(TAG, "---------------------------------------")
-
-
-                Log.d(TAG, "Success Found: ${body?.results?.size} movies")
-                body?.results?.forEachIndexed { index, movie ->
-                    Log.d(TAG, "")
-                    Log.d(TAG, "    Movie ${index + 1}:")
-                    Log.d(TAG, "    Title: ${movie.title}")
-                    Log.d(TAG, "    Original: ${movie.originalTitle}")
-                    Log.d(TAG, "    Rating: ${movie.voteAverage}/10 (${movie.voteCount} votes")
-                    Log.d(TAG, "    Release: ${movie.releaseDate}")
-                    Log.d(TAG, "    Language: ${movie.originalLanguage}")
-                    Log.d(TAG, "    Popularity: ${movie.popularity}")
-                    Log.d(TAG, "    Overview: ${movie.overview.take(100)}...")
-                    Log.d(TAG, "    Poster: ${movie.getPosterURL()}")
+                // Validación
+                if (query.isBlank()) {
+                    return@withContext NetworkResult.Error("La búsqueda no puede estar vacía")
                 }
-                body?.results
-            } else {
-                Log.e(TAG, "Error ${response.code()} - ${response.message()}")
-                Log.e(TAG, "Body: ${response.errorBody()?.string()}")
-                null
+
+                val response = apiService.searchMovies(query)
+
+                when {
+                    response.isSuccessful -> {
+                        val movies = response.body()?.results
+
+                        movies?.let {
+                            Log.d(TAG, "Found ${it.size} movies")
+                            NetworkResult.Success(it)
+                        } ?: NetworkResult.Error("No se encontraron películas")
+                    }
+                    response.code() == 401 -> {
+                        NetworkResult.Error("Error de autenticación. Verifica tu API token")
+                    }
+                    response.code() == 404 -> {
+                        NetworkResult.Error("Endpoint no encontrado")
+                    }
+                    else -> {
+                        NetworkResult.Error("Error ${response.code()}: ${response.message()}")
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Exception", e)
+                NetworkResult.Error(e.message ?: "Error desconocido")
             }
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception ${e.message}", e)
-            e.printStackTrace()
-            null
         }
     }
 
-    suspend fun getPopularMovies(): List<Movie>? {
-        return try {
-            Log.d(TAG, "Getting popular movies...")
-            val response = apiService.getPopularMovies()
+    suspend fun getPopularMovies(): NetworkResult<List<Movie>> {
+        return withContext(Dispatchers.IO) {
+            try {
+                Log.d(TAG, "Getting popular movies...")
+                val response = apiService.getPopularMovies()
 
-            when {
-                response.isSuccessful -> {
-                    val body = response.body()
-
-
-                    Log.d(TAG, "Success! found: ${body?.results?.size} movies")
-
-                    body?.let {
-                        Log.d(TAG, "Total pages: ${it.totalPages}")
-                        Log.d(TAG, "Total results: ${it.totalResults}")
-                    }
-                    body?.results
+                if (response.isSuccessful) {
+                    val movies = response.body()?.results
+                    movies?.let {
+                        NetworkResult.Success(it)
+                    } ?: NetworkResult.Error("No se encontraron películas")
+                } else {
+                    NetworkResult.Error("Error ${response.code()}")
                 }
-                else -> {
-                    Log.e(TAG, "Error: ${response.code()}")
-                    null
-                }
+            } catch (e: Exception) {
+                NetworkResult.Error(e.message ?: "Error desconocido")
             }
-
-        } catch (e: Exception) {
-            Log.e(TAG, "Exception ${e.message}", e)
-            null
         }
     }
 }
