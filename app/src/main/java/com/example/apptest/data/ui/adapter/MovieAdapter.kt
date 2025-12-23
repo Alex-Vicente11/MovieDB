@@ -26,12 +26,21 @@ class MovieAdapter(
             tvTitle.text = movie.title
             tvRating.text = "${movie.voteAverage}/10"
 
-            tvYear.text = movie.releaseDate.split("-").firstOrNull() ?: "N/A"
-
-            tvOverview.text = if (movie.overview.length > 150) {
-                "${movie.overview.take(150)}"
+            tvYear.text = if (!movie.releaseDate.isNullOrEmpty()) {
+                movie.releaseDate.split("-").firstOrNull() ?: "N/A"
             } else {
-                movie.overview
+                "N/A"
+            }
+
+            tvOverview.text = if (!movie.overview.isNullOrEmpty()) {
+                if (movie.overview.length > 150) {
+                    "${movie.overview.take(150)}..."
+                } else {
+                    movie.overview
+                }
+
+            } else {
+                "Sin descripcion disponible"
             }
 
             // Cargar imagen con Glide o Coil (placeholder)
@@ -46,7 +55,7 @@ class MovieAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         // LayoutInflater: Convierte XML a View
-        val vie = LayoutInflater.from(parent.context)
+        val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.item_movie, parent, false)
         return MovieViewHolder(view)
     }
