@@ -71,9 +71,14 @@ dependencies {
 
     // Coroutines - Para operaciones asíncronas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
     // Lifecycle - Para usar lifecycleScope
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
+
+    // ViewModel & LiveData
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
+    implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
 
     // ConstraintLayout
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
@@ -84,4 +89,12 @@ dependencies {
     // AndroidX Core
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
+
+    // CardView
+    implementation("androidx.cardview:cardview:1.0.0")
+
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+
+
 }
