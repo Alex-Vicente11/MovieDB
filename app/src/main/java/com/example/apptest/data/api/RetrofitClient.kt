@@ -1,5 +1,6 @@
 package com.example.apptest.data.api
 
+import com.google.gson.GsonBuilder
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -29,6 +30,10 @@ object RetrofitClient {
         .addInterceptor(authInterceptor)
         .addInterceptor(loggingInterceptor)
         .build()
+
+    private val gson = GsonBuilder()
+        .setLenient() // Permite JSON no estricto
+        .create()
 
     private val retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
