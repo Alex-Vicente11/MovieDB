@@ -7,6 +7,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.compose.ui.layout.Layout
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.apptest.R
 import com.example.apptest.data.model.Movie
 
@@ -23,15 +25,21 @@ class MovieAdapter(
         private val ivPoster: ImageView = itemView.findViewById(R.id.ivMoviePoster)
 
         fun bind(movie: Movie) {
+            // titulo
             tvTitle.text = movie.title
-            tvRating.text = "${movie.voteAverage}/10"
 
+            // Rating con formato
+            val ratingText = String.format("%.1f/10", movie.voteAverage)
+            tvRating.text = "⭐ $ratingText"
+
+            // Año
             tvYear.text = if (!movie.releaseDate.isNullOrEmpty()) {
                 movie.releaseDate.split("-").firstOrNull() ?: "N/A"
             } else {
                 "N/A"
             }
 
+            // Overview
             tvOverview.text = if (!movie.overview.isNullOrEmpty()) {
                 if (movie.overview.length > 150) {
                     "${movie.overview.take(150)}..."
@@ -44,7 +52,15 @@ class MovieAdapter(
             }
 
             // Cargar imagen con Glide o Coil (placeholder)
-            ivPoster.setImageResource(R.drawable.ic_movie_placeholder)
+            // getPosterURL() ya construye la URL completa
+            val imageUrl = movie.getPosterURL()
+
+            Glide.with(itemView.context)    // contexto
+                .load(imageUrl)     // URL de la imagen
+                .placeholder(R.drawable.ic_movie_placeholder) // mientras carga
+                .error(R.drawable.ic_movie_placeholder) // si falla
+                .transition(DrawableTransitionOptions.withCrossFade()) // animacion
+                .into(ivPoster)     // imageView
 
             // setOnClickListener: Lambda que se ejecuta al hacer click
             itemView.setOnClickListener {
