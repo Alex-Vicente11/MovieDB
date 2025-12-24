@@ -1,5 +1,6 @@
 package com.example.apptest.data.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ class MovieAdapter(
     private val onMovieClick: (Movie) -> Unit
 ): RecyclerView.Adapter<MovieAdapter.MovieViewHolder>() {
 
+    private val TAG = "MovieAdapter"
     inner class MovieViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         private val tvTitle: TextView = itemView.findViewById(R.id.tvMovieTitle)
         private val tvRating: TextView = itemView.findViewById(R.id.tvMovieRating)
@@ -25,6 +27,9 @@ class MovieAdapter(
         private val ivPoster: ImageView = itemView.findViewById(R.id.ivMoviePoster)
 
         fun bind(movie: Movie) {
+            Log.d(TAG, "Binding movie: ${movie.title}")
+            Log.d(TAG, "  vote_average: ${movie.voteAverage}")
+            Log.d(TAG, "  poster_path: ${movie.posterPath}")
             // titulo
             tvTitle.text = movie.title
 
@@ -54,13 +59,19 @@ class MovieAdapter(
             // Cargar imagen con Glide o Coil (placeholder)
             // getPosterURL() ya construye la URL completa
             val imageUrl = movie.getPosterURL()
+            Log.d(TAG, " Loading image from: $imageUrl")
 
-            Glide.with(itemView.context)    // contexto
-                .load(imageUrl)     // URL de la imagen
-                .placeholder(R.drawable.ic_movie_placeholder) // mientras carga
-                .error(R.drawable.ic_movie_placeholder) // si falla
-                .transition(DrawableTransitionOptions.withCrossFade()) // animacion
-                .into(ivPoster)     // imageView
+            if (imageUrl.isNotEmpty()) {
+                Glide.with(itemView.context)    // contexto
+                    .load(imageUrl)     // URL de la imagen
+                    .placeholder(R.drawable.ic_movie_placeholder) // mientras carga
+                    .error(R.drawable.ic_movie_placeholder) // si falla
+                    .transition(DrawableTransitionOptions.withCrossFade()) // animacion
+                    .into(ivPoster)     // imageView
+            } else {
+                Log.w(TAG, "Image URL is empty, using placeholder")
+                ivPoster.setImageResource(R.drawable.ic_movie_placeholder)
+            }
 
             // setOnClickListener: Lambda que se ejecuta al hacer click
             itemView.setOnClickListener {
@@ -83,6 +94,7 @@ class MovieAdapter(
     override fun getItemCount(): Int = movies.size
 
     fun updateMovies(newMovies: List<Movie>) {
+        Log.d(TAG, "Updating movies: ${newMovies.size} items")
         movies = newMovies
         // notifyDataSetChanged: Notifica que los datos cambiaron
         notifyDataSetChanged()
