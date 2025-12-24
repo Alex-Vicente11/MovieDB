@@ -26,11 +26,20 @@ data class Movie(
     val voteCount: Int,
 ) {
     fun getPosterURL(): String {
-        return "https://image.tmdb.org/t/p/w500${posterPath ?: ""}"
+        // Si posterPath es null o vacio, retorna string vacio
+        // Glide mostrará el placeholder automaticamente
+        return if (!posterPath.isNullOrEmpty()) {
+            "https://image.tmdb.org/t/p/w500$posterPath"
+        } else {
+            ""
+        }
     }
 
     fun getBackdropUrl(): String {
-        return "https://image.tmdb.org/t/p/w780${backdropPath ?: ""}"
+        return if (!backdropPath.isNullOrEmpty()){
+            "https://image.tmdb.org/t/p/w780$backdropPath"
+        } else
+            ""
     }
 
     fun getFormatedRating(): String {
