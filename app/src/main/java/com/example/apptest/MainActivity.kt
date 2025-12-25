@@ -1,5 +1,6 @@
 package com.example.apptest
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -17,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.apptest.data.model.Movie
 import com.example.apptest.data.network.NetworkResult
+import com.example.apptest.data.ui.MovieDetailsActivity
 import com.example.apptest.data.ui.MovieViewModel
 import com.example.apptest.data.ui.adapter.MovieAdapter
 import kotlinx.coroutines.Job
@@ -244,14 +246,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showMovieDetails(movie: Movie) {
-        // Navegar a pantalla de detalles
-        val message = """
-            ${movie.title}
-            ${movie.voteAverage}/10
-            ${movie.releaseDate}
-        """.trimIndent()
+        // Intent: Objeto para navegar entre Activities
+        // this: Contexto actual (MainActivity)
+        // MovieDetailsActivity::class.java: Activity de destino
+        val intent = Intent(this, MovieDetailsActivity::class.java).apply {
+            // .apply: Scope function para configurar el intent
+            // putExtra: Agrega datos al intent
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_ID, movie.id)
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_TITLE, movie.title)
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_OVERVIEW, movie.overview)
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_RATING, movie.voteAverage)
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_VOTES, movie.voteCount)
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_RELEASE, movie.releaseDate)
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_POSTER, movie.getPosterURL())
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_BACKDROP, movie.getBackdropUrl())
+            putExtra(MovieDetailsActivity.EXTRA_MOVIE_POPULARITY, movie.popularity)
+        }
 
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show()
-        Log.d(TAG, "Movie clicked: ${movie.title}")
+        // startActivity: Inicia la nueva Activity
+        startActivity(intent)
     }
 }
