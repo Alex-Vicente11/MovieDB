@@ -1,7 +1,8 @@
 package com.example.apptest
 
-import com.example.apptest.data.repository.MovieRepository
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.widget.Button
@@ -18,6 +19,8 @@ import com.example.apptest.data.model.Movie
 import com.example.apptest.data.network.NetworkResult
 import com.example.apptest.data.ui.MovieViewModel
 import com.example.apptest.data.ui.adapter.MovieAdapter
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
@@ -36,6 +39,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var tvError: TextView
     private lateinit var tvEmpty: TextView
 
+    // Jop para controlar la busqueda
+    // Job: representa una corrutina que puede ser cancelada
+    private var searchJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +52,7 @@ class MainActivity : AppCompatActivity() {
         setupRecyclerView()
         setupObservers()
         setupListeners()
+        setupRealtimeSearch()
 
 
         // Cargar películas populares al inicio
@@ -145,6 +152,60 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupRealtimeSearch() {
+        // TextWatcher: Interface que detecta cambios en el EditText
+        etSearch.addTextChangedListener(object : TextWatcher {
+            // beforeTextChanged: Antes de que cambie el texto
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // no hay implementacion
+            }
+
+            //onTextChanged: Mientras se esta escribiendo
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // no hay implementacion
+            }
+
+            override fun afterTextChanged(s: Editable?) {
+                // s: El texto actual del EditText
+                val query = s?.toString()?.trim() ?: ""
+
+                Log.d(TAG, "Text changed: '$query")
+
+                // cancelar busqueda anterior si existe
+                // ?: Job anterior se cancela cuando escribes rapido
+                searchJob?.cancel()
+
+                if (query.isEmpty()) {
+                    // si esta vacio, mostrar populares
+                    Log.d(TAG, "Query is empty, showing popular movies")
+                    viewModel.getPopularMovies()
+                    return
+                }
+
+                if (query.length < 2) {
+                    // No buscar si hay menos de 2 caracteres
+                    Log.d(TAG, "Query too short, waiting...")
+                    return
+                }
+
+                // DEBOUNCE: Esperar 500ms antes de buscar
+                // Esto evita hacer peticiones por cada letra
+                searchJob = lifecycleScope.launch {
+                    // delay: pausa la corrutina sin bloquear el thread
+                    // si el usuario sigue escribiendo, esta corritina se cancela
+                    delay(500) // esperar medio segundo
+
+                    Log.d(TAG, "Performing search for: '$query'")
+                    performSearch(query)
+                }
+            }
+        })
+    }
+
+    private fun performSearch(query: String) {
+        viewModel.searchMovies(query)
+    }
+
     private fun showLoading() {
         progressBar.visibility = View.VISIBLE
         recyclerView.visibility = View.GONE
@@ -170,7 +231,7 @@ class MainActivity : AppCompatActivity() {
         recyclerView.visibility = View.GONE
         tvEmpty.visibility = View.GONE
         tvError.visibility = View.VISIBLE
-        tvError.text = "$message"
+        tvError.text = message
 
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
         Log.e(TAG, "Error: $message")
