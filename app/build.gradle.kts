@@ -38,6 +38,7 @@ android {
     }
     buildFeatures {
         compose = true
+        viewBinding = true
     }
 }
 
@@ -98,4 +99,11 @@ dependencies {
 
     // Glide para cargar imagenes
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // Fragment
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
+
+    // Navigation Component (opcional pero recomendado)
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 }
