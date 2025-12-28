@@ -1,6 +1,7 @@
 package com.example.apptest.data.ui
 
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -30,7 +31,7 @@ class MovieDetailsActivity: AppCompatActivity() {
     private lateinit var tvRelease: TextView
     private lateinit var tvPopularity: TextView
     private lateinit var tvOverview: TextView
-    private lateinit var btnBack: ImageView
+    private lateinit var btnBack: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

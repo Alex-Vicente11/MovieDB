@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#1E1E1E"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    android:paddingTop="?attr/actionBarSize">
 
     <!-- Header -->
     <LinearLayout
@@ -13,7 +14,9 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:padding="16dp"
-        android:background="#2C2C2C">
+        android:layout_marginTop="4dp"
+        android:background="#2C2C2C"
+        >
 
         <TextView
             android:layout_width="match_parent"
