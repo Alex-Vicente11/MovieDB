@@ -1,14 +1,13 @@
 package com.example.apptest.data.api
-import com.example.apptest.data.model.Movie
-import com.example.apptest.data.model.MovieResponse
-import org.intellij.lang.annotations.Language
+import com.example.apptest.domain.model.Movie
+import com.example.apptest.domain.model.MovieResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
 
-interface TMDDApiService {
+interface TMDBApiService {
 
     @GET("search/movie")
     suspend fun searchMovies(
