@@ -18,6 +18,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "TMDB_TOKEN", "\"eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4ZWE3MjJiMjQ4YjU1N2E0Mzc1YmQ4OTUzYmU5ZjRmNyIsIm5iZiI6MTc2NTQ4MTM0Mi44NTMsInN1YiI6IjY5M2IxYjdlYTYzOGMzMzk3MjM2MDdlNSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.k7Zpf2F7axUGqVU1rElMqK5iLlM6i5W2Qxa7Up6_iLY\"")
     }
 
     buildTypes {
@@ -39,6 +41,7 @@ android {
     buildFeatures {
         compose = true
         viewBinding = true
+        buildConfig = true
     }
 }
 
