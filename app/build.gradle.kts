@@ -111,4 +111,16 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    // Testing
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("io.mockk:mockk:1.13.8") // Para kotlin
+    testImplementation("app.cash.turbine:turbine:1.0.0") // Para testear Flows
+
+    // Para Repository tests
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.12.0")
+
+    // Truth - Assertions más legibles de Google (opcional)
+    testImplementation("com.google.truth:truth:1.1.5")
 }
