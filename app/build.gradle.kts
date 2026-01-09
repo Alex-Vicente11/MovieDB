@@ -43,6 +43,13 @@ android {
         viewBinding = true
         buildConfig = true
     }
+
+    testOptions {
+        unitTests {
+            isReturnDefaultValues = true
+            isIncludeAndroidResources = false
+        }
+    }
 }
 
 dependencies {
@@ -123,4 +130,10 @@ dependencies {
 
     // Truth - Assertions más legibles de Google (opcional)
     testImplementation("com.google.truth:truth:1.1.5")
+
+    // Tests - OkHttp MockWebServer
+    testImplementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    // Para mockear clases de Android en tests unitarios
+    testImplementation("androidx.test:core:1.5.0")
 }
