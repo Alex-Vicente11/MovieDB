@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.apptest.R
 import com.example.apptest.databinding.ItemMovieBinding
-import com.example.apptest.domain.model.Movie
+import com.example.apptest.movies.domain.model.Movie
 
 /**
  * ADAPTER para RecyclerView de películas

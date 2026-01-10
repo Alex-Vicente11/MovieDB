@@ -3,10 +3,10 @@ package com.example.apptest.movies.di
 import com.example.apptest.movies.data.network.NetworkModule
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.movies.data.repository.MovieRepositoryImpl
-import com.example.apptest.domain.repository.MovieRepository
-import com.example.apptest.domain.usecase.GetMovieDetailsUseCase
-import com.example.apptest.domain.usecase.GetPopularMoviesUseCase
-import com.example.apptest.domain.usecase.SearchMoviesUseCase
+import com.example.apptest.movies.domain.repository.MovieRepository
+import com.example.apptest.movies.domain.usecase.GetMovieDetailsUseCase
+import com.example.apptest.movies.domain.usecase.GetPopularMoviesUseCase
+import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
 
 /**
  * CONTENEDOR DE DEPENDENCIAS

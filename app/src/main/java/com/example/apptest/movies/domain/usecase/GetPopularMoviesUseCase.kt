@@ -1,7 +1,7 @@
-package com.example.apptest.domain.usecase
+package com.example.apptest.movies.domain.usecase
 
-import com.example.apptest.domain.model.Movie
-import com.example.apptest.domain.repository.MovieRepository
+import com.example.apptest.movies.domain.model.Movie
+import com.example.apptest.movies.domain.repository.MovieRepository
 import com.example.apptest.util.Resource
 import kotlinx.coroutines.flow.Flow
 

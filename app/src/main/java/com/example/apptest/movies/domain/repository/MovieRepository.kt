@@ -1,8 +1,8 @@
-package com.example.apptest.domain.repository
+package com.example.apptest.movies.domain.repository
 
 
-import com.example.apptest.domain.model.Movie
-import com.example.apptest.domain.model.MovieDetails
+import com.example.apptest.movies.domain.model.Movie
+import com.example.apptest.movies.domain.model.MovieDetails
 import com.example.apptest.util.Resource
 import kotlinx.coroutines.flow.Flow
 

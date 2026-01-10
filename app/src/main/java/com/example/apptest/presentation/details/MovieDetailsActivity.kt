@@ -13,7 +13,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.apptest.movies.MyApplication
 import com.example.apptest.R
 import com.example.apptest.databinding.ActivityMovieDetailsBinding
-import com.example.apptest.domain.model.MovieDetails
+import com.example.apptest.movies.domain.model.MovieDetails
 import com.example.apptest.util.Constants
 import kotlinx.coroutines.launch
 

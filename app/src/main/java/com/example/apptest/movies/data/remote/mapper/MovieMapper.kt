@@ -3,9 +3,9 @@ package com.example.apptest.movies.data.remote.mapper
 import com.example.apptest.movies.data.remote.dto.GenreDto
 import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
 import com.example.apptest.movies.data.remote.dto.MovieDto
-import com.example.apptest.domain.model.Genre
-import com.example.apptest.domain.model.Movie
-import com.example.apptest.domain.model.MovieDetails
+import com.example.apptest.movies.domain.model.Genre
+import com.example.apptest.movies.domain.model.Movie
+import com.example.apptest.movies.domain.model.MovieDetails
 
 /**
  * MAPPER: Convierte DTOs a modelos de dominio

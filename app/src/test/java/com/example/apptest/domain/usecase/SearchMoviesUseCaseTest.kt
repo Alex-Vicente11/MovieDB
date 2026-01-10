@@ -1,7 +1,8 @@
 package com.example.apptest.domain.usecase
 
-import com.example.apptest.domain.model.Movie
-import com.example.apptest.domain.repository.MovieRepository
+import com.example.apptest.movies.domain.model.Movie
+import com.example.apptest.movies.domain.repository.MovieRepository
+import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
 import com.example.apptest.util.Resource
 import io.mockk.coEvery
 import io.mockk.coVerify

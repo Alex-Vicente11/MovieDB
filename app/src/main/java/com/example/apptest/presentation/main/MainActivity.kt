@@ -14,6 +14,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptest.movies.MyApplication
 import com.example.apptest.databinding.ActivityMainBinding
+import com.example.apptest.movies.domain.model.Movie
 import com.example.apptest.presentation.adapter.MovieAdapter
 import com.example.apptest.presentation.details.MovieDetailsActivity
 import com.example.apptest.util.Constants
@@ -240,7 +241,7 @@ class MainActivity : AppCompatActivity() {
         binding.progressBar.visibility = View.GONE
     }
 
-    private fun showMovies(movies: List<com.example.apptest.domain.model.Movie>) {
+    private fun showMovies(movies: List<Movie>) {
         binding.recyclerView.visibility = View.VISIBLE
         binding.tvError.visibility = View.GONE
         binding.tvEmpty.visibility = View.GONE

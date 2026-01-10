@@ -2,9 +2,9 @@ package com.example.apptest.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apptest.domain.model.Movie
-import com.example.apptest.domain.usecase.GetPopularMoviesUseCase
-import com.example.apptest.domain.usecase.SearchMoviesUseCase
+import com.example.apptest.movies.domain.model.Movie
+import com.example.apptest.movies.domain.usecase.GetPopularMoviesUseCase
+import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
 import com.example.apptest.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

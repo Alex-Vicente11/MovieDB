@@ -1,7 +1,7 @@
 package com.example.apptest.presentation.adapter
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.apptest.domain.model.Movie
+import com.example.apptest.movies.domain.model.Movie
 
 /**
  * DiffUtil Callback para calcular diferencias entre listas de películas
