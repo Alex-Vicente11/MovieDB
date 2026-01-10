@@ -1,7 +1,7 @@
-package com.example.apptest.data.remote.api
+package com.example.apptest.movies.data.remote.api
 
-import com.example.apptest.data.remote.dto.MovieDetailsDto
-import com.example.apptest.data.remote.dto.MovieResponseDto
+import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
+import com.example.apptest.movies.data.remote.dto.MovieResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

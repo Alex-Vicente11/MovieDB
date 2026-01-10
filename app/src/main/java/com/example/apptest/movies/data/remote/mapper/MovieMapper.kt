@@ -1,8 +1,8 @@
-package com.example.apptest.data.remote.mapper
+package com.example.apptest.movies.data.remote.mapper
 
-import com.example.apptest.data.remote.dto.GenreDto
-import com.example.apptest.data.remote.dto.MovieDetailsDto
-import com.example.apptest.data.remote.dto.MovieDto
+import com.example.apptest.movies.data.remote.dto.GenreDto
+import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
+import com.example.apptest.movies.data.remote.dto.MovieDto
 import com.example.apptest.domain.model.Genre
 import com.example.apptest.domain.model.Movie
 import com.example.apptest.domain.model.MovieDetails

@@ -1,4 +1,4 @@
-package com.example.apptest.data.network.interceptor
+package com.example.apptest.movies.data.network.interceptor
 
 import okhttp3.Interceptor
 import okhttp3.Response

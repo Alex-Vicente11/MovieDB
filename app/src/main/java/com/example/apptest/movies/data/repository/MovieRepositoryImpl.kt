@@ -1,8 +1,8 @@
-package com.example.apptest.data.repository
+package com.example.apptest.movies.data.repository
 
 import android.util.Log
-import com.example.apptest.data.remote.api.TMDBApiService
-import com.example.apptest.data.remote.mapper.MovieMapper.toDomain
+import com.example.apptest.movies.data.remote.api.TMDBApiService
+import com.example.apptest.movies.data.remote.mapper.MovieMapper.toDomain
 import com.example.apptest.domain.model.Movie
 import com.example.apptest.domain.model.MovieDetails
 import com.example.apptest.domain.repository.MovieRepository

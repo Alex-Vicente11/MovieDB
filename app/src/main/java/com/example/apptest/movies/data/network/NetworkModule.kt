@@ -1,8 +1,8 @@
-package com.example.apptest.data.network
+package com.example.apptest.movies.data.network
 
 
-import com.example.apptest.data.network.interceptor.AuthInterceptor
-import com.example.apptest.data.remote.api.TMDBApiService
+import com.example.apptest.movies.data.network.interceptor.AuthInterceptor
+import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

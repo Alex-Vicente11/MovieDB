@@ -1,7 +1,7 @@
 package com.example.apptest.movies
 
 import android.app.Application
-import com.example.apptest.di.AppContainer
+import com.example.apptest.movies.di.AppContainer
 
 /**
  * CLASE APPLICATION
