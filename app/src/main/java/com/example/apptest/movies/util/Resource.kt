@@ -1,4 +1,4 @@
-package com.example.apptest.util
+package com.example.apptest.movies.util
 
 /**
  * RESOURCE - Envoltorio de estados

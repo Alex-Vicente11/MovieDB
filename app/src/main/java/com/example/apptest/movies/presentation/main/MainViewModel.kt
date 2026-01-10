@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.apptest.movies.domain.model.Movie
 import com.example.apptest.movies.domain.usecase.GetPopularMoviesUseCase
 import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
-import com.example.apptest.util.Resource
+import com.example.apptest.movies.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

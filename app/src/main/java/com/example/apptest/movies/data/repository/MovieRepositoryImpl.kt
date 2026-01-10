@@ -6,7 +6,7 @@ import com.example.apptest.movies.data.remote.mapper.MovieMapper.toDomain
 import com.example.apptest.movies.domain.model.Movie
 import com.example.apptest.movies.domain.model.MovieDetails
 import com.example.apptest.movies.domain.repository.MovieRepository
-import com.example.apptest.util.Resource
+import com.example.apptest.movies.util.Resource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

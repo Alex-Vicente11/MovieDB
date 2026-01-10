@@ -1,4 +1,4 @@
-package com.example.apptest.util
+package com.example.apptest.movies.util
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

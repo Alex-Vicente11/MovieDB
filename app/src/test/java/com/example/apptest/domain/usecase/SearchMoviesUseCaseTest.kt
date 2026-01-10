@@ -3,7 +3,7 @@ package com.example.apptest.domain.usecase
 import com.example.apptest.movies.domain.model.Movie
 import com.example.apptest.movies.domain.repository.MovieRepository
 import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
-import com.example.apptest.util.Resource
+import com.example.apptest.movies.util.Resource
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

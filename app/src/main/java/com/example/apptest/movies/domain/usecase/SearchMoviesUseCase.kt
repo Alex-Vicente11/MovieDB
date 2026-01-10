@@ -2,7 +2,7 @@ package com.example.apptest.movies.domain.usecase
 
 import com.example.apptest.movies.domain.model.Movie
 import com.example.apptest.movies.domain.repository.MovieRepository
-import com.example.apptest.util.Resource
+import com.example.apptest.movies.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
