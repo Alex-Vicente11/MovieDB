@@ -1,4 +1,4 @@
-package com.example.apptest.presentation.main
+package com.example.apptest.movies.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

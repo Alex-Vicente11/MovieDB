@@ -1,4 +1,4 @@
-package com.example.apptest.presentation.main
+package com.example.apptest.movies.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,8 +15,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptest.movies.MyApplication
 import com.example.apptest.databinding.ActivityMainBinding
 import com.example.apptest.movies.domain.model.Movie
-import com.example.apptest.presentation.adapter.MovieAdapter
-import com.example.apptest.presentation.details.MovieDetailsActivity
+import com.example.apptest.movies.presentation.adapter.MovieAdapter
+import com.example.apptest.movies.presentation.details.MovieDetailsActivity
 import com.example.apptest.util.Constants
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay

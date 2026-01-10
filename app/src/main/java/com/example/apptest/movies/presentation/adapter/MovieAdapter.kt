@@ -1,4 +1,4 @@
-package com.example.apptest.presentation.adapter
+package com.example.apptest.movies.presentation.adapter
 
 import android.util.Log
 import android.view.LayoutInflater

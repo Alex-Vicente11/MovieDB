@@ -1,4 +1,4 @@
-package com.example.apptest.presentation.details
+package com.example.apptest.movies.presentation.details
 
 import android.os.Bundle
 import android.util.Log
