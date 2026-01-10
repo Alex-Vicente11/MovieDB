@@ -1,4 +1,4 @@
-package com.example.apptest
+package com.example.apptest.movies
 
 import android.app.Application
 import com.example.apptest.di.AppContainer

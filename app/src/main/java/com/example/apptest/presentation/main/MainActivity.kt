@@ -12,7 +12,7 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.apptest.MyApplication
+import com.example.apptest.movies.MyApplication
 import com.example.apptest.databinding.ActivityMainBinding
 import com.example.apptest.presentation.adapter.MovieAdapter
 import com.example.apptest.presentation.details.MovieDetailsActivity

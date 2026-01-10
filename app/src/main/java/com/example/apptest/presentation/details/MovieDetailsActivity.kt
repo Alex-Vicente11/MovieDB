@@ -10,7 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.apptest.MyApplication
+import com.example.apptest.movies.MyApplication
 import com.example.apptest.R
 import com.example.apptest.databinding.ActivityMovieDetailsBinding
 import com.example.apptest.domain.model.MovieDetails
