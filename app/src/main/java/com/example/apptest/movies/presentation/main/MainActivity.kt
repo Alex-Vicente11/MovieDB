@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         val appContainer = (application as MyApplication).appContainer
 
         viewModel = MainViewModel(
-            searchMoviesUseCase = appContainer.searchMoviesUseCase,
+            searchMoviesUseCase = appContainer.searchContainer.searchMoviesUseCase,
             getPopularMoviesUseCase = appContainer.getPopularMoviesUseCase
         )
 

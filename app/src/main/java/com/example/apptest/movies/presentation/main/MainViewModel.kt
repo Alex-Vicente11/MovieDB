@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.movies.domain.usecase.GetPopularMoviesUseCase
-import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
 import com.example.apptest.core.data.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -21,7 +20,7 @@ import kotlinx.coroutines.launch
  * - Sobrevive a cambios de configuración
  */
 class MainViewModel(
-    private val searchMoviesUseCase: SearchMoviesUseCase,
+    private val searchMoviesUseCase: com.example.apptest.features.search.domain.usecase.SearchMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 ) : ViewModel() {
 

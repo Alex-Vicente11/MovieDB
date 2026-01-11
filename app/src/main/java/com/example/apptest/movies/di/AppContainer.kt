@@ -1,12 +1,13 @@
 package com.example.apptest.movies.di
 
+import com.example.apptest.features.search.di.SearchContainer
 import com.example.apptest.core.data.network.NetworkModule
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.movies.data.repository.MovieRepositoryImpl
 import com.example.apptest.movies.domain.repository.MovieRepository
 import com.example.apptest.movies.domain.usecase.GetMovieDetailsUseCase
 import com.example.apptest.movies.domain.usecase.GetPopularMoviesUseCase
-import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
+
 
 /**
  * CONTENEDOR DE DEPENDENCIAS
@@ -26,46 +27,41 @@ import com.example.apptest.movies.domain.usecase.SearchMoviesUseCase
 class AppContainer {
 
     // ═══════════════════════════════════════════════════════
-    // DATA LAYER
+    // FEATURE CONTAINERS
     // ═══════════════════════════════════════════════════════
 
     /**
-     * API Service (singleton)
-     * Delegado al NetworkModule
+     * Feature: Search
      */
+    val searchContainer: SearchContainer by lazy {
+        SearchContainer()
+    }
+
+    // ═══════════════════════════════════════════════════════
+    // DATA LAYER (Legacy)
+    // ═══════════════════════════════════════════════════════
+
     private val apiService: TMDBApiService by lazy {
         NetworkModule.provideTMDBApiService()
     }
 
-    /**
-     * Repository (singleton)
-     * Implementación concreta que cumple el contrato de MovieRepository
-     */
     val movieRepository: MovieRepository by lazy {
         MovieRepositoryImpl(apiService)
     }
 
     // ═══════════════════════════════════════════════════════
-    // DOMAIN LAYER - USE CASES
+    // DOMAIN LAYER - USE CASES (Legacy)
     // ═══════════════════════════════════════════════════════
 
-    /**
-     * Use Case: Buscar películas
-     */
-    val searchMoviesUseCase: SearchMoviesUseCase by lazy {
-        SearchMoviesUseCase(movieRepository)
-    }
+    // ⬇️ ELIMINAR ESTA PROPIEDAD COMPLETA:
+    // val searchMoviesUseCase: SearchMoviesUseCase by lazy {
+    //     SearchMoviesUseCase(movieRepository)
+    // }
 
-    /**
-     * Use Case: Obtener películas populares
-     */
     val getPopularMoviesUseCase: GetPopularMoviesUseCase by lazy {
         GetPopularMoviesUseCase(movieRepository)
     }
 
-    /**
-     * Use Case: Obtener detalles de película
-     */
     val getMovieDetailsUseCase: GetMovieDetailsUseCase by lazy {
         GetMovieDetailsUseCase(movieRepository)
     }
