@@ -4,7 +4,7 @@ import com.example.apptest.movies.data.remote.dto.GenreDto
 import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
 import com.example.apptest.movies.data.remote.dto.MovieDto
 import com.example.apptest.movies.domain.model.Genre
-import com.example.apptest.movies.domain.model.Movie
+import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.movies.domain.model.MovieDetails
 
 /**

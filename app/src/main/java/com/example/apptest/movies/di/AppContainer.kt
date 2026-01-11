@@ -1,6 +1,6 @@
 package com.example.apptest.movies.di
 
-import com.example.apptest.movies.data.network.NetworkModule
+import com.example.apptest.core.data.network.NetworkModule
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.movies.data.repository.MovieRepositoryImpl
 import com.example.apptest.movies.domain.repository.MovieRepository

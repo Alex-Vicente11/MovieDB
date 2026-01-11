@@ -1,7 +1,6 @@
-package com.example.apptest.movies.data.network
+package com.example.apptest.core.data.network
 
-
-import com.example.apptest.movies.data.network.interceptor.AuthInterceptor
+import com.example.apptest.core.data.network.interceptor.AuthInterceptor
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
@@ -119,7 +118,7 @@ object NetworkModule {
      * Retrofit convierte las interfaces con anotaciones HTTP
      * en llamadas HTTP reales usando OkHttp
      */
-    private fun provideRetrofit(): Retrofit {
+    public fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(NetworkConfig.BASE_URL)
             .client(provideOkHttpClient())

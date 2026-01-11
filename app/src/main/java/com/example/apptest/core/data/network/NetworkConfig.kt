@@ -1,4 +1,4 @@
-package com.example.apptest.movies.data.network
+package com.example.apptest.core.data.network
 
 import com.example.apptest.BuildConfig
 

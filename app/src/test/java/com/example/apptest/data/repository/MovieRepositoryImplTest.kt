@@ -6,7 +6,7 @@ import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
 import com.example.apptest.movies.data.remote.dto.MovieDto
 import com.example.apptest.movies.data.remote.dto.MovieResponseDto
 import com.example.apptest.movies.data.repository.MovieRepositoryImpl
-import com.example.apptest.movies.util.Resource
+import com.example.apptest.core.data.util.Resource
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk

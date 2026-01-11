@@ -14,10 +14,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptest.movies.MyApplication
 import com.example.apptest.databinding.ActivityMainBinding
-import com.example.apptest.movies.domain.model.Movie
+import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.movies.presentation.adapter.MovieAdapter
 import com.example.apptest.movies.presentation.details.MovieDetailsActivity
-import com.example.apptest.movies.util.Constants
+import com.example.apptest.core.util.Constants
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

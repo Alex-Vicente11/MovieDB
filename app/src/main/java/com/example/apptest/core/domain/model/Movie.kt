@@ -1,4 +1,4 @@
-package com.example.apptest.movies.domain.model
+package com.example.apptest.core.domain.model
 
 /**
  * MODELO DE DOMINIO - Movie

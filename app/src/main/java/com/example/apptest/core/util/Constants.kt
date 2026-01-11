@@ -1,4 +1,4 @@
-package com.example.apptest.movies.util
+package com.example.apptest.core.util
 
 /**
  * CONSTANTES DE LA APLICACIÓN
