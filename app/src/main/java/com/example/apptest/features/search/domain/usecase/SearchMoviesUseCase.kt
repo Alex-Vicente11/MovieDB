@@ -3,17 +3,26 @@ package com.example.apptest.features.search.domain.usecase
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.search.domain.repository.SearchRepository
+import com.example.apptest.movies.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 /**
  * USE CASE: Buscar películas
+ *
+ * Encapsula la lógica de negocio para buscar películas
+ * - Valida el query
+ * - Llama al repositorio
+ * - Puede agregar lógica adicional (filtros, transformaciones)
  */
 class SearchMoviesUseCase(
     private val repository: SearchRepository
 ) {
     /**
      * Ejecuta la búsqueda
+     *
+     * operator fun invoke() permite llamar al UseCase como función:
+     * searchMoviesUseCase(query) en lugar de searchMoviesUseCase.execute(query)
      */
     operator fun invoke(query: String): Flow<Resource<List<Movie>>> {
         // Validación: Query no puede estar vacío
