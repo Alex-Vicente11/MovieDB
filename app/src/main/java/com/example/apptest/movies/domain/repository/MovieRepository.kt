@@ -2,7 +2,7 @@ package com.example.apptest.movies.domain.repository
 
 
 import com.example.apptest.core.domain.model.Movie
-import com.example.apptest.movies.domain.model.MovieDetails
+import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.core.data.util.Resource
 import kotlinx.coroutines.flow.Flow
 

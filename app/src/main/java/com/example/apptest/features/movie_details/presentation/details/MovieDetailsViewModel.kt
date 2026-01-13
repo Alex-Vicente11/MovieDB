@@ -1,9 +1,9 @@
-package com.example.apptest.movies.presentation.details
+package com.example.apptest.features.movie_details.presentation.details
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apptest.movies.domain.model.MovieDetails
-import com.example.apptest.movies.domain.usecase.GetMovieDetailsUseCase
+import com.example.apptest.features.movie_details.domain.model.MovieDetails
+import com.example.apptest.features.movie_details.domain.usecase.GetMovieDetailsUseCase
 import com.example.apptest.core.data.util.Resource
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

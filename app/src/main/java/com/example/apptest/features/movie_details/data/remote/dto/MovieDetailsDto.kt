@@ -1,10 +1,32 @@
-package com.example.apptest.movies.data.remote.dto
+package com.example.apptest.features.movie_details.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
 /**
  * DTO para detalles completos de una película
- * Incluye campos adicionales que no vienen en búsquedas
+ *
+ * UBICACIÓN: features/movie_details/data/remote/dto/
+ *
+ * Responsabilidad:
+ * - Representar la estructura JSON de la API para el endpoint /movie/{id}
+ * - Incluye campos adicionales que NO vienen en búsquedas
+ *
+ * Decisión de diseño:
+ * ¿Por qué este DTO va en movie_details/ y NO en core/?
+ *
+ * - MovieDto (core) se usa en múltiples endpoints:
+ *   * /search/movie
+ *   * /movie/popular
+ *   * /movie/trending
+ *   * etc.
+ *
+ * - MovieDetailsDto solo se usa en:
+ *   * /movie/{id} (endpoint de detalles)
+ *
+ * Por lo tanto, va en el feature específico
+ *
+ * Cambios vs versión legacy:
+ *  Package actualizado: movies.data.remote.dto → movie_details.data.remote.dto
  */
 data class MovieDetailsDto(
     @SerializedName("id")
@@ -71,6 +93,13 @@ data class MovieDetailsDto(
 
 /**
  * DTO para género
+ *
+ * UBICACIÓN: features/movie_details/data/remote/dto/
+ *
+ * Decisión de diseño:
+ * - Solo se usa en MovieDetailsDto
+ * - No aparece en otros endpoints
+ * - Por lo tanto, va en el feature movie_details
  */
 data class GenreDto(
     @SerializedName("id")

@@ -1,8 +1,9 @@
-package com.example.apptest.movies.domain.usecase
+package com.example.apptest.features.movie_details.domain.usecase
 
-import com.example.apptest.movies.domain.model.MovieDetails
-import com.example.apptest.movies.domain.repository.MovieRepository
 import com.example.apptest.core.data.util.Resource
+import com.example.apptest.features.movie_details.domain.model.MovieDetails
+import com.example.apptest.features.movie_details.domain.repository.MovieDetailsRepository
+import com.example.apptest.movies.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
@@ -13,7 +14,7 @@ import kotlinx.coroutines.flow.flow
  * Valida el ID antes de llamar al repositorio
  */
 class GetMovieDetailsUseCase(
-    private val repository: MovieRepository
+    private val repository: MovieDetailsRepository
 ) {
     /**
      * Ejecuta la obtención de detalles

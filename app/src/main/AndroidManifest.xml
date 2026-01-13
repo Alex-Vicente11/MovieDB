@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".movies.presentation.details.MovieDetailsActivity"
+        <activity android:name=".features.movie_details.presentation.details.MovieDetailsActivity"
             android:exported="false"
             android:theme="@style/Base.Theme.AppTest" />
     </application>

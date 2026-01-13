@@ -1,4 +1,4 @@
-package com.example.apptest.movies.presentation.details
+package com.example.apptest.features.movie_details.presentation.details
 
 import android.os.Bundle
 import android.util.Log
@@ -10,27 +10,40 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.apptest.movies.MyApplication
 import com.example.apptest.R
-import com.example.apptest.databinding.ActivityMovieDetailsBinding
-import com.example.apptest.movies.domain.model.MovieDetails
 import com.example.apptest.core.util.Constants
+import com.example.apptest.databinding.ActivityMovieDetailsBinding
+import com.example.apptest.features.movie_details.domain.model.MovieDetails
+import com.example.apptest.movies.MyApplication
 import kotlinx.coroutines.launch
 
 /**
- * MOVIE DETAILS ACTIVITY (Clean Architecture + MVVM)
+ * MOVIE DETAILS ACTIVITY - Feature: Movie Details
  *
- * Responsabilidades (SOLO UI):
- * ✅ Inflar ViewBinding
- * ✅ Obtener movieId del Intent
- * ✅ Observar StateFlow del ViewModel
- * ✅ Renderizar detalles de la película
+ * UBICACIÓN: features/movie_details/presentation/details/
  *
- * Cambios vs versión anterior:
- * ✅ Usa ViewModel en lugar de recibir todos los datos por Intent
- * ✅ Carga los detalles desde la API (no depende de datos pasados)
- * ✅ ViewBinding en lugar de findViewById
- * ✅ StateFlow en lugar de LiveData
+ * Responsabilidades:
+ * - Mostrar información completa de una película
+ * - Recibir movieId por Intent
+ * - Observar estados del ViewModel
+ * - Renderizar UI según el estado
+ *
+ * Cambios vs versión legacy:
+ * Package actualizado: movies.presentation.details → movie_details.presentation.details
+ * Imports actualizados para usar feature modular
+ * ViewModel ahora usa MovieDetailsContainer
+ *
+ * Arquitectura MVVM + Clean Architecture:
+ * - Activity = Vista tonta (solo renderiza estados)
+ * - ViewModel = Lógica de presentación
+ * - UseCase = Lógica de negocio
+ * - Repository = Acceso a datos
+ *
+ * Ciclo de vida:
+ *  onCreate: Setup inicial (binding, viewModel, observers)
+ *  StateFlow + repeatOnLifecycle: Observación lifecycle-aware
+ * Sin memory leaks (ViewBinding nullable)
+ *
  */
 class MovieDetailsActivity : AppCompatActivity() {
 
@@ -41,6 +54,10 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     // ViewModel
     private lateinit var viewModel: MovieDetailsViewModel
+
+    // ═══════════════════════════════════════════════════════════════════
+    // CICLO DE VIDA: CREACIÓN
+    // ═══════════════════════════════════════════════════════════════════
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,13 +85,17 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     /**
      * Crear ViewModel con dependencias inyectadas
+     *
+     * Nota: Ahora usa movieDetailsContainer del AppContainer
      */
     private fun setupViewModel() {
         val appContainer = (application as MyApplication).appContainer
 
         viewModel = MovieDetailsViewModel(
-            getMovieDetailsUseCase = appContainer.getMovieDetailsUseCase
+            getMovieDetailsUseCase = appContainer.movieDetailsContainer.getMovieDetailsUseCase
         )
+
+        Log.d(TAG, "setupViewModel: ViewModel inicializado con feature modular")
     }
 
     /**
@@ -88,10 +109,17 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     /**
      * Observar el StateFlow del ViewModel
+     *
+     * ✅ repeatOnLifecycle(STARTED):
+     *    - Se ejecuta cuando la Activity está STARTED o superior (visible)
+     *    - Se CANCELA cuando va a STOPPED (background)
+     *    - Previene memory leaks y actualizaciones innecesarias
      */
     private fun observeUiState() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                Log.d(TAG, "observeUiState: Iniciando observación del StateFlow")
+
                 viewModel.uiState.collect { state ->
                     when (state) {
                         is MovieDetailsUiState.Idle -> {
@@ -120,9 +148,9 @@ class MovieDetailsActivity : AppCompatActivity() {
         }
     }
 
-    // ═══════════════════════════════════════════════════════════
-    // FUNCIONES DE UI
-    // ═══════════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // FUNCIONES DE UI (Renderizado de estados)
+    // ═══════════════════════════════════════════════════════════════════
 
     private fun showLoading() {
         binding.progressBar.visibility = View.VISIBLE

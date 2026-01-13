@@ -17,7 +17,7 @@ import com.example.apptest.core.util.Constants
 import com.example.apptest.databinding.ActivityMainBinding
 import com.example.apptest.movies.MyApplication
 import com.example.apptest.features.popular_movies.presentation.adapter.MovieAdapter
-import com.example.apptest.movies.presentation.details.MovieDetailsActivity
+import com.example.apptest.features.movie_details.presentation.details.MovieDetailsActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

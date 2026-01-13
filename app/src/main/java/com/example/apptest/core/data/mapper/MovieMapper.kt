@@ -2,10 +2,10 @@ package com.example.apptest.core.data.mapper
 
 import com.example.apptest.core.data.remote.dto.MovieDto
 import com.example.apptest.core.domain.model.Movie
-import com.example.apptest.movies.data.remote.dto.GenreDto
-import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
-import com.example.apptest.movies.domain.model.Genre
-import com.example.apptest.movies.domain.model.MovieDetails
+import com.example.apptest.features.movie_details.data.remote.dto.GenreDto
+import com.example.apptest.features.movie_details.data.remote.dto.MovieDetailsDto
+import com.example.apptest.features.movie_details.domain.model.Genre
+import com.example.apptest.features.movie_details.domain.model.MovieDetails
 
 /**
  * MAPPER: Convierte DTOs a modelos de dominio

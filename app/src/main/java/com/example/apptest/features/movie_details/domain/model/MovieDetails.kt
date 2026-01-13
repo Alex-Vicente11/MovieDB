@@ -1,10 +1,33 @@
-package com.example.apptest.movies.domain.model
+package com.example.apptest.features.movie_details.domain.model
 
 /**
  * MODELO DE DOMINIO - MovieDetails
  *
- * Contiene información completa de una película
- * Incluye campos adicionales que no están en búsquedas
+ * UBICACIÓN: features/movie_details/domain/model/
+ *
+ * Responsabilidad:
+ * - Representar información completa de una película
+ * - Incluye campos adicionales que NO están en búsquedas
+ *
+ * Decisión de diseño:
+ * ¿Por qué este modelo va en movie_details/ y NO en core/?
+ *
+ * - Movie.kt está en core/ porque se usa en múltiples features:
+ *   * Search (lista de búsqueda)
+ *   * Popular Movies (lista de populares)
+ *   * Trending, Upcoming, etc. (futuro)
+ *
+ * - MovieDetails.kt va en movie_details/ porque:
+ *   * SOLO se usa en la pantalla de detalles
+ *   * NO se usa en listas/búsquedas
+ *   * Es específico de UN solo feature
+ *
+ * Principio YAGNI: "You Aren't Gonna Need It"
+ * - No lo movemos a core hasta que otro feature lo necesite
+ *
+ * Cambios vs versión legacy:
+ * ✅ Package actualizado: movies.domain.model → movie_details.domain.model
+ * ✅ Documentación mejorada
  */
 data class MovieDetails(
     val id: Int,
@@ -104,7 +127,22 @@ data class MovieDetails(
 }
 
 /**
- * Género de película
+ * MODELO DE DOMINIO - Genre
+ *
+ * UBICACIÓN: features/movie_details/domain/model/
+ *
+ * Responsabilidad:
+ * - Representar un género de película
+ *
+ * Decisión de diseño:
+ * ¿Por qué Genre va en movie_details/ y NO en core/?
+ *
+ * - Genre solo se usa en MovieDetails
+ * - Movie.kt (core) tiene genreIds: List<Int> pero NO objetos Genre
+ * - Si en el futuro otro feature necesita Genre, lo movemos a core
+ *
+ * Cambios vs versión legacy:
+ * ✅ Package actualizado: movies.domain.model → movie_details.domain.model
  */
 data class Genre(
     val id: Int,

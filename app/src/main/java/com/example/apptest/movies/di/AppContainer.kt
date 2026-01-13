@@ -1,23 +1,23 @@
 package com.example.apptest.movies.di
 
 import com.example.apptest.core.data.network.NetworkModule
+import com.example.apptest.features.movie_details.di.MovieDetailsContainer
 import com.example.apptest.features.popular_movies.di.PopularMoviesContainer
 import com.example.apptest.features.search.di.SearchContainer
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.movies.data.repository.MovieRepositoryImpl
 import com.example.apptest.movies.domain.repository.MovieRepository
-import com.example.apptest.movies.domain.usecase.GetMovieDetailsUseCase
 
 /**
  * CONTENEDOR DE DEPENDENCIAS PRINCIPAL
  *
  * Service Locator manual (Dependency Injection sin framework)
  *
- * Estado actual (Fase 3 completada):
- * ✅ Feature: Search (migrado)
- * ✅ Feature: Popular Movies (migrado)
- * ⏳ Feature: Movie Details (pendiente - Fase 4)
- * ⏳ Feature: Videos (pendiente - Fase 5)
+ * Estado actual (Fase 4 completada):
+ *  Feature: Search (migrado)
+ *  Feature: Popular Movies (migrado)
+ *  Feature: Movie Details (migrado)
+ * Feature: Videos (pendiente - Fase 5)
  *
  * Arquitectura de Features Modulares:
  * - Cada feature tiene su propio contenedor
@@ -33,7 +33,7 @@ class AppContainer {
     /**
      * Feature: Search
      * Responsabilidad: Búsqueda de películas
-     * Estado: ✅ Migrado completamente (Fase 2)
+     * Estado:  Migrado completamente (Fase 2)
      */
     val searchContainer: SearchContainer by lazy {
         SearchContainer()
@@ -42,10 +42,19 @@ class AppContainer {
     /**
      * Feature: Popular Movies
      * Responsabilidad: Mostrar películas populares
-     * Estado: ✅ Migrado completamente (Fase 3)
+     * Estado:  Migrado completamente (Fase 3)
      */
     val popularMoviesContainer: PopularMoviesContainer by lazy {
         PopularMoviesContainer()
+    }
+
+    /**
+     * Feature: Movie Details
+     * Responsabilidad: Mostrar detalles completos de una película
+     * Estado: Migrado completamente (Fase 4)
+     */
+    val movieDetailsContainer: MovieDetailsContainer by lazy {
+        MovieDetailsContainer()
     }
 
     // ═══════════════════════════════════════════════════════════════════
@@ -54,7 +63,7 @@ class AppContainer {
 
     /**
      * API monolítico legacy
-     * : Eliminar cuando se complete migración de Movie Details (Fase 4)
+     * Eliminar en Fase 6 (ya no se usa)
      */
     private val apiService: TMDBApiService by lazy {
         NetworkModule.provideTMDBApiService()
@@ -62,17 +71,10 @@ class AppContainer {
 
     /**
      * Repositorio monolítico legacy
-     * : Eliminar cuando se complete migración de Movie Details (Fase 4)
+     * : Eliminar en Fase 6 (ya no se usa)
      */
     val movieRepository: MovieRepository by lazy {
         MovieRepositoryImpl(apiService)
     }
 
-    /**
-     * UseCase de detalles (legacy)
-     * : Mover a features/movie_details/ en Fase 4
-     */
-    val getMovieDetailsUseCase: GetMovieDetailsUseCase by lazy {
-        GetMovieDetailsUseCase(movieRepository)
-    }
 }
