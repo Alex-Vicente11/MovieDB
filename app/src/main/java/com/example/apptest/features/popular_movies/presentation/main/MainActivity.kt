@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.core.util.Constants
 import com.example.apptest.databinding.ActivityMainBinding
-import com.example.apptest.movies.MyApplication
+import com.example.apptest.MyApplication
 import com.example.apptest.features.popular_movies.presentation.adapter.MovieAdapter
 import com.example.apptest.features.movie_details.presentation.details.MovieDetailsActivity
 import kotlinx.coroutines.Job

@@ -3,7 +3,6 @@ package com.example.apptest.features.search.domain.usecase
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.search.domain.repository.SearchRepository
-import com.example.apptest.movies.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

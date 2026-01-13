@@ -14,7 +14,7 @@ import com.example.apptest.R
 import com.example.apptest.core.util.Constants
 import com.example.apptest.databinding.ActivityMovieDetailsBinding
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
-import com.example.apptest.movies.MyApplication
+import com.example.apptest.MyApplication
 import kotlinx.coroutines.launch
 
 /**

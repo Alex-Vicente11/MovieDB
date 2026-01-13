@@ -1,7 +1,6 @@
 package com.example.apptest.core.data.network
 
 import com.example.apptest.core.data.network.interceptor.AuthInterceptor
-import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -12,25 +11,32 @@ import java.util.concurrent.TimeUnit
 /**
  * MÓDULO DE RED
  *
+ * UBICACIÓN: core/data/network/
+ *
  * Responsabilidad única: Configurar y proveer componentes de red
  *
  * Este módulo se encarga de:
  * - Configurar OkHttpClient con interceptores
  * - Configurar Retrofit con convertidores
- * - Proveer instancias de API Services
+ * - Proveer instancia singleton de Retrofit
  *
  * Separado del AppContainer para:
- * ✅ Mejor organización y separación de responsabilidades
- * ✅ Facilitar testing (puedes mockear NetworkModule)
- * ✅ Facilitar migración futura a Hilt/Koin
+ *  Mejor organización y separación de responsabilidades
+ *  Facilitar testing (puedes mockear NetworkModule)
+ * Facilitar migración futura a Hilt/Koin
  *
  * Patrón: Factory pattern + Singleton (lazy initialization)
+ *
+ * Arquitectura Modular:
+ * - Este módulo NO crea API Services directamente
+ * - Cada feature crea su propia API usando CoreContainer.retrofit
+ * - Ejemplo: CoreContainer.retrofit.create(SearchApi::class.java)
  */
 object NetworkModule {
 
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
     // INTERCEPTORS
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Proporciona el interceptor de autenticación
@@ -64,9 +70,9 @@ object NetworkModule {
         }
     }
 
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
     // OKHTTP CLIENT
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Proporciona OkHttpClient configurado
@@ -94,9 +100,9 @@ object NetworkModule {
             .build()
     }
 
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
     // GSON
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Proporciona Gson configurado
@@ -108,44 +114,33 @@ object NetworkModule {
         .setLenient()
         .create()
 
-    // ═══════════════════════════════════════════════════════
-    // RETROFIT
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // RETROFIT (SINGLETON COMPARTIDO)
+    // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Proporciona Retrofit configurado
      *
+     * PUBLIC: Usado por CoreContainer para exponer a todos los features
+     *
      * Retrofit convierte las interfaces con anotaciones HTTP
      * en llamadas HTTP reales usando OkHttp
+     *
+     * Arquitectura Modular:
+     * - Un solo Retrofit compartido por todos los features
+     * - Cada feature crea su API específica
+     * - Ejemplo de uso en feature containers:
+     *   ```kotlin
+     *   private val searchApi: SearchApi by lazy {
+     *       CoreContainer.retrofit.create(SearchApi::class.java)
+     *   }
+     *   ```
      */
-    public fun provideRetrofit(): Retrofit {
+    fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(NetworkConfig.BASE_URL)
             .client(provideOkHttpClient())
             .addConverterFactory(GsonConverterFactory.create(provideGson()))
             .build()
     }
-
-    // ═══════════════════════════════════════════════════════
-    // API SERVICES
-    // ═══════════════════════════════════════════════════════
-
-    /**
-     * Proporciona el servicio de API de TMDB
-     *
-     * Esta es la función pública que usa AppContainer
-     *
-     * @return TMDBApiService configurado y listo para usar
-     */
-    fun provideTMDBApiService(): TMDBApiService {
-        return provideRetrofit().create(TMDBApiService::class.java)
-    }
-
-    /**
-     * Si en el futuro agregas más APIs, puedes agregar más funciones aquí:
-     *
-     * fun provideOtherApiService(): OtherApiService {
-     *     return provideRetrofit().create(OtherApiService::class.java)
-     * }
-     */
 }

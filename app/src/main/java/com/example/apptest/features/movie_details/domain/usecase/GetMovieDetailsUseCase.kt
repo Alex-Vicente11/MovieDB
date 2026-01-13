@@ -3,7 +3,6 @@ package com.example.apptest.features.movie_details.domain.usecase
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.features.movie_details.domain.repository.MovieDetailsRepository
-import com.example.apptest.movies.domain.repository.MovieRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
