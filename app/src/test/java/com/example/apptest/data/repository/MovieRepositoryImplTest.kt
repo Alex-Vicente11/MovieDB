@@ -3,8 +3,8 @@ package com.example.apptest.data.repository
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.movies.data.remote.dto.GenreDto
 import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
-import com.example.apptest.movies.data.remote.dto.MovieDto
-import com.example.apptest.movies.data.remote.dto.MovieResponseDto
+import com.example.apptest.core.data.remote.dto.MovieDto
+import com.example.apptest.core.data.remote.dto.MovieResponseDto
 import com.example.apptest.movies.data.repository.MovieRepositoryImpl
 import com.example.apptest.core.data.util.Resource
 import io.mockk.coEvery

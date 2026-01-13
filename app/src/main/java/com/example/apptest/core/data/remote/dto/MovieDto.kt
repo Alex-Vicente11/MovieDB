@@ -1,10 +1,12 @@
-package com.example.apptest.movies.data.remote.dto
+package com.example.apptest.core.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
 /**
  * DTO para la respuesta de búsqueda y películas populares
  * Representa la estructura exacta del JSON de la API
+ *
+ * Es DTO es usado por múltiples features
  */
 data class MovieResponseDto(
     @SerializedName("page")

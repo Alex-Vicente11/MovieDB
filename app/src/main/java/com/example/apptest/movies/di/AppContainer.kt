@@ -1,67 +1,77 @@
 package com.example.apptest.movies.di
 
-import com.example.apptest.features.search.di.SearchContainer
 import com.example.apptest.core.data.network.NetworkModule
+import com.example.apptest.features.popular_movies.di.PopularMoviesContainer
+import com.example.apptest.features.search.di.SearchContainer
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.movies.data.repository.MovieRepositoryImpl
 import com.example.apptest.movies.domain.repository.MovieRepository
 import com.example.apptest.movies.domain.usecase.GetMovieDetailsUseCase
-import com.example.apptest.movies.domain.usecase.GetPopularMoviesUseCase
-
 
 /**
- * CONTENEDOR DE DEPENDENCIAS
+ * CONTENEDOR DE DEPENDENCIAS PRINCIPAL
  *
  * Service Locator manual (Dependency Injection sin framework)
  *
- * Organización por capas:
- * 1. Network Layer → NetworkModule (separado)
- * 2. Data Layer → API Service, Repository
- * 3. Domain Layer → Use Cases
+ * Estado actual (Fase 3 completada):
+ * ✅ Feature: Search (migrado)
+ * ✅ Feature: Popular Movies (migrado)
+ * ⏳ Feature: Movie Details (pendiente - Fase 4)
+ * ⏳ Feature: Videos (pendiente - Fase 5)
  *
- * Ventajas de esta refactorización:
- *  NetworkModule separado (responsabilidad única)
- *  AppContainer más limpio y enfocado
- *  Fácil migración futura a Hilt/Koin
+ * Arquitectura de Features Modulares:
+ * - Cada feature tiene su propio contenedor
+ * - AppContainer solo coordina features
+ * - Legacy code se eliminará progresivamente
  */
 class AppContainer {
 
-    // ═══════════════════════════════════════════════════════
-    // FEATURE CONTAINERS
-    // ═══════════════════════════════════════════════════════
+    // ═══════════════════════════════════════════════════════════════════
+    // FEATURE CONTAINERS (Arquitectura Modular)
+    // ═══════════════════════════════════════════════════════════════════
 
     /**
      * Feature: Search
+     * Responsabilidad: Búsqueda de películas
+     * Estado: ✅ Migrado completamente (Fase 2)
      */
     val searchContainer: SearchContainer by lazy {
         SearchContainer()
     }
 
-    // ═══════════════════════════════════════════════════════
-    // DATA LAYER (Legacy)
-    // ═══════════════════════════════════════════════════════
+    /**
+     * Feature: Popular Movies
+     * Responsabilidad: Mostrar películas populares
+     * Estado: ✅ Migrado completamente (Fase 3)
+     */
+    val popularMoviesContainer: PopularMoviesContainer by lazy {
+        PopularMoviesContainer()
+    }
 
+    // ═══════════════════════════════════════════════════════════════════
+    // LEGACY CODE (Será eliminado en Fase 6)
+    // ═══════════════════════════════════════════════════════════════════
+
+    /**
+     * API monolítico legacy
+     * : Eliminar cuando se complete migración de Movie Details (Fase 4)
+     */
     private val apiService: TMDBApiService by lazy {
         NetworkModule.provideTMDBApiService()
     }
 
+    /**
+     * Repositorio monolítico legacy
+     * : Eliminar cuando se complete migración de Movie Details (Fase 4)
+     */
     val movieRepository: MovieRepository by lazy {
         MovieRepositoryImpl(apiService)
     }
 
-    // ═══════════════════════════════════════════════════════
-    // DOMAIN LAYER - USE CASES (Legacy)
-    // ═══════════════════════════════════════════════════════
-
-    // ⬇️ ELIMINAR ESTA PROPIEDAD COMPLETA:
-    // val searchMoviesUseCase: SearchMoviesUseCase by lazy {
-    //     SearchMoviesUseCase(movieRepository)
-    // }
-
-    val getPopularMoviesUseCase: GetPopularMoviesUseCase by lazy {
-        GetPopularMoviesUseCase(movieRepository)
-    }
-
+    /**
+     * UseCase de detalles (legacy)
+     * : Mover a features/movie_details/ en Fase 4
+     */
     val getMovieDetailsUseCase: GetMovieDetailsUseCase by lazy {
         GetMovieDetailsUseCase(movieRepository)
     }

@@ -2,7 +2,7 @@ package com.example.apptest.movies.data.repository
 
 import android.util.Log
 import com.example.apptest.movies.data.remote.api.TMDBApiService
-import com.example.apptest.movies.data.remote.mapper.MovieMapper.toDomain
+import com.example.apptest.core.data.mapper.MovieMapper.toDomain
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.movies.domain.model.MovieDetails
 import com.example.apptest.movies.domain.repository.MovieRepository

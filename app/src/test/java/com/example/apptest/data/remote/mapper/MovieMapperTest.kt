@@ -2,8 +2,8 @@ package com.example.apptest.data.remote.mapper
 
 import com.example.apptest.movies.data.remote.dto.GenreDto
 import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
-import com.example.apptest.movies.data.remote.dto.MovieDto
-import com.example.apptest.movies.data.remote.mapper.MovieMapper.toDomain
+import com.example.apptest.core.data.remote.dto.MovieDto
+import com.example.apptest.core.data.mapper.MovieMapper.toDomain
 import org.junit.Assert
 import org.junit.Test
 

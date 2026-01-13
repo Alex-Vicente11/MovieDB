@@ -1,20 +1,22 @@
-package com.example.apptest.movies.data.remote.mapper
+package com.example.apptest.core.data.mapper
 
+import com.example.apptest.core.data.remote.dto.MovieDto
+import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.movies.data.remote.dto.GenreDto
 import com.example.apptest.movies.data.remote.dto.MovieDetailsDto
-import com.example.apptest.movies.data.remote.dto.MovieDto
 import com.example.apptest.movies.domain.model.Genre
-import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.movies.domain.model.MovieDetails
 
 /**
  * MAPPER: Convierte DTOs a modelos de dominio
+ * Este mapper es usado por todos los features que trabajan con Movie
  *
  * Responsabilidades:
  * - Transformar respuestas de API a modelos limpios
  * - Manejar valores nulos con defaults
  * - Normalizar datos (trim, defaults, etc.)
  */
+
 object MovieMapper {
 
     /**

@@ -1,6 +1,6 @@
 package com.example.apptest.features.search.data.remote.api
 
-import com.example.apptest.movies.data.remote.dto.MovieResponseDto
+import com.example.apptest.core.data.remote.dto.MovieResponseDto
 import retrofit2.http.GET
 import retrofit2.http.Query
 

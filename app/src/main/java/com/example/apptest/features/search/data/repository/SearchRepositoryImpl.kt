@@ -5,7 +5,7 @@ import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.search.data.remote.api.SearchApi
 import com.example.apptest.features.search.domain.repository.SearchRepository
-import com.example.apptest.movies.data.remote.mapper.MovieMapper.toDomain
+import com.example.apptest.core.data.mapper.MovieMapper.toDomain
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow

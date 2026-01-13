@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#1E1E1E"
-    tools:context=".movies.presentation.main.MainActivity">
+    tools:context=".features.popular_movies.presentation.main.MainActivity">
 
     <!-- AppBarLayout contiene el Toolbar -->
     <com.google.android.material.appbar.AppBarLayout

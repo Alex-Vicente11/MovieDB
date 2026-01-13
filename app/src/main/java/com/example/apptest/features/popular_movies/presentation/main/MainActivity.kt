@@ -1,4 +1,4 @@
-package com.example.apptest.movies.presentation.main
+package com.example.apptest.features.popular_movies.presentation.main
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,12 +12,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.apptest.movies.MyApplication
-import com.example.apptest.databinding.ActivityMainBinding
 import com.example.apptest.core.domain.model.Movie
-import com.example.apptest.movies.presentation.adapter.MovieAdapter
-import com.example.apptest.movies.presentation.details.MovieDetailsActivity
 import com.example.apptest.core.util.Constants
+import com.example.apptest.databinding.ActivityMainBinding
+import com.example.apptest.movies.MyApplication
+import com.example.apptest.features.popular_movies.presentation.adapter.MovieAdapter
+import com.example.apptest.movies.presentation.details.MovieDetailsActivity
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity() {
 
     // Job para debounce de búsqueda
     private var searchJob: Job? = null
+
 
     // ═══════════════════════════════════════════════════════════
     // CICLO DE VIDA: CREACIÓN
@@ -92,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel = MainViewModel(
             searchMoviesUseCase = appContainer.searchContainer.searchMoviesUseCase,
-            getPopularMoviesUseCase = appContainer.getPopularMoviesUseCase
+            getPopularMoviesUseCase = appContainer.popularMoviesContainer.getPopularMoviesUseCase
         )
 
         Log.d(TAG, "setupViewModel: ViewModel inicializado")

@@ -1,4 +1,4 @@
-package com.example.apptest.movies.presentation.adapter
+package com.example.apptest.features.popular_movies.presentation.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.example.apptest.R
-import com.example.apptest.databinding.ItemMovieBinding
 import com.example.apptest.core.domain.model.Movie
+import com.example.apptest.databinding.ItemMovieBinding
 
 /**
  * ADAPTER para RecyclerView de películas
