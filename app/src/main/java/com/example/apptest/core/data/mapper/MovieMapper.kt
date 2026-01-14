@@ -6,6 +6,8 @@ import com.example.apptest.features.movie_details.data.remote.dto.GenreDto
 import com.example.apptest.features.movie_details.data.remote.dto.MovieDetailsDto
 import com.example.apptest.features.movie_details.domain.model.Genre
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
+import com.example.apptest.features.videos.data.remote.dto.VideoDto
+import com.example.apptest.features.videos.domain.model.Video
 
 /**
  * MAPPER: Convierte DTOs a modelos de dominio
@@ -75,5 +77,33 @@ object MovieMapper {
             id = this.id,
             name = this.name.trim()
         )
+    }
+
+    /**
+     * Mapper para Video
+     *
+     * Convierte VideoDto a Video (domino)
+     */
+    fun VideoDto.toDomain(): Video {
+        return Video(
+            id = this.id,
+            key = this.key,
+            name = this.name.trim(),
+            site = this.site,
+            size = this.size,
+            type = this.type,
+            official = this.official,
+            publishedAt = this.publishedAt,
+            language = this.language,
+            country = this.country
+        )
+    }
+
+    /**
+     * Convierte lista de VideoDto a lista de Video
+     * Usado para mapear resultados de /movie/{id}/videos
+     */
+    fun List<VideoDto>.toDomainVideos(): List<Video> {
+        return this.map { it.toDomain() }
     }
 }
