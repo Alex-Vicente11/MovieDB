@@ -34,7 +34,7 @@ data class Video(
      */
 
     fun getYoutubeUrl(): String {
-        return "$YOUTUBE_WATCH_URL"
+        return "$YOUTUBE_WATCH_URL$key"
     }
 
     /**
