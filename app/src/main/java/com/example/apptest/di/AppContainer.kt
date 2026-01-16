@@ -3,6 +3,7 @@ package com.example.apptest.di
 import com.example.apptest.features.movie_details.di.MovieDetailsContainer
 import com.example.apptest.features.popular_movies.di.PopularMoviesContainer
 import com.example.apptest.features.search.di.SearchContainer
+import com.example.apptest.features.videos.di.VideosContainer
 
 /**
  * CONTENEDOR DE DEPENDENCIAS PRINCIPAL
@@ -16,11 +17,11 @@ import com.example.apptest.features.search.di.SearchContainer
  * - AppContainer solo coordina y expone los features
  * - Separación clara de responsabilidades
  *
- * Estado actual (Fase 4 completada + Limpieza):
- * ✅ Feature: Search (migrado y funcional)
- * ✅ Feature: Popular Movies (migrado y funcional)
- * ✅ Feature: Movie Details (migrado y funcional)
- * ⏳ Feature: Videos (pendiente - Fase 5)
+ * Estado actual :
+ *  Feature: Search (migrado y funcional)
+ *  Feature: Popular Movies (migrado y funcional)
+ *  Feature: Movie Details (migrado y funcional)
+ *  Feature: Videos (migrado y funcional)
  *
  * Ventajas de esta arquitectura:
  * - Cada feature es independiente y autocontenido
@@ -39,7 +40,6 @@ class AppContainer {
      * Feature: Search
      *
      * Responsabilidad: Búsqueda de películas
-     * Estado: ✅ Migrado completamente (Fase 2)
      *
      * Dependencias expuestas:
      * - searchMoviesUseCase: Buscar películas por query
@@ -57,7 +57,6 @@ class AppContainer {
      * Feature: Popular Movies
      *
      * Responsabilidad: Mostrar películas populares
-     * Estado: ✅ Migrado completamente (Fase 3)
      *
      * Dependencias expuestas:
      * - getPopularMoviesUseCase: Obtener películas populares
@@ -75,7 +74,6 @@ class AppContainer {
      * Feature: Movie Details
      *
      * Responsabilidad: Mostrar detalles completos de una película
-     * Estado: ✅ Migrado completamente (Fase 4)
      *
      * Dependencias expuestas:
      * - getMovieDetailsUseCase: Obtener detalles de una película por ID
@@ -87,5 +85,20 @@ class AppContainer {
      */
     val movieDetailsContainer: MovieDetailsContainer by lazy {
         MovieDetailsContainer()
+    }
+
+    /** Feature: Videos
+     *
+     * Responsabilidad: Mostrar videos y trailers de peliculas
+     *
+     * Dependencias expuestas:
+     * - getMovieVideosUseCase: Obtener videos de una pelicula por ID
+     *
+     * Use:
+     * Kotlin
+     * val videosUseCase = appContainer.videosContainer.getMovieVideosUseCase
+     */
+    val videosContainer: VideosContainer by lazy {
+        VideosContainer()
     }
 }
