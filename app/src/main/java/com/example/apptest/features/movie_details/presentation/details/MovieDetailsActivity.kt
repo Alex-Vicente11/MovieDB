@@ -1,5 +1,6 @@
 package com.example.apptest.features.movie_details.presentation.details
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -15,6 +16,7 @@ import com.example.apptest.core.util.Constants
 import com.example.apptest.databinding.ActivityMovieDetailsBinding
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.MyApplication
+import com.example.apptest.features.videos.presentation.videos.VideosActivity
 import kotlinx.coroutines.launch
 
 /**
@@ -102,8 +104,14 @@ class MovieDetailsActivity : AppCompatActivity() {
      * Configurar listeners
      */
     private fun setupListeners() {
+        // Boton volver
         binding.btnBack.setOnClickListener {
             finish()
+        }
+
+        // Boton para ver videos
+        binding.btnWatchVideos.setOnClickListener {
+            openVideosActivity()
         }
     }
 
@@ -226,5 +234,22 @@ class MovieDetailsActivity : AppCompatActivity() {
 
     private fun showError(message: String) {
         Toast.makeText(this, message, Toast.LENGTH_LONG).show()
+    }
+
+    // Abrir VideosActivity con movieId y titulo
+    private fun openVideosActivity() {
+        val movieId = intent.getIntExtra(Constants.EXTRA_MOVIE_ID, -1)
+        val movieTitle = binding.tvTitleDetail.text.toString()
+
+        if (movieId != -1) {
+            val intent = Intent(this, VideosActivity::class.java).apply {
+                putExtra(Constants.EXTRA_MOVIE_ID, movieId)
+                putExtra(VideosActivity.EXTRA_MOVIE_TITLE, movieTitle)
+            }
+            startActivity(intent)
+            Log.d(TAG, "Opening VideosActivity for movie: $movieTitle (ID: $movieId)")
+        } else {
+            Toast.makeText(this, "Error: ID de película inválido", Toast.LENGTH_SHORT).show()
+        }
     }
 }
