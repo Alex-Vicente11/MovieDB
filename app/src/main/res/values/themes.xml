@@ -1,10 +1,19 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.AppTest" parent="Theme.AppCompat.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <!-- Colores primarios -->
+        <item name="colorPrimary">#E91E63</item>
+        <item name="colorPrimaryVariant">#C2185B</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+
+        <!-- Colores secundarios -->
+        <item name="colorSecondary">#4CAF50</item>
+        <item name="colorSecondaryVariant">#388E3C</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+
+        <!-- Background -->
+        <item name="android:windowBackground">#1E1E1E</item>
+        <item name="colorSurface">#2C2C2C</item>
     </style>
 
     <style name="Theme.AppTest" parent="Base.Theme.AppTest" />
