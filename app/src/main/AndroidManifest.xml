@@ -28,9 +28,19 @@
             </intent-filter>
         </activity>
 
+        <!-- Feature Movie Details -->
         <activity android:name=".features.movie_details.presentation.details.MovieDetailsActivity"
             android:exported="false"
+            android:label="Detalles"
+            android:parentActivityName=".features.popular_movies.presentation.main.MainActivity"
             android:theme="@style/Base.Theme.AppTest" />
+
+        <!-- Feature: Videos -->
+        <activity android:name=".features.videos.presentation.videos.VideosActivity"
+            android:exported="false"
+            android:label="Videos y Trailers"
+            android:parentActivityName=".features.movie_details.presentation.details.MovieDetailsActivity"
+            android:theme="@style/Theme.AppTest"/>
     </application>
 
 </manifest>
