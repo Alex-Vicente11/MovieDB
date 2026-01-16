@@ -94,8 +94,8 @@ dependencies {
     // ConstraintLayout
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
-    // Material Design
-    implementation("com.google.android.material:material:1.11.0")
+    // Material Design 3
+    implementation("com.google.android.material:material:1.9.0")
 
     // AndroidX Core
     implementation("androidx.core:core-ktx:1.12.0")
