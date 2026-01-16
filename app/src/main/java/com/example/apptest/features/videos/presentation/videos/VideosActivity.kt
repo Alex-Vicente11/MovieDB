@@ -210,13 +210,62 @@ class VideosActivity: AppCompatActivity() {
      * Intenta abrir la app de Youtube primero, sino abre en navegador
      */
     private fun openVideoInYoutube(video: Video) {
+        val videoKey = video.key
+
+        Log.d(TAG, "Attempting to open video : ${video.name}")
+        Log.d(TAG, "Video key: $videoKey")
+        Log.d(TAG, "Youtube URL: ${video.getYoutubeUrl()}")
+
         try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video.getYoutubeUrl()))
-            startActivity(intent)
-            Log.d(TAG, "Opening video: ${video.name}")
+            // Metodo: Abrir en app de Youtube
+            val youtubeAppIntent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse("vnd.youtube:$videoKey")
+                setPackage("com.google.android.youtube")
+            }
+
+            // Verificar si Youtube app está instalada
+            if (youtubeAppIntent.resolveActivity(packageManager) != null) {
+                startActivity(youtubeAppIntent)
+                Log.d(TAG, "Opened in Youtube app")
+                return
+            }
+
+            Log.d(TAG, "Youtube app not found, trying web browser")
+
+            // Metodo: Abrir en navegador web (fallback)
+            val webIntent = Intent(Intent.ACTION_VIEW).apply {
+                data = Uri.parse(video.getYoutubeUrl())
+            }
+
+            if (webIntent.resolveActivity(packageManager) != null) {
+                startActivity(webIntent)
+                Log.d(TAG, "Opened in web browser")
+                return
+            }
+
+            Log.e(TAG, "No app can handle Youtube video")
+            Toast.makeText(
+                this,
+                "No se puede abrir el video. Verifica que Youtube esté instalado",
+                Toast.LENGTH_SHORT
+            ).show()
         } catch (e: Exception) {
             Log.e(TAG, "Error opening Youtube: ${e.message}")
             Toast.makeText(this, "No se pudo abrir el video", Toast.LENGTH_SHORT).show()
+
+            // Metodo: URL web directa
+            try {
+                val fallbackIntent = Intent(Intent.ACTION_VIEW, Uri.parse(video.getYoutubeUrl()))
+                startActivity(fallbackIntent)
+                Log.d(TAG, "Opened with fallback method")
+            } catch (fallbackException: Exception) {
+                Log.e(TAG, "Fallback also failed: ${fallbackException.message}", fallbackException)
+                Toast.makeText(
+                    this,
+                    "No se pudo abrir el video: ${e.message}",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
         }
     }
 
