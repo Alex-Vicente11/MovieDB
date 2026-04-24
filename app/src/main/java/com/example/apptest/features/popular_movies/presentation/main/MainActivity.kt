@@ -119,20 +119,6 @@ class MainActivity : AppCompatActivity() {
      * Configurar listeners de botones
      */
     private fun setupListeners() {
-        binding.btnSearch.setOnClickListener {
-            val query = binding.etSearch.text.toString().trim()
-            if (query.isNotEmpty()) {
-                Log.d(TAG, "btnSearch: Buscando '$query'")
-                viewModel.searchMovies(query)
-            } else {
-                Toast.makeText(
-                    this,
-                    Constants.ERROR_EMPTY_QUERY,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
         binding.btnPopular.setOnClickListener {
             Log.d(TAG, "btnPopular: Limpiando búsqueda y cargando populares")
             binding.etSearch.text.clear()

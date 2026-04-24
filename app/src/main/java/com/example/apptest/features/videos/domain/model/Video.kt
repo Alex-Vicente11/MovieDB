@@ -24,7 +24,6 @@ data class Video(
         const val TYPE_FEATURETTE = "Featurette"
         const val TYPE_BEHIND_SCENES = "Behind the Scenes"
     }
-
     /**
      *  URL de Youtube para reproducir el video
      *

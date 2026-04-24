@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,160 +8,129 @@
     android:background="#1E1E1E"
     tools:context=".features.popular_movies.presentation.main.MainActivity">
 
-    <!-- AppBarLayout contiene el Toolbar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/purple_500"
-            app:title="@string/app_name"
-            app:titleTextColor="@color/white" />
-
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <!-- Contenido principal -->
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- HEADER SECTION                                       -->
+    <!-- Fila 1: 🎬 TheMovieDB  |  🔥 Populares (48dp)      -->
+    <!-- Fila 2: [ Buscar películas... ] (48dp, ancho total) -->
+    <!-- ════════════════════════════════════════════════════ -->
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:id="@+id/headerSection"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="#2C2C2C"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <!-- ════════════════════════════════════════════════════ -->
-        <!-- HEADER SECTION -->
-        <!-- ════════════════════════════════════════════════════ -->
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/headerSection"
+        <!-- Fila 1 izquierda: Título -->
+        <TextView
+            android:id="@+id/tvTitle"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#2C2C2C"
-            android:padding="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="48dp"
+            android:gravity="center_vertical"
+            android:text="🎬 TheMovieDB"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/etSearch"
+            app:layout_constraintEnd_toStartOf="@+id/btnPopular"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <!-- Title -->
-            <TextView
-                android:id="@+id/tvTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="🎬 TheMovieDB"
-                android:textColor="#FFFFFF"
-                android:textSize="24sp"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <!-- Search EditText -->
-            <EditText
-                android:id="@+id/etSearch"
-                android:layout_width="0dp"
-                android:layout_height="48dp"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/bg_search"
-                android:hint="Buscar películas..."
-                android:imeOptions="actionSearch"
-                android:inputType="text"
-                android:padding="12dp"
-                android:textColor="#FFFFFF"
-                android:textColorHint="#888888"
-                app:layout_constraintEnd_toStartOf="@+id/btnSearch"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
-
-            <!-- Search Button -->
-            <Button
-                android:id="@+id/btnSearch"
-                android:layout_width="wrap_content"
-                android:layout_height="48dp"
-                android:text="🔍"
-                android:textSize="18sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/etSearch"
-                app:layout_constraintBottom_toBottomOf="@+id/etSearch" />
-
-            <!-- Popular Button -->
-            <Button
-                android:id="@+id/btnPopular"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="🔥 Ver Populares"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/etSearch" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <!-- ════════════════════════════════════════════════════ -->
-        <!-- CONTENT AREA -->
-        <!-- ════════════════════════════════════════════════════ -->
-
-        <!-- RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:padding="8dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerSection"
-            tools:listitem="@layout/item_movie"
-            tools:visibility="visible" />
-
-        <!-- Loading -->
-        <ProgressBar
-            android:id="@+id/progressBar"
+        <!-- Fila 1 derecha: Botón Populares (touch target 48dp) -->
+        <Button
+            android:id="@+id/btnPopular"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="48dp"
+            android:text="🔥 Populares"
+            android:textSize="13sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerSection"
-            tools:visibility="visible" />
+            app:layout_constraintTop_toTopOf="@+id/tvTitle" />
 
-        <!-- Error -->
-        <TextView
-            android:id="@+id/tvError"
+        <!-- Fila 2: Buscador dinámico ancho completo (touch target 48dp) -->
+        <EditText
+            android:id="@+id/etSearch"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="24dp"
-            android:text="❌ Error"
-            android:textColor="#F44336"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_height="48dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_search"
+            android:hint="Buscar películas..."
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:padding="12dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#888888"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerSection" />
-
-        <!-- Empty -->
-        <TextView
-            android:id="@+id/tvEmpty"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:padding="24dp"
-            android:text="🔭 No se encontraron películas"
-            android:textColor="#888888"
-            android:textSize="16sp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/headerSection" />
+            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- ════════════════════════════════════════════════════ -->
+    <!-- CONTENT AREA                                         -->
+    <!-- ════════════════════════════════════════════════════ -->
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="8dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerSection"
+        tools:listitem="@layout/item_movie"
+        tools:visibility="visible" />
+
+    <!-- Loading -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerSection"
+        tools:visibility="visible" />
+
+    <!-- Error -->
+    <TextView
+        android:id="@+id/tvError"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="24dp"
+        android:text="❌ Error"
+        android:textColor="#F44336"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerSection" />
+
+    <!-- Empty -->
+    <TextView
+        android:id="@+id/tvEmpty"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="24dp"
+        android:text="🔭 No se encontraron películas"
+        android:textColor="#888888"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/headerSection" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
