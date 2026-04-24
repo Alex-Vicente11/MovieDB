@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AppTest</string>
+
+    <!-- fragment_popular_movies -->
+    <string name="search_hint">Buscar película</string>
+    <string name="no_results">Sin resultados</string>
 </resources>
