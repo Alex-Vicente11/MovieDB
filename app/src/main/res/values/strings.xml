@@ -4,4 +4,9 @@
     <!-- fragment_popular_movies -->
     <string name="search_hint">Buscar película</string>
     <string name="no_results">Sin resultados</string>
+
+    <!-- fragment_movie_details -->
+    <string name="backdrop_desc">imagen de fondo</string>
+    <string name="poster_desc">sin imagen</string>
+    <string name="watch_videos">ver videos</string>
 </resources>

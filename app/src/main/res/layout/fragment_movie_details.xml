@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <!-- AppBar con CollapsingToolbar para el efecto parallax del backdrop -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:id="@+id/collapsingToolbar"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed"
+            app:contentScrim="?attr/colorSurface"
+            app:expandedTitleMarginStart="16dp"
+            app:expandedTitleMarginBottom="16dp">
+
+            <!-- Image backdrop (parallax) -->
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/ivBackdrop"
+                android:scaleType="centerCrop"
+                android:contentDescription="@string/backdrop_desc"
+                app:layout_collapseMode="parallax"
+                app:layout_collapseParallaxMultiplier="0.7"/>
+
+            <!-- Overlay oscuro para legibilidad del titulo -->
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/gradient_backdrop"
+                app:layout_collapseMode="parallax"/>
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:id="@+id/toolbar"
+                app:layout_collapseMode="pin"/>
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido deslizable -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/contentLayout"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <!-- Fila: poster + info primaria -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:layout_width="100dp"
+                    android:layout_height="150dp"
+                    android:id="@+id/ivPosterDetail"
+                    android:scaleType="centerCrop"
+                    android:contentDescription="@string/poster_desc"
+                    app:shapeAppearanceOverlay="@style/RoundedCornerMedium"/>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginStart="12dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvTitleDetail"
+                        style="@style/TextAppearance.Material3.HeadlineSmall"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvTaglineDetail"
+                        android:layout_marginTop="4dp"
+                        android:textStyle="bold|italic"
+                        android:visibility="gone"
+                        style="@style/TextAppearance.Material3.BodyMedium"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tvRatingDetail"
+                        android:layout_marginTop="8dp"
+                        style="@style/TextAppearance.Material3.LabelLarge"/>
+
+                    <TextView
+                        android:id="@+id/tvVotesDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextAppearance.Material3.BodySmall"/>
+
+                    <TextView
+                        android:id="@+id/tvReleaseDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        style="@style/TextAppearance.Material3.BodySmall"/>
+
+                    <TextView
+                        android:id="@+id/tvRuntimeDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextAppearance.Material3.BodySmall"/>
+
+                    <TextView
+                        android:id="@+id/tvPopularityDetail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/TextAppearance.Material3.BodySmall"/>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- Generos -->
+            <TextView
+                android:id="@+id/tvGenresDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                style="@style/TextAppearance.Material3.BodyMedium"/>
+
+            <!-- Overview -->
+            <TextView
+                android:id="@+id/tvOverviewDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                style="@style/TextAppearance.Material3.BodyMedium"/>
+
+            <!-- Datos financieros -->
+            <TextView
+                android:id="@+id/tvBudgetDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                style="@style/TextAppearance.Material3.BodySmall"/>
+
+            <TextView
+                android:id="@+id/tvRevenueDetail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/TextAppearance.Material3.BodySmall"/>
+
+            <!-- Botón Ver Videos -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnWatchVideos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="@string/watch_videos"
+                style="@style/Widget.Material3.Button.Icon"
+                app:icon="@drawable/ic_play"/>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <!-- ── ProgressBar centrada sobre el contenido ── -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        app:indicatorSize="48dp"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
