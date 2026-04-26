@@ -296,7 +296,7 @@ class PopularMoviesFragment: Fragment() {
         Log.d(TAG, "Navigating to details: ${movie.title} (ID: ${movie.id}")
 
         val action = PopularMoviesFragmentDirections
-            .actionPopularMoviesToMovieDetails()
+            .actionPopularMoviesToMovieDetails(movie.id)
 
         findNavController().navigate(action)
     }
