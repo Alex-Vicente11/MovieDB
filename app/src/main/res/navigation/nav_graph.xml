@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/nav_graph.xml">
+    android:id="@+id/nav_graph.xml"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/popularMoviesFragment">
 
+    <fragment
+        android:id="@+id/popularMoviesFragment"
+        android:name="com.example.apptest.features.popular_movies.presentation.ui.PopularMoviesFragment"
+        android:label="Popular Movies"
+        tools:layout="@layout/fragment_popular_movies">
+
+        <!-- Action: navegar a detalles de la película
+            Safe Args generará: PopularMoviesFragmentDirections.toMovieDetails(movieId) -->
+        <action
+            android:id="@+id/action_popularMovies_to_movieDetails"
+            app:destination="@+id/movieDetailsFragment"/>
+
+
+    </fragment>
 </navigation>
