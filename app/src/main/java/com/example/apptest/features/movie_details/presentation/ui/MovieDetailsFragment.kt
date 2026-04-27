@@ -265,7 +265,10 @@ class MovieDetailsFragment: Fragment() {
         Log.d(TAG, "Navigating to videos: $movieTitle (ID: ${args.movieId}")
 
         val action = MovieDetailsFragmentDirections
-            .actionMovieDetailsToVideos()
+            .actionMovieDetailsToVideos(
+                movieId = args.movieId,
+                movieTitle = movieTitle
+            )
 
         findNavController().navigate(action)
     }

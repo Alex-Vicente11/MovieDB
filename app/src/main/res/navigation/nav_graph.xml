@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!-- Centraliza
+        .Qué pantallas existen (destinations)
+        .Cómo se conectan (actions)
+        .Qué datos pasan entre ellas (arguments)
+        .Animaciones de transición (enterAnim, exitAnim)
+
+     SAFE ARGS:
+        Los <argument> de cada <fragment> permiten que el plugin Safe Args genere clases tipadas en tiempo de compilación:
+            .PopularMoviesFragmentDirections.toMovieDetails(movieId = 123)
+            .MovieDetailsFragmentArgs.fromBundle(requireArguments()).movieId
+        Esto elimina los "magic strings" de Bundle y detecta errores de tipo en compilación, no en runtime.
+-->
+
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph.xml"
@@ -15,10 +28,14 @@
             Safe Args generará: PopularMoviesFragmentDirections.toMovieDetails(movieId) -->
         <action
             android:id="@+id/action_popularMovies_to_movieDetails"
-            app:destination="@+id/movieDetailsFragment"/>
-
+            app:destination="@+id/movieDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
+    <!-- MovieDetailsFragment Recibe movieId como argumento obligatorio -->
     <fragment
         android:id="@+id/movieDetailsFragment"
         android:name="com.example.apptest.features.movie_details.presentation.ui.MovieDetailsFragment"
@@ -39,5 +56,23 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
+    <!-- Recibe movieId y movieTitle -->
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="com.example.apptest.features.videos.presentation.ui.VideosFragment"
+        android:label="Videos"
+        tools:layout="@layout/fragment_videos">
+
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+
+        <argument
+            android:name="movieTitle"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
 
 </navigation>
