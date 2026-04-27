@@ -1,60 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+<!--
+    ════════════════════════════════════════════════════════════════════════════
+    AndroidManifest.xml
+    ════════════════════════════════════════════════════════════════════════════
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    CAMBIOS vs versión anterior:
+      ELIMINADAS: MovieDetailsActivity, VideosActivity
+        → Ya no son Activities; son Fragments gestionados por el NavController
+        → No necesitan registro en el Manifest
+        → El sistema operativo solo necesita conocer Activities, no Fragments
+
+      CONSERVADA: MainActivity (única Activity, launcher)
+
+    SOLID → Open/Closed:
+      Para agregar nuevas pantallas en el futuro, solo se modifica nav_graph.xml,
+      NO el Manifest. El Manifest queda cerrado a modificaciones frecuentes.
+
+    MATERIAL DESIGN:
+      android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
+        → NoActionBar porque cada Fragment maneja su propia MaterialToolbar.
+          Tener la ActionBar del sistema Y una MaterialToolbar = doble barra.
+          NoActionBar da control total del AppBar a cada Fragment/Activity.
+
+    DEEP LINKS (futuro):
+      Si agregas deep links a destinations del grafo, se registrarían aquí
+      como <intent-filter> dentro de MainActivity, no en cada Fragment.
+    ════════════════════════════════════════════════════════════════════════════
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Permiso de red para llamadas a TheMovieDB API -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
-    <!-- Queries: Necesario para Intent.resolveActivity() en Android 11+
-        Declara qué apps/esquemas puede consultar esta app -->
-    <queries>
-        <!-- Youtube app -->
-        <package android:name="com.google.android.youtube" />
-
-        <!-- Navegadores web (para fallback) -->
-        <intent >
-            <action android:name="android.intent.action.VIEW" />
-            <data android:scheme="https" />
-        </intent>
-    </queries>
-
-
     <application
-        android:allowBackup="true"
         android:name=".MyApplication"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.AppTest"
-        android:usesCleartextTraffic="false">
-        <activity
-            android:name=".features.popular_movies.presentation.main.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.AppTest">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        android:label="@string/app_name"
+        android:supportsRtl="true">
 
-                <category android:name="android.intent.category.LAUNCHER" />
+        <!--
+            ÚNICA ACTIVITY DE LA APLICACIÓN.
+
+            Intent filter LAUNCHER → punto de entrada del sistema operativo.
+            Toda la navegación interna ocurre dentro de esta Activity
+            a través del NavController y el nav_graph.
+        -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize">
+
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
 
-        <!-- Feature Movie Details -->
-        <activity android:name=".features.movie_details.presentation.details.MovieDetailsActivity"
-            android:exported="false"
-            android:label="Detalles"
-            android:parentActivityName=".features.popular_movies.presentation.main.MainActivity"
-            android:theme="@style/Base.Theme.AppTest" />
+        <!--
+            ELIMINADAS (ya eran Activities, ahora son Fragments):
+            ✗ MovieDetailsActivity → MovieDetailsFragment
+            ✗ VideosActivity       → VideosFragment
 
-        <!-- Feature: Videos -->
-        <activity android:name=".features.videos.presentation.videos.VideosActivity"
-            android:exported="false"
-            android:label="Videos y Trailers"
-            android:parentActivityName=".features.movie_details.presentation.details.MovieDetailsActivity"
-            android:theme="@style/Theme.AppTest"/>
+            Los Fragments NO se registran en el Manifest.
+        -->
+
     </application>
 
 </manifest>

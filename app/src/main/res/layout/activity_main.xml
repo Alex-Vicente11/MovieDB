@@ -1,136 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
+<!--
+    PATRÓN: Single Activity Container
+    ────────────────────────────────────────────────────────────────────────────
+    Esta Activity es solo un CONTENEDOR vacío. Toda la UI real vive en los
+    Fragments. El único elemento funcional aquí es el NavHostFragment.
+
+    NavHostFragment:
+      • Es el "motor" del Navigation Component
+      • Gestiona el back stack de fragments
+      • Intercambia los fragments según las actions del nav_graph
+      • app:navGraph   → vincula el grafo de navegación
+      • app:defaultNavHost → intercepta el botón Back del sistema y lo maneja
+                            automáticamente según el back stack del grafo
+
+    MATERIAL DESIGN 3:
+      • Se usa CoordinatorLayout como raíz para permitir comportamientos
+        coordinados (ej: Snackbars, CollapsingToolbar en pantallas hijas)
+      • Cada Fragment puede tener su propia Toolbar sin conflictos
+
+    CLEAN ARCHITECTURE:
+      La Activity no conoce ninguna pantalla concreta. Solo conoce el
+      NavHostFragment. Esto cumple con el principio de inversión de
+      dependencias: la Activity depende de la abstracción (NavHost),
+      no de los Fragments concretos.
+    ════════════════════════════════════════════════════════════════════════════
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#1E1E1E"
-    tools:context=".features.popular_movies.presentation.main.MainActivity">
+    android:layout_height="match_parent">
 
-    <!-- ════════════════════════════════════════════════════ -->
-    <!-- HEADER SECTION                                       -->
-    <!-- Fila 1: 🎬 TheMovieDB  |  🔥 Populares (48dp)      -->
-    <!-- Fila 2: [ Buscar películas... ] (48dp, ancho total) -->
-    <!-- ════════════════════════════════════════════════════ -->
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/headerSection"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#2C2C2C"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
-        android:paddingTop="8dp"
-        android:paddingBottom="8dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <!--
+        FragmentContainerView es el reemplazo moderno de FrameLayout para
+        Fragments. Ventajas sobre FrameLayout:
+          • Maneja correctamente las animaciones de entrada/salida
+          • Garantiza que los Fragments solo se dibujen dentro de sus límites
+          • Recomendado por Google desde Navigation 2.3+
 
-        <!-- Fila 1 izquierda: Título -->
-        <TextView
-            android:id="@+id/tvTitle"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:gravity="center_vertical"
-            android:text="🎬 TheMovieDB"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/etSearch"
-            app:layout_constraintEnd_toStartOf="@+id/btnPopular"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:name="...NavHostFragment"
+          → Indica que este contenedor es gestionado por el Navigation Component
 
-        <!-- Fila 1 derecha: Botón Populares (touch target 48dp) -->
-        <Button
-            android:id="@+id/btnPopular"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:text="🔥 Populares"
-            android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/tvTitle"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/tvTitle" />
+        app:navGraph="@navigation/nav_graph"
+          → Vincula el grafo que define todas las pantallas
 
-        <!-- Fila 2: Buscador dinámico ancho completo (touch target 48dp) -->
-        <EditText
-            android:id="@+id/etSearch"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginTop="8dp"
-            android:background="@drawable/bg_search"
-            android:hint="Buscar películas..."
-            android:imeOptions="actionSearch"
-            android:inputType="text"
-            android:padding="12dp"
-            android:textColor="#FFFFFF"
-            android:textColorHint="#888888"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tvTitle" />
+        app:defaultNavHost="true"
+          → Solo UNO por layout puede ser true.
+            Permite que este NavHost capture el botón Atrás del sistema.
+            Sin esto, el Back no navegaría hacia atrás en el grafo.
+    -->
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:navGraph="@navigation/nav_graph"
+        app:defaultNavHost="true"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <!-- ════════════════════════════════════════════════════ -->
-    <!-- CONTENT AREA                                         -->
-    <!-- ════════════════════════════════════════════════════ -->
-
-    <!-- RecyclerView -->
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:padding="8dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerSection"
-        tools:listitem="@layout/item_movie"
-        tools:visibility="visible" />
-
-    <!-- Loading -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerSection"
-        tools:visibility="visible" />
-
-    <!-- Error -->
-    <TextView
-        android:id="@+id/tvError"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="24dp"
-        android:text="❌ Error"
-        android:textColor="#F44336"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerSection" />
-
-    <!-- Empty -->
-    <TextView
-        android:id="@+id/tvEmpty"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:padding="24dp"
-        android:text="🔭 No se encontraron películas"
-        android:textColor="#888888"
-        android:textSize="16sp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/headerSection" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
