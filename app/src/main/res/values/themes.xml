@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Base.Theme.AppTest" parent="Theme.AppCompat.DayNight.NoActionBar">
+    <style name="Theme.AppTest" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Colores primarios -->
         <item name="colorPrimary">#E91E63</item>
         <item name="colorPrimaryVariant">#C2185B</item>
@@ -15,6 +15,4 @@
         <item name="android:windowBackground">#1E1E1E</item>
         <item name="colorSurface">#2C2C2C</item>
     </style>
-
-    <style name="Theme.AppTest" parent="Base.Theme.AppTest" />
 </resources>
