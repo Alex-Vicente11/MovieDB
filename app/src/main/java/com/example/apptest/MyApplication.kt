@@ -1,70 +1,43 @@
 package com.example.apptest
 
 import android.app.Application
-import com.example.apptest.di.AppContainer
+import dagger.hilt.android.HiltAndroidApp
 
 /**
- * CLASE APPLICATION
+ * CAMBIO vs versión anterior:
  *
- * UBICACIÓN: raíz del package base (com.example.apptest/)
+ * ANTES:
+ *   class MyApplication : Application() {
+ *       val appContainer: AppContainer by lazy { AppContainer() }
+ *   }
  *
- * Responsabilidad:
- * - Mantener el AppContainer durante toda la vida de la app
- * - Inicializar librerías globales si es necesario
- * - Se crea ANTES que cualquier Activity
+ * DESPUÉS:
+ *   @HiltAndroidApp
+ *   class MyApplication : Application()
  *
- * Ciclo de vida:
- * 1. onCreate() se llama cuando la app inicia
- * 2. La app corre (Activities, Services, etc.)
- * 3. onTerminate() se llama cuando la app se cierra (solo en emulador)
+ * ────────────────────────────────────────────────────────────────────────────
+ * ¿Qué hace @HiltAndroidApp?
+ * ────────────────────────────────────────────────────────────────────────────
+ * Esta anotación le ordena a kapt (el procesador de anotaciones) que genere
+ * el componente raíz de Hilt: SingletonComponent.
  *
- * IMPORTANTE: Debe estar registrada en AndroidManifest.xml:
- * ```xml
- * <application
- *     android:name=".MyApplication"
- *     ...>
- * </application>
- * ```
+ * En tiempo de compilación, kapt genera una clase llamada:
+ *   MyApplication_GeneratedInjector.java  (nunca la ves tú)
  *
- * Cambios vs versión legacy:
- *  Package actualizado: movies → raíz (com.example.apptest)
- * Import actualizado: AppContainer ahora está en di/
- * Documentación mejorada
+ * Esa clase contiene el grafo de dependencias completo de la app:
+ *   - OkHttpClient (Singleton)
+ *   - Retrofit (Singleton)
+ *   - Todos los Repository (Singleton)
+ *   - Todos los UseCase (creados por @Inject constructor)
+ *   - Todos los ViewModel (ViewModelScoped, via @HiltViewModel)
+ *
+ * SOLID → Single Responsibility:
+ *   MyApplication ya no tiene ninguna responsabilidad de creación de objetos.
+ *   Hilt asume toda esa responsabilidad en tiempo de compilación.
+ *
+ * BENEFICIO:
+ *   Si olvidaste proveer una dependencia en algún módulo, el error aparece
+ *   al compilar — no como un NullPointerException en runtime.
  */
-class MyApplication : Application() {
-
-    /**
-     * Contenedor de dependencias (Service Locator)
-     *
-     * Inicialización lazy:
-     * - Se crea solo cuando se accede por primera vez
-     * - Singleton durante toda la vida de la app
-     *
-     * Acceso desde Activities:
-     * ```kotlin
-     * val appContainer = (application as MyApplication).appContainer
-     * val useCase = appContainer.searchContainer.searchMoviesUseCase
-     * ```
-     */
-    val appContainer: AppContainer by lazy {
-        AppContainer()
-    }
-
-    /**
-     * Se llama cuando la app se inicia (antes de cualquier Activity)
-     *
-     * Aquí puedes inicializar librerías globales:
-     * - Timber: Logging mejorado
-     * - LeakCanary: Detección de memory leaks
-     * - Firebase: Analytics, Crashlytics
-     * - WorkManager: Tareas en background
-     */
-    override fun onCreate() {
-        super.onCreate()
-
-        // Ejemplo de inicialización de librerías:
-        // if (BuildConfig.DEBUG) {
-        //     Timber.plant(Timber.DebugTree())
-        // }
-    }
-}
+@HiltAndroidApp
+class MyApplication : Application()
