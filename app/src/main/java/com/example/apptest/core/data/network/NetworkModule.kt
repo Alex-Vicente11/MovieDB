@@ -2,11 +2,16 @@ package com.example.apptest.core.data.network
 
 import com.example.apptest.core.data.network.interceptor.AuthInterceptor
 import com.google.gson.GsonBuilder
+import dagger.Module
+import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
+import javax.inject.Singleton
 
 /**
  * MÓDULO DE RED
@@ -32,48 +37,37 @@ import java.util.concurrent.TimeUnit
  * - Cada feature crea su propia API usando CoreContainer.retrofit
  * - Ejemplo: CoreContainer.retrofit.create(SearchApi::class.java)
  */
+
+/**
+ *      @Module       ->clase que le dice a Hilt CÓMO crear objetos que él no puede crear solo
+ *      @InstallIn    ->define en qué componente vive. SingletonComponent = toda la vida de la app
+ *      @Provides     ->marca una función como proveedora de una dependencia
+ *      @Singleton    ->una sola instancia durante toda la vida de la app
+ */
+//   provideAuthInterceptor() → AuthInterceptor
+//       ↓ parámetro de
+//   provideOkHttpClient(auth) → OkHttpClient
+//       ↓ parámetro de
+//   provideRetrofit(client)   → Retrofit
+//       ↓ parámetro de (en cada feature module)
+//   provideXxxApi(retrofit)   → XxxApi
+
+@Module
+@InstallIn(SingletonComponent::class)
 object NetworkModule {
 
-    // ═══════════════════════════════════════════════════════════════════
     // INTERCEPTORS
-    // ═══════════════════════════════════════════════════════════════════
-
     /**
      * Proporciona el interceptor de autenticación
      * Agrega el Bearer Token a todas las peticiones
      */
-    private fun provideAuthInterceptor(): AuthInterceptor {
-        return AuthInterceptor(NetworkConfig.ACCESS_TOKEN)
-    }
+    @Provides
+    @Singleton
+    fun provideAuthInterceptor(): AuthInterceptor =
+        AuthInterceptor(NetworkConfig.ACCESS_TOKEN)
 
-    /**
-     * Proporciona el interceptor de logging
-     *
-     * Niveles:
-     * - NONE: Sin logs
-     * - BASIC: Request/Response line
-     * - HEADERS: Request/Response line + headers
-     * - BODY: Request/Response line + headers + body
-     *
-     * Solo habilitado en modo DEBUG para evitar:
-     * - Llenar logs en producción
-     * - Exponer información sensible
-     * - Reducir overhead de performance
-     */
-    private fun provideLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().apply {
-            level = if (NetworkConfig.isLoggingEnabled) {
-                HttpLoggingInterceptor.Level.BODY
-            } else {
-                HttpLoggingInterceptor.Level.NONE
-            }
-        }
-    }
 
-    // ═══════════════════════════════════════════════════════════════════
     // OKHTTP CLIENT
-    // ═══════════════════════════════════════════════════════════════════
-
     /**
      * Proporciona OkHttpClient configurado
      *
@@ -83,27 +77,28 @@ object NetworkModule {
      * - Connection pool (automático)
      * - Retry y redirect (automático)
      */
-    private fun provideOkHttpClient(): OkHttpClient {
-        return OkHttpClient.Builder()
-            // Interceptores (orden importa: auth primero, logging después)
-            .addInterceptor(provideAuthInterceptor())
-            .addInterceptor(provideLoggingInterceptor())
 
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient =
+        OkHttpClient.Builder()
+            // Interceptores (orden importa: auth primero, logging después)
+            .addInterceptor(authInterceptor)
+            .addInterceptor(HttpLoggingInterceptor().apply {
+                level = if (NetworkConfig.isLoggingEnabled)
+                    HttpLoggingInterceptor.Level.BODY
+                else
+                    HttpLoggingInterceptor.Level.BODY
+            })
             // Timeouts
             .connectTimeout(NetworkConfig.CONNECT_TIMEOUT, TimeUnit.SECONDS)
             .readTimeout(NetworkConfig.READ_TIMEOUT, TimeUnit.SECONDS)
             .writeTimeout(NetworkConfig.WRITE_TIMEOUT, TimeUnit.SECONDS)
-
             // Retry automático en caso de falla temporal
             .retryOnConnectionFailure(true)
-
             .build()
-    }
 
-    // ═══════════════════════════════════════════════════════════════════
     // GSON
-    // ═══════════════════════════════════════════════════════════════════
-
     /**
      * Proporciona Gson configurado
      *
@@ -114,10 +109,7 @@ object NetworkModule {
         .setLenient()
         .create()
 
-    // ═══════════════════════════════════════════════════════════════════
     // RETROFIT (SINGLETON COMPARTIDO)
-    // ═══════════════════════════════════════════════════════════════════
-
     /**
      * Proporciona Retrofit configurado
      *
@@ -136,11 +128,12 @@ object NetworkModule {
      *   }
      *   ```
      */
-    fun provideRetrofit(): Retrofit {
-        return Retrofit.Builder()
+    @Provides
+    @Singleton
+    fun provideRetrofit(okHttpClient: OkHttpClient): Retrofit =
+        Retrofit.Builder()
             .baseUrl(NetworkConfig.BASE_URL)
-            .client(provideOkHttpClient())
+            .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(provideGson()))
             .build()
-    }
 }
