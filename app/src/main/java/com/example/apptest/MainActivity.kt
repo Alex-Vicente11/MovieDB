@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.example.apptest.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Single Activity Container
@@ -30,6 +31,15 @@ import com.example.apptest.databinding.ActivityMainBinding
  *      Preparado para Deep Links (un intent = una destionation en el grafo)
  */
 
+/**
+ * Cambio -> @AndroidEntryPoint
+ * Hilt requiere que TODAS las clases en la jerarquia tengan la anotación
+ * Los Fragments viven dentro de un activity - si la Activity no tiene @AndroidEntryPint,
+ * Hilt no puede inyectar en sus Fragments hijos.
+ * Es un requisito de la cadena: Application -> Fragment
+ */
+
+@AndroidEntryPoint
 class MainActivity: AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
