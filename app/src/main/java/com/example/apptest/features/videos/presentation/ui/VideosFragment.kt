@@ -194,17 +194,17 @@ class VideosFragment: Fragment() {
 
     private fun tryOpenYoutubeApp(video: Video): Boolean {
         return try {
-            val intent = Intent(Intent.ACTION_VIEW).apply {
-                data = Uri.parse("vnd.youtube:${video.key}")
+            // Usar URL directa en lugar de vnd.youtube: — más compatible
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${video.key}")).apply {
                 setPackage("com.google.android.youtube")
             }
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(intent)
-                Log.d(TAG, "Opened in Youtube app")
+                Log.d(TAG, "Opened in YouTube app")
                 true
             } else false
-        }catch (e: Exception) {
-            Log.w(TAG, "Youtube app not available: ${e.message}")
+        } catch (e: Exception) {
+            Log.w(TAG, "YouTube app not available: ${e.message}")
             false
         }
     }

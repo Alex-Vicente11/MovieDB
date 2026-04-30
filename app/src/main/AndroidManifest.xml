@@ -32,6 +32,18 @@
     <!-- Permiso de red para llamadas a TheMovieDB API -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <queries >
+        <!--YouTube app -->
+        <package android:name="com.google.android.youtube"/>
+
+        <!-- Navegador web (fallback) -->
+        <intent >
+            <action android:name="android.intent.action.VIEW"/>
+            <data android:scheme="https"/>
+
+        </intent>
+    </queries>
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
