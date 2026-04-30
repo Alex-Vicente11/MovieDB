@@ -5,6 +5,7 @@ import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.search.domain.repository.SearchRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 /**
  * USE CASE: Buscar películas
@@ -14,7 +15,7 @@ import kotlinx.coroutines.flow.flow
  * - Llama al repositorio
  * - Puede agregar lógica adicional (filtros, transformaciones)
  */
-class SearchMoviesUseCase(
+class SearchMoviesUseCase @Inject constructor(
     private val repository: SearchRepository
 ) {
     /**

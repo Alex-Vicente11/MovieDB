@@ -6,6 +6,7 @@ import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.search.data.remote.api.SearchApi
 import com.example.apptest.features.search.domain.repository.SearchRepository
 import com.example.apptest.core.data.mapper.MovieMapper.toDomain
+import jakarta.inject.Inject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -16,7 +17,7 @@ import java.io.IOException
 /**
  * IMPLEMENTACIÓN del repositorio de búsqueda
  */
-class SearchRepositoryImpl(
+class SearchRepositoryImpl @Inject constructor(
     private val api: SearchApi
 ) : SearchRepository {
 
