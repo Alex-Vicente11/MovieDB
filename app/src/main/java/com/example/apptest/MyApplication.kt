@@ -40,4 +40,4 @@ import dagger.hilt.android.HiltAndroidApp
  *   al compilar — no como un NullPointerException en runtime.
  */
 @HiltAndroidApp
-class MyApplication : Application()
+class MyApplication: Application()
