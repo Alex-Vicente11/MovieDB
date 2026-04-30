@@ -7,6 +7,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
@@ -30,7 +31,7 @@ import javax.inject.Singleton
 //   Hilt resuelve Retrofit automáticamente desde NetworkModule.
 
 @Module
-@InstallIn(Singleton::class)
+@InstallIn(SingletonComponent::class)
 abstract class MovieDetailsModule {
 
     @Binds

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,8 +23,10 @@ import com.example.apptest.features.movie_details.presentation.details.MovieDeta
 import com.example.apptest.features.movie_details.presentation.details.MovieDetailsViewModel
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar  // ← material
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
 
     companion object {
@@ -38,7 +41,7 @@ class MovieDetailsFragment : Fragment() {
     private val args: MovieDetailsFragmentArgs by navArgs()
 
     // ── ViewModel ────────
-    private lateinit var viewModel: MovieDetailsViewModel
+    private val viewModel: MovieDetailsViewModel by viewModels()
 
 
     // CICLO DE VIDA
@@ -55,7 +58,6 @@ class MovieDetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbar()
-        setupViewModel()
         setupListeners()
         observeUiState()
         loadMovieDetails()
@@ -70,13 +72,6 @@ class MovieDetailsFragment : Fragment() {
     // SETUP
     private fun setupToolbar() {
         binding.toolbar.setupWithNavController(findNavController())
-    }
-
-    private fun setupViewModel() {
-        val appContainer = (requireActivity().application as MyApplication).appContainer
-        viewModel = MovieDetailsViewModel(
-            getMovieDetailsUseCase = appContainer.movieDetailsContainer.getMovieDetailsUseCase
-        )
     }
 
     private fun setupListeners() {

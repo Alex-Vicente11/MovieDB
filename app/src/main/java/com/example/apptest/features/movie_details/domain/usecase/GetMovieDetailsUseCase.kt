@@ -5,6 +5,7 @@ import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.features.movie_details.domain.repository.MovieDetailsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import javax.inject.Inject
 
 /**
  * USE CASE: Obtener detalles de una película
@@ -12,7 +13,7 @@ import kotlinx.coroutines.flow.flow
  * Encapsula la lógica de negocio para obtener detalles completos
  * Valida el ID antes de llamar al repositorio
  */
-class GetMovieDetailsUseCase(
+class GetMovieDetailsUseCase @Inject constructor(
     private val repository: MovieDetailsRepository
 ) {
     /**

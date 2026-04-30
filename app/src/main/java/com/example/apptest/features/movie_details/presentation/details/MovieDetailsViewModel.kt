@@ -5,10 +5,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.features.movie_details.domain.usecase.GetMovieDetailsUseCase
 import com.example.apptest.core.data.util.Resource
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * VIEWMODEL para MovieDetailsActivity
@@ -17,7 +19,10 @@ import kotlinx.coroutines.launch
  * - Cargar detalles de una película por ID
  * - Exponer estado de UI mediante StateFlow
  */
-class MovieDetailsViewModel(
+// CAMBIOS: @HiltViewModel + @Inject constructor
+// El cuerpo (loadMovieDetails, estados) NO cambia.
+@HiltViewModel
+class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase
 ) : ViewModel() {
 

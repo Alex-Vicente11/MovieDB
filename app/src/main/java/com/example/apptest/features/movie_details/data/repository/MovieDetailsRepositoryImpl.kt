@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * IMPLEMENTACIÓN del repositorio de detalles de películas
@@ -41,7 +42,16 @@ import java.io.IOException
  * ✅ Más fácil de testear
  * ✅ Código más limpio y legible
  */
-class MovieDetailsRepositoryImpl(
+
+// ÚNICO CAMBIO vs versión anterior:
+//   ANTES → class MovieDetailsRepositoryImpl(private val api: MovieDetailsApi)
+//   AHORA → class MovieDetailsRepositoryImpl @Inject constructor(...)
+//
+// @Inject constructor le dice a Hilt: "puedes crear esta clase con este constructor".
+// Hilt verá que necesita MovieDetailsApi, la buscará en MovieDetailsModule
+// y la inyectará automáticamente.
+// Sin @Inject constructor el @Binds en MovieDetailsModule fallaría en compilación.
+class MovieDetailsRepositoryImpl @Inject constructor(
     private val api: MovieDetailsApi
 ) : MovieDetailsRepository {
 
