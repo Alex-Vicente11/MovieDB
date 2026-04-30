@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.ui.unit.Constraints
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,10 +23,25 @@ import com.example.apptest.databinding.FragmentPopularMoviesBinding
 import com.example.apptest.features.popular_movies.presentation.adapter.MovieAdapter
 import com.example.apptest.features.popular_movies.presentation.main.MainUiState
 import com.example.apptest.features.popular_movies.presentation.main.MainViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+// CAMBIOS vs versión anterior:
+//   AGREGADO  → @AndroidEntryPoint
+//   CAMBIADO  → private val viewModel: MainViewModel by viewModels()
+//   ELIMINADO → setupViewModel() y su llamada en onViewCreated()
+//   ELIMINADO → import de MyApplication
+//
+// @AndroidEntryPoint → permite que Hilt inyecte en este Fragment.
+//   Sin esto, `by viewModels()` no funcionaría con Hilt.
+//
+// by viewModels() → delegado que usa el HiltViewModelFactory generado.
+//   Hilt crea MainViewModel con SearchMoviesUseCase y GetPopularMoviesUseCase
+//   automáticamente. El ViewModel sigue sobreviviendo rotaciones de pantalla.
+
+@AndroidEntryPoint
 class PopularMoviesFragment: Fragment() {
 
     companion object {
@@ -58,7 +74,7 @@ class PopularMoviesFragment: Fragment() {
     private var _binding: FragmentPopularMoviesBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by viewModels()
 
     private lateinit var adapter: MovieAdapter
 
@@ -79,7 +95,6 @@ class PopularMoviesFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbar()
-        setupViewModel()
         setupRecyclerView()
         setupListeners()
         setupRealtimeSearch()
@@ -87,9 +102,7 @@ class PopularMoviesFragment: Fragment() {
 
         // Cargar películas populares solo la primera vez
         // savedInstanceState == null -> primera creación (no rotación, no vuelta de back stack)
-        if (savedInstanceState == null) {
-            viewModel.getPopularMovies()
-        }
+        if (savedInstanceState == null) viewModel.getPopularMovies()
         // Si savedInstanceState != null, el ViewModel ya tiene datos ->
         // observeUiState() re-emitirá el estado actual automaticamente
     }
@@ -106,29 +119,7 @@ class PopularMoviesFragment: Fragment() {
      * es top-level -> NO muestra botón <-
      */
     private fun setupToolbar() {
-        val navController = findNavController()
-        binding.toolbar.setupWithNavController(navController)
-    }
-
-    /**
-     * Inicializar ViewModel con sus dependencias
-     *
-     * Manual Dependency Injection via AppContainer (Service Locator).
-     * El AppContainer es accesible desde cualquier Fragment a través de
-     * requireActivity().application -> (as MyApplication).appContainer
-     *
-     * Diferencia con la Activity:
-     *      Activity: (application as MyApplication).appContainer
-     *      Fragment: (requireActivity().application as MyApplication).appContainer
-     *
-     */
-    private fun setupViewModel(){
-        val appContainer = (requireActivity().application as MyApplication).appContainer
-
-        viewModel = MainViewModel(
-            searchMoviesUseCase = appContainer.searchContainer.searchMoviesUseCase,
-            getPopularMoviesUseCase = appContainer.popularMoviesContainer.getPopularMoviesUseCase
-        )
+        binding.toolbar.setupWithNavController(findNavController())
     }
 
     /**

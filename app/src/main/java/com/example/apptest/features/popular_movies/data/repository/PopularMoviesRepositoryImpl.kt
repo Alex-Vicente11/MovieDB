@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
+import javax.inject.Inject
 
 /**
  * IMPLEMENTACIÓN del repositorio de películas populares
@@ -36,7 +37,7 @@ import java.io.IOException
  * ✅ Menor superficie de error
  * ✅ Más fácil de testear
  */
-class PopularMoviesRepositoryImpl(
+class PopularMoviesRepositoryImpl @Inject constructor(
     private val api: PopularMoviesApi
 ) : PopularMoviesRepository {
 

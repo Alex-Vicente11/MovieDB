@@ -6,10 +6,12 @@ import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.popular_movies.domain.usecase.GetPopularMoviesUseCase
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.features.search.domain.usecase.SearchMoviesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * VIEWMODEL para MainActivity
@@ -20,7 +22,19 @@ import kotlinx.coroutines.launch
  * - Manejar eventos de UI
  * - Sobrevive a cambios de configuración
  */
-class MainViewModel(
+
+// CAMBIOS vs versión anterior:
+//   AGREGADO → @HiltViewModel
+//   AGREGADO → @Inject antes de constructor
+//   AGREGADO → imports de HiltViewModel e Inject
+//   El cuerpo (searchMovies, getPopularMovies, estados) NO cambia.
+//
+// @HiltViewModel → Hilt genera un ViewModelFactory para este ViewModel.
+// @Inject constructor → Hilt sabe qué dependencias pasar al crearlo.
+// El Fragment usa `by viewModels()` y Hilt hace el resto automáticamente.
+
+@HiltViewModel
+class MainViewModel @Inject constructor(
     private val searchMoviesUseCase: SearchMoviesUseCase,
     private val getPopularMoviesUseCase: GetPopularMoviesUseCase
 ) : ViewModel() {

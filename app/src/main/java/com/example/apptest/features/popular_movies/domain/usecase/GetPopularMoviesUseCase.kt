@@ -4,6 +4,7 @@ import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.popular_movies.domain.repository.PopularMoviesRepository
 import kotlinx.coroutines.flow.Flow
+import javax.inject.Inject
 
 /**
  * USE CASE: Obtener películas populares
@@ -30,7 +31,7 @@ import kotlinx.coroutines.flow.Flow
  * - Solo hace UNA cosa: coordinar la obtención de películas populares
  * - No maneja red, no mapea datos, no maneja UI
  */
-class GetPopularMoviesUseCase(
+class GetPopularMoviesUseCase @Inject constructor(
     private val repository: PopularMoviesRepository
 ) {
     /**
