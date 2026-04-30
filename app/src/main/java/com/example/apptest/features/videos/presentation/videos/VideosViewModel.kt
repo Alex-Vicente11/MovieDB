@@ -8,10 +8,12 @@ import androidx.lifecycle.viewModelScope
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.features.videos.domain.model.Video
 import com.example.apptest.features.videos.domain.usecase.GetMovieVideosUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 /**
  * Responsabilidades:
@@ -20,7 +22,10 @@ import kotlinx.coroutines.launch
  * - Filtrar videos de Youtube únicamente
  */
 
-class VideosViewModel(
+// CAMBIOS: @HiltViewModel + @Inject constructor
+// El cuerpo (loadVideos, filtrado, ordenamiento, estados) NO cambia.
+@HiltViewModel
+class VideosViewModel @Inject constructor(
     private val getMovieVideosUseCase: GetMovieVideosUseCase
 ): ViewModel() {
 

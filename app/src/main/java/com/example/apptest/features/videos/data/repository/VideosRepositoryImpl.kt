@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import okio.IOException
 import retrofit2.HttpException
+import javax.inject.Inject
 
 /**
  * Responsabilidades:
@@ -26,7 +27,7 @@ import retrofit2.HttpException
  * - Flow Pattern: Emisión reactiva de estados
  */
 
-class VideosRepositoryImpl(
+class VideosRepositoryImpl @Inject constructor(
     private val api: VideosApi
 ): VideosRepository {
     companion object {

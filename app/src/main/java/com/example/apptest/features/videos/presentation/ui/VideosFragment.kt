@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
@@ -22,6 +23,7 @@ import com.example.apptest.features.videos.presentation.adapter.VideosAdapter
 import com.example.apptest.features.videos.presentation.videos.VideosUiState
 import com.example.apptest.features.videos.presentation.videos.VideosViewModel
 import com.google.android.material.snackbar.Snackbar
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue
 
@@ -40,6 +42,7 @@ import kotlin.getValue
  *          -> candidata a moverse a un helper/util en el futuro
  *
  */
+@AndroidEntryPoint
 class VideosFragment: Fragment() {
 
     companion object {
@@ -51,7 +54,7 @@ class VideosFragment: Fragment() {
 
     private val args: VideosFragmentArgs by navArgs()
 
-    private lateinit var viewModel: VideosViewModel
+    private val viewModel: VideosViewModel by viewModels()
 
     private val videosAdapter = VideosAdapter { video ->
         openVideoInYoutube(video)
@@ -70,7 +73,6 @@ class VideosFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         setupToolbar()
-        setupViewModel()
         setupRecyclerView()
         observeUiState()
         loadVideos()
@@ -91,13 +93,7 @@ class VideosFragment: Fragment() {
         binding.toolbar.title = args.movieTitle ?: "Videos"
     }
 
-    private fun setupViewModel() {
-        val appContainer = (requireActivity().application as MyApplication).appContainer
 
-        viewModel = VideosViewModel(
-            getMovieVideosUseCase = appContainer.videosContainer.getMovieVideosUseCase
-        )
-    }
 
     private fun setupRecyclerView() {
         binding.recyclerViewVideos.apply {

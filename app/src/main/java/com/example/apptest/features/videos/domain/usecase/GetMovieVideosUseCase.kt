@@ -3,6 +3,7 @@ package com.example.apptest.features.videos.domain.usecase
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.features.videos.domain.model.Video
 import com.example.apptest.features.videos.domain.repository.VideosRepository
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
@@ -27,7 +28,7 @@ import kotlinx.coroutines.flow.map
  *  - Valida entrada y delega al repositorio
  */
 
-class GetMovieVideosUseCase(
+class GetMovieVideosUseCase @Inject constructor(
     private val repository: VideosRepository
 ) {
     /**
