@@ -1,4 +1,4 @@
-package com.example.apptest.di
+package com.example.apptest.core.di
 
 import android.content.Context
 import androidx.room.Room
