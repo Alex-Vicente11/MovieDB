@@ -10,8 +10,10 @@ import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.popular_movies.data.remote.api.PopularMoviesApi
 import com.example.apptest.features.popular_movies.domain.repository.PopularMoviesRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -161,5 +163,5 @@ class PopularMoviesRepositoryImpl @Inject constructor(
             Log.e(TAG, "Exception", e)
             if (cachedMovies.isEmpty()) emit(Resource.Error(e.localizedMessage ?: "Error desconocido"))
         }
-    }
+    }.flowOn(Dispatchers.IO)
 }
