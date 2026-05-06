@@ -1,7 +1,10 @@
 package com.example.apptest.features.videos.data.repository
 
 import android.util.Log
-import com.example.apptest.core.data.mapper.MovieMapper.toDomainVideos
+import com.example.apptest.core.data.local.dao.VideosDao
+import com.example.apptest.core.data.local.mapper.toDomain
+import com.example.apptest.core.data.local.mapper.toEntity
+import com.example.apptest.core.data.mapper.MovieMapper.toDomain
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.features.videos.data.remote.api.VideosApi
 import com.example.apptest.features.videos.domain.model.Video
@@ -25,11 +28,16 @@ import javax.inject.Inject
  * - Repository Pattern: Abstrae la fuente de datos
  * - Mapper Pattern: Separa DTOs de modelos de domino
  * - Flow Pattern: Emisión reactiva de estados
+ *
+ * Cache - first
+ * Misma estrategia sin expiración
+ * Los trailers de una película no cambian después del estreno.
  */
 
 class VideosRepositoryImpl @Inject constructor(
-    private val api: VideosApi
-): VideosRepository {
+    private val api: VideosApi,
+    private val videosDao: VideosDao
+) : VideosRepository {
     companion object {
         private const val TAG = "VideosRepo"
     }
@@ -50,15 +58,32 @@ class VideosRepositoryImpl @Inject constructor(
      * - Exception: Otros erroes inesperados
      */
     override fun getMovieVideos(movieId: Int): Flow<Resource<List<Video>>> = flow {
-        try {
-            emit(Resource.Loading())
-            Log.d(TAG, "Getting videos for movie ID: ${movieId}")
 
+        emit(Resource.Loading())
+        Log.d(TAG, "Getting videos for movie ID: $movieId")
+
+        // Paso 1 - Buscar en Room
+        val cached = videosDao.getVideosByMovieId(movieId)
+
+        if (cached.isNotEmpty()) {
+            Log.d(TAG, "Cache hit: ${cached.size} videos for movie $movieId")
+            emit(Resource.Success(cached.toDomain()))
+            return@flow
+        }
+
+        // PASO 2 - Cache miss: llamar a la API
+        Log.d(TAG, "Cache miss for videos of movie $movieId")
+
+        try {
             // LLamada a la API (retorna VideoResponseDto)
             val response = api.getMovieVideos(movieId = movieId)
 
             // Mapear DTOs -> Domain Models usando MovieMapper de core
-            val videos = response.results.toDomainVideos()
+            val videos = response.results.map { it.toDomain() }
+
+            // PASO 3 - Guardar en Room
+            videosDao.insertVideos(videos.toEntity(movieId))
+            Log.d(TAG, "Saved ${videos.size} videos for movie $movieId to Room")
 
             // Emitir exito
             Log.d(TAG, "Found ${videos.size} videos")
@@ -77,7 +102,7 @@ class VideosRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             // Error de red/conexion
             Log.e(TAG, "IOException", e)
-            emit(Resource.Error("Error de conexión. Verifica tu internet."))
+            emit(Resource.Error("Sin conexión. Verifica tu internet."))
         } catch (e: Exception) {
             // Otros errores inesperados
             Log.e(TAG, "Exception", e)
