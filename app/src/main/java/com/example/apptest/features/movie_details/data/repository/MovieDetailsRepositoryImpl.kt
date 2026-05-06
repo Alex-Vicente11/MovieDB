@@ -1,15 +1,16 @@
 package com.example.apptest.features.movie_details.data.repository
 
 import android.util.Log
+import com.example.apptest.core.data.local.dao.MovieDetailsDao
+import com.example.apptest.core.data.local.mapper.toDomain
+import com.example.apptest.core.data.local.mapper.toEntity
 import com.example.apptest.core.data.mapper.MovieMapper.toDomain
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.features.movie_details.data.remote.api.MovieDetailsApi
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.features.movie_details.domain.repository.MovieDetailsRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
 import java.io.IOException
 import javax.inject.Inject
@@ -18,8 +19,6 @@ import javax.inject.Inject
  * IMPLEMENTACIÓN del repositorio de detalles de películas
  *
  * CAPA: Data (implementación concreta)
- * UBICACIÓN: features/movie_details/data/repository/
- *
  * Responsabilidades:
  * - Hacer llamadas a la API (MovieDetailsApi)
  * - Convertir DTOs a modelos de dominio (usando MovieMapper)
@@ -31,16 +30,12 @@ import javax.inject.Inject
  * - Mapper Pattern: Separa DTOs de modelos de dominio
  * - Flow Pattern: Emisión reactiva de estados
  *
- * Comparación con MovieRepositoryImpl (legacy):
- * ❌ ANTES: MovieRepositoryImpl (~120 líneas, 3 responsabilidades)
- * ✅ AHORA: MovieDetailsRepositoryImpl (~50 líneas, 1 responsabilidad)
- *
  * Beneficios:
- * ✅ Solo hace UNA cosa (detalles de películas)
- * ✅ Usa API especializada (MovieDetailsApi)
- * ✅ Menor superficie de error
- * ✅ Más fácil de testear
- * ✅ Código más limpio y legible
+ *  Solo hace UNA cosa (detalles de películas)
+ *  Usa API especializada (MovieDetailsApi)
+ *  Menor superficie de error
+ *  Más fácil de testear
+ *  Código más limpio y legible
  */
 
 // ÚNICO CAMBIO vs versión anterior:
@@ -51,8 +46,26 @@ import javax.inject.Inject
 // Hilt verá que necesita MovieDetailsApi, la buscará en MovieDetailsModule
 // y la inyectará automáticamente.
 // Sin @Inject constructor el @Binds en MovieDetailsModule fallaría en compilación.
+
+/**
+ * Cache - First
+ *
+ * Estrategia: Cache -First sin expiración
+ *      Si el detalle ya está en Room -> devolver Room, NO llamar a la API.
+ *      Solo llama a la API si no hay datos en Room para este movieId.
+ *
+ * ¿Por qué sin expiración?
+ *      Los detalles de una película (título, sinopsis, genéros, presupuesto)
+ *      son prácticamente inmutables. No tiene sentido recargar datos que
+ *      no van a cambiar. El usuario verá los detalles al instante.
+ *
+ * CAMBIOS vs versión anterior:
+ *  AGREGADO -> MovieDetailsDao inyectado por Hilt
+ *  CAMBIANDO -> cache-first antes de llamar a la API
+ */
 class MovieDetailsRepositoryImpl @Inject constructor(
-    private val api: MovieDetailsApi
+    private val api: MovieDetailsApi,
+    private val movieDetailsDao: MovieDetailsDao
 ) : MovieDetailsRepository {
 
     companion object {
@@ -75,21 +88,35 @@ class MovieDetailsRepositoryImpl @Inject constructor(
      * - Exception: Otros errores inesperados
      */
     override fun getMovieDetails(movieId: Int): Flow<Resource<MovieDetails>> = flow {
+
+        emit(Resource.Loading())
+        Log.d(TAG, "Getting movie details for ID: $movieId")
+
+        // 1. PASO 1 - Buscar en Room primero (cache-first))
+        val cached = movieDetailsDao.getMovieDetails(movieId)
+
+        if (cached != null) {
+            // Tenemos datos en caché -> emitir y NO llamar a la API
+            Log.d(TAG, "Cache hit for movie $movieId: ${cached.title}")
+            emit(Resource.Success(cached.toDomain()))
+            return@flow  // <- salimos del flow, no hay llamada a la API
+        }
+
+        // PASO 2 - No hay caché: llamar a la API
+        Log.d(TAG, "Cache miss for movie $movieId, fetching from API")
+
         try {
-            // 1. Emitir estado de carga
-            emit(Resource.Loading())
-            Log.d(TAG, "Getting movie details for ID: $movieId")
-
-            // 2. Llamada a la API (retorna MovieDetailsDto)
+            //Llamada a la API (retorna MovieDetailsDto)
             val response = api.getMovieDetails(movieId = movieId)
-
-            // 3. Mapear DTO → Domain Model usando MovieMapper de core
+            // Mapear DTO → Domain Model usando MovieMapper de core
             val movieDetails = response.toDomain()
 
-            // 4. Emitir éxito
-            Log.d(TAG, "Movie found: ${movieDetails.title}")
-            emit(Resource.Success(movieDetails))
+            // PASO 3 - Guardar en Room para futuras visitas
+            movieDetailsDao.insertMovieDetails(movieDetails.toEntity())
+            Log.d(TAG, "Saved details for ${movieDetails.title} to Room")
 
+            // Emitir éxito
+            emit(Resource.Success(movieDetails))
         } catch (e: HttpException) {
             // Error HTTP (4xx, 5xx)
             val message = when (e.code()) {
@@ -105,12 +132,12 @@ class MovieDetailsRepositoryImpl @Inject constructor(
         } catch (e: IOException) {
             // Error de red/conexión
             Log.e(TAG, "IOException", e)
-            emit(Resource.Error("Error de conexión. Verifica tu internet."))
+            emit(Resource.Error("Sin conexión. Verifica tu internet."))
 
         } catch (e: Exception) {
             // Otros errores inesperados
             Log.e(TAG, "Exception", e)
             emit(Resource.Error(e.localizedMessage ?: "Error desconocido"))
         }
-    }.flowOn(Dispatchers.IO)  // Ejecutar en IO thread
+    }
 }
