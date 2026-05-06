@@ -59,6 +59,9 @@ data class VideoEntity(
     @ColumnInfo(name = "iso_639_1")
     val iso6391: String,    // idioma: "es, "en"
 
+    @ColumnInfo(name = "iso_3166_1")
+    val iso31661: String,   // país: "US", "MX"
+
     @ColumnInfo(name = "cached_at")
     val cachedAt: Long = System.currentTimeMillis()
 )
