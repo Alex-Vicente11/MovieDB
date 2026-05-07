@@ -7,4 +7,5 @@ data class Favorite(
     val voteAverage: Double,
     val releaseDate: String,
     val overview: String,
+    val addedAt: Long
 )
