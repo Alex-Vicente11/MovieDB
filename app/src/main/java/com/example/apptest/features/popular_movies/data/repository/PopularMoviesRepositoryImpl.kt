@@ -5,6 +5,7 @@ import com.example.apptest.core.data.local.dao.MovieDao
 import com.example.apptest.core.data.local.entity.MovieEntity
 import com.example.apptest.core.data.local.mapper.toDomain
 import com.example.apptest.core.data.local.mapper.toEntity
+import com.example.apptest.core.data.mapper.MovieMapper
 import com.example.apptest.core.data.mapper.MovieMapper.toDomain
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
@@ -12,6 +13,7 @@ import com.example.apptest.features.popular_movies.data.remote.api.PopularMovies
 import com.example.apptest.features.popular_movies.domain.repository.PopularMoviesRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import retrofit2.HttpException
@@ -92,17 +94,11 @@ class PopularMoviesRepositoryImpl @Inject constructor(
         // 2. Emitir caché de Room inmediatamente si existe
         // first() obtiene la primera emisión del Flow de Room (snapshot actual)
         // La UI muestra datos al instante sin esperar la red
-        val cachedMovies = movieDao.getPopularMovies()
-            .let { flow ->
-                var result = emptyList<MovieEntity>()
-                // Recolectamos solo el primer valor (snapshot)
-                flow.collect { result = it; return@collect }
-                result
-            }
+        val cachedMovies = movieDao.getPopularMovies().first()
 
         if (cachedMovies.isNotEmpty()) {
             Log.d(TAG, "Emiting ${cachedMovies.size} movies from cache")
-            emit(Resource.Success(cachedMovies.toDomain()))
+            emit(Resource.Success(cachedMovies.map { it.toDomain() }))
         }
 
         // PASO 3 - Verificar si el caché expiró
@@ -134,7 +130,11 @@ class PopularMoviesRepositoryImpl @Inject constructor(
             // PASO 6 - Emitir datos frescos de Room
             // (Room también emitirá automáticamente vía Flow en el Dao,
             // pero aquí emitimos explicitamente para el flujo de Resource)
-            emit(Resource.Success(movies.map { it.toDomain() }))
+            emit(Resource.Success(
+                with(MovieMapper) {
+                    movies.map { it.toDomain() }
+                }
+            ))
 
         } catch (e: HttpException) {
             // Error HTTP (4xx, 5xx)

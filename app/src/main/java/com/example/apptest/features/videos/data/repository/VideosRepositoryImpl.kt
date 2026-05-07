@@ -5,6 +5,7 @@ import com.example.apptest.core.data.local.dao.VideosDao
 import com.example.apptest.core.data.local.mapper.toDomain
 import com.example.apptest.core.data.local.mapper.toEntity
 import com.example.apptest.core.data.mapper.MovieMapper.toDomain
+import com.example.apptest.core.data.mapper.MovieMapper.toDomainVideos
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.features.videos.data.remote.api.VideosApi
 import com.example.apptest.features.videos.domain.model.Video
@@ -67,7 +68,7 @@ class VideosRepositoryImpl @Inject constructor(
 
         if (cached.isNotEmpty()) {
             Log.d(TAG, "Cache hit: ${cached.size} videos for movie $movieId")
-            emit(Resource.Success(cached.toDomain()))
+            emit(Resource.Success(cached.map { it.toDomain() }))
             return@flow
         }
 
@@ -79,7 +80,7 @@ class VideosRepositoryImpl @Inject constructor(
             val response = api.getMovieVideos(movieId = movieId)
 
             // Mapear DTOs -> Domain Models usando MovieMapper de core
-            val videos = response.results.map { it.toDomain() }
+            val videos = response.results.toDomainVideos()
 
             // PASO 3 - Guardar en Room
             videosDao.insertVideos(videos.toEntity(movieId))

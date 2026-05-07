@@ -44,6 +44,6 @@ interface VideosApi {
     @GET("movie/{movie_id}/videos")
     suspend fun getMovieVideos(
         @Path("movie_id") movieId: Int,
-        @Query("language") languege: String = "es-MX"
+        @Query("language") language: String = "es-MX"
     ): VideoResponseDto
 }

@@ -50,8 +50,6 @@ fun MovieEntity.toDomain(): Movie = Movie(
     popularity = popularity
 )
 
-fun List<MovieEntity>.toDomain(): List<Movie> = map { it.toDomain() }
-
 fun Movie.toEntity(isPopular: Boolean = false): MovieEntity = MovieEntity(
     id = id,
     title = title,
@@ -127,8 +125,6 @@ fun VideoEntity.toDomain(): Video = Video(
     country = iso31661
 )
 
-fun List<VideoEntity>.toDomain(): List<Video> = map { it.toDomain() }
-
 fun Video.toEntity(movieId: Int): VideoEntity = VideoEntity(
     id = id,
     movieId = movieId,
@@ -152,19 +148,16 @@ fun FavoriteEntity.toDomain(): Favorite = Favorite(
     id = movieId,
     title = title,
     posterPath = posterPath,
-    backdropPath = backdropPath,
     voteAverage = voteAverage,
     releaseDate = releaseDate,
-    overview = overview
+    overview = overview,
+    addedAt = addedAt
 )
-
-fun List<FavoriteEntity>.toDomain(): List<Favorite> = map { it.toDomain() }
 
 fun Movie.toFavoriteEntity(): FavoriteEntity = FavoriteEntity(
     movieId = id,
     title = title,
     posterPath = posterPath,
-    backdropPath = backdropPath,
     voteAverage = voteAverage,
     releaseDate = releaseDate,
     overview = overview,
