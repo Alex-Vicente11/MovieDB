@@ -8,4 +8,17 @@ data class Favorite(
     val releaseDate: String,
     val overview: String,
     val addedAt: Long
-)
+) {
+    companion object {
+        private const val IMAGE_BASE_URL = "https://image.tmdb.org/t/p/w500"
+    }
+
+    fun getPosterUrl(): String =
+        if (posterPath != null) "$IMAGE_BASE_URL$posterPath" else "N/A"
+
+    fun getReleaseYear(): String =
+        releaseDate.split("-").firstOrNull() ?: "N/A"
+
+    fun getFormattedRating(): String =
+        String.format("⭐ %.1f/10", voteAverage)
+}
