@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    res/layout/fragment_favorites.xml
+    ════════════════════════════════════════════════════════════════════════════
+    DISEÑO consistente con fragment_popular_movies.xml:
+      • Misma estructura CoordinatorLayout + AppBarLayout + RecyclerView
+      • Mismos colores de fondo (#1A1A2E) y superficie (#2C2C3E)
+      • El padding inferior (80dp) evita que el BottomNav tape el último item
+
+    ESTADOS de la pantalla:
+      1. Loading → CircularProgressIndicator centrado
+      2. Empty   → ícono de corazón + mensaje motivador
+      3. Content → RecyclerView con la lista de favoritos
+
+    DIFERENCIA con popular_movies:
+      No tiene barra de búsqueda — favoritos es una lista simple.
+      Tiene un estado vacío más elaborado con ícono grande (UX).
+    ════════════════════════════════════════════════════════════════════════════
+-->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#1A1A2E">
+
+    <!-- AppBar -->
+    <com.google.android.material.appbar.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appBarLayout"
+        android:background="1E1E2E"
+        app:elevation="4dp"
+        app:liftOnScroll="true"
+        app:liftOnScrollTargetViewId="@id/recyclerViewFavorites">
+
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            app:title="❤️  Mis Favoritos"
+            app:titleTextColor="#FFFFFF"
+            android:background="#1E1E2E"/>
+
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <!-- Contenido -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingBottom="80dp"
+        android:clipToPadding="false"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!-- Lista de favoritos -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/recyclerViewFavorites"
+            android:clipToPadding="false"
+            android:paddingBottom="8dp"
+            android:visibility="gone"/>
+
+        <!-- Estado: cargando -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            app:indicatorColor="#E91E63"
+            app:indicatorSize="52dp"
+            app:trackColor="#2C2C3E"/>
+
+        <!-- Estado sin favoritos (mejor UX) -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/emptyState"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:visibility="gone">
+
+            <!-- ícono de corazón grande -->
+            <ImageView
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:src="@drawable/ic_favorite_border"
+                android:contentDescription="Sin favoritos"
+                app:tint="#E91E63"
+                android:alpha="0.5"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="Toca el corazón en los detalles\n de una película para guardarla aquí"
+                android:textColor="#9E9E9E"
+                android:textSize="14sp"
+                android:textAlignment="center"
+                android:lineSpacingExtra="4dp"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
