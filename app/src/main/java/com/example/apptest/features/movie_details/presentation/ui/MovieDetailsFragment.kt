@@ -15,9 +15,9 @@ import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.example.apptest.MyApplication
 import com.example.apptest.R
 import com.example.apptest.databinding.FragmentMovieDetailsBinding
+import com.example.apptest.features.favorites.presentation.FavoritesViewModel
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.features.movie_details.presentation.details.MovieDetailsUiState
 import com.example.apptest.features.movie_details.presentation.details.MovieDetailsViewModel
@@ -25,7 +25,20 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar  // ← material
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import androidx.core.graphics.toColorInt
+import com.example.apptest.core.domain.model.Movie
 
+/**
+ * CAMBIOS vs versión anterior:
+ *  AGREGADO -> FavoritesViewModel (por viewModels())
+ *  AGREGADO -> observeFavoriteState() - observa isFavoriteState de Room
+ *  AGREGADO -> setupFavoriteButtom() - configura el FAB de favorito
+ *  CAMBIADO -> showMovieDetails() llama a favoritesViewModel.observeIsFavorite()
+ *
+ *  2 ViewModels en un mismo Fragment:
+ *      MovieDetailsViewModel -> carga los detalles de la película (Retrofit + Room)
+ *      FavoritesViewModel -> gestiona el estado del botón corazón (solo Room)
+ */
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
 
@@ -42,6 +55,8 @@ class MovieDetailsFragment : Fragment() {
 
     // ── ViewModel ────────
     private val viewModel: MovieDetailsViewModel by viewModels()
+
+    private val favoritesViewModel: FavoritesViewModel by viewModels()
 
 
     // CICLO DE VIDA
@@ -60,14 +75,9 @@ class MovieDetailsFragment : Fragment() {
         setupToolbar()
         setupListeners()
         observeUiState()
+        observeFavoriteState()
         loadMovieDetails()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
 
     // SETUP
     private fun setupToolbar() {
@@ -75,8 +85,12 @@ class MovieDetailsFragment : Fragment() {
     }
 
     private fun setupListeners() {
-        binding.btnWatchVideos.setOnClickListener {
-            navigateToVideos()
+        binding.btnWatchVideos.setOnClickListener { navigateToVideos() }
+
+        // Botón corazón llama a toggleFavorite()
+        // FavoritesViewModel sabe si es favorito o no -> agrega o elimina
+        binding.btnFavorite.setOnClickListener {
+            favoritesViewModel.toggleFavorite()
         }
     }
 
@@ -115,6 +129,48 @@ class MovieDetailsFragment : Fragment() {
         }
     }
 
+    /**
+     * Observar estado del favorito
+     * isFavoriteState es un Flow<Boolean> de Room
+     * Cada vez que el usuario agrega/elimina el favorito, Room emite el nuevo
+     * valor y este collector actualiza el ícono automáticamente.
+     */
+    private fun observeFavoriteState() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                favoritesViewModel.isFavoriteState.collect { isFavorite ->
+                    updateFavoriteBottom(isFavorite)
+                }
+            }
+        }
+    }
+
+    // Actualiza el ícono y calor del botón según el estado
+    private fun updateFavoriteBottom(isFavorite: Boolean) {
+        if (isFavorite) {
+            // Favorito → corazón lleno rosa
+            binding.btnFavorite.setImageResource(R.drawable.ic_favorite)
+            binding.btnFavorite.backgroundTintList =
+                android.content.res.ColorStateList.valueOf(
+                    "#E91E63".toColorInt()
+                )
+            binding.btnFavorite.imageTintList =
+                android.content.res.ColorStateList.valueOf(
+                    android.graphics.Color.WHITE
+                )
+        } else {
+            // No favorito → corazón outline gris
+            binding.btnFavorite.setImageResource(R.drawable.ic_favorite_border)
+            binding.btnFavorite.backgroundTintList =
+                android.content.res.ColorStateList.valueOf(
+                    "#1E1E2E".toColorInt()
+                )
+            binding.btnFavorite.imageTintList =
+                android.content.res.ColorStateList.valueOf(
+                    "#9E9E9E".toColorInt()
+                )
+        }
+    }
 
     // RENDERIZADO DE ESTADOS
     private fun showLoading() {
@@ -154,6 +210,24 @@ class MovieDetailsFragment : Fragment() {
 
         // Imágenes
         loadImages(movie)
+
+        /**
+         * Notificar a FavoritesViewModel qué película estamos viendo para que observe
+         * isFavorite(movie.id) en Room.
+         * Convertimos MovieDetails -> Movie para el UseCase de favoritos.
+         */
+        val movieDomain = Movie(
+            id = movie.id,
+            title = movie.title,
+            overview = movie.overview,
+            posterPath = movie.posterPath,
+            backdropPath = movie.backdropPath,
+            voteAverage = movie.voteAverage,
+            voteCount = movie.voteCount,
+            releaseDate = movie.releaseDate,
+            popularity = movie.popularity
+        )
+        favoritesViewModel.observeIsFavorite(movieDomain)
     }
 
     /**
@@ -174,12 +248,12 @@ class MovieDetailsFragment : Fragment() {
                     text          = genre
                     isClickable   = false
                     isCheckable   = false
-                    setTextColor(android.graphics.Color.parseColor("#FFFFFF"))
+                    setTextColor("#FFFFFF".toColorInt())
                     chipBackgroundColor = android.content.res.ColorStateList.valueOf(
-                        android.graphics.Color.parseColor("#2C2C3E")
+                        "#2C2C3E".toColorInt()
                     )
                     chipStrokeColor = android.content.res.ColorStateList.valueOf(
-                        android.graphics.Color.parseColor("#E91E63")
+                        "#E91E63".toColorInt()
                     )
                     chipStrokeWidth = 1.5f
                     textSize        = 12f
@@ -234,5 +308,10 @@ class MovieDetailsFragment : Fragment() {
                 movieTitle = movieTitle
             )
         findNavController().navigate(action)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
