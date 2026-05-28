@@ -35,6 +35,23 @@
             app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
     </fragment>
 
+    <!-- Favorites -->
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.example.apptest.features.favorites.presentation.FavoritesFragment"
+        android:label="Favoritos"
+        tools:layout="@layout/fragment_favorites">
+
+        <action
+            android:id="@+id/action_favorites_to_movieDetails"
+            app:destination="@+id/movieDetailsFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    </fragment>
+
     <!-- MovieDetailsFragment Recibe movieId como argumento obligatorio -->
     <fragment
         android:id="@+id/movieDetailsFragment"

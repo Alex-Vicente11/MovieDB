@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- BottomNavigationView
+     Cada <item> representa una pestaña:
+     android:id  -> debe coincidir con el android:id del <fragment>
+                 en nav_graph.xml. Navigation Component usa este id para saber
+                 a qué destino navegar al tocar la pestaña.
+     android:icon -> drawable del ícono (filled cuando está activo,
+                     outlined cuando no lo está - Material Design)
+     android:title  -> texto debajo del ícono
+-->
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Películas populares — pantalla inicial -->
+    <item
+        android:id="@+id/popularMoviesFragment"
+        android:icon="@drawable/ic_movies"
+        android:title="Películas" />
+
+    <!-- Favoritos — nuevo feature con Room -->
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/ic_favorite"
+        android:title="Favoritos" />
+
+    <!--
+        Géneros — preparado para futura implementación
+        Descomentar cuando el feature esté listo:
+
+    <item
+        android:id="@+id/genresFragment"
+        android:icon="@drawable/ic_genres"
+        android:title="Géneros"/>
+    -->
+
+</menu>
