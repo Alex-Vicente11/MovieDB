@@ -1,54 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    PATRÓN: Single Activity Container
-    ────────────────────────────────────────────────────────────────────────────
-    Esta Activity es solo un CONTENEDOR vacío. Toda la UI real vive en los
-    Fragments. El único elemento funcional aquí es el NavHostFragment.
+    CAMBIO vs versión anterior:
+      ANTES → solo FragmentContainerView
+      AHORA → FragmentContainerView + BottomNavigationView
 
-    NavHostFragment:
-      • Es el "motor" del Navigation Component
-      • Gestiona el back stack de fragments
-      • Intercambia los fragments según las actions del nav_graph
-      • app:navGraph   → vincula el grafo de navegación
-      • app:defaultNavHost → intercepta el botón Back del sistema y lo maneja
-                            automáticamente según el back stack del grafo
+    BottomNavigationView (Material Design 3):
+      • app:menu → referencia al bottom_nav_menu.xml
+      • Navigation Component lo conecta automáticamente con setupWithNavController()
+        en MainActivity — al tocar una pestaña navega al fragment correcto
+      • app:layout_behavior no se necesita aquí porque BottomNav ya se
+        posiciona con layout_gravity="bottom"
 
-    MATERIAL DESIGN 3:
-      • Se usa CoordinatorLayout como raíz para permitir comportamientos
-        coordinados (ej: Snackbars, CollapsingToolbar en pantallas hijas)
-      • Cada Fragment puede tener su propia Toolbar sin conflictos
-
-    CLEAN ARCHITECTURE:
-      La Activity no conoce ninguna pantalla concreta. Solo conoce el
-      NavHostFragment. Esto cumple con el principio de inversión de
-      dependencias: la Activity depende de la abstracción (NavHost),
-      no de los Fragments concretos.
-    ════════════════════════════════════════════════════════════════════════════
+    PATRÓN: el NavHostFragment ocupa todoo el espacio disponible y el
+    BottomNav se superpone en la parte inferior. Los Fragments tienen
+    paddingBottom igual a la altura del BottomNav (56dp) para que
+    el contenido no quede tapado.
 -->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="#1A1A2E">
 
-    <!--
-        FragmentContainerView es el reemplazo moderno de FrameLayout para
-        Fragments. Ventajas sobre FrameLayout:
-          • Maneja correctamente las animaciones de entrada/salida
-          • Garantiza que los Fragments solo se dibujen dentro de sus límites
-          • Recomendado por Google desde Navigation 2.3+
-
-        android:name="...NavHostFragment"
-          → Indica que este contenedor es gestionado por el Navigation Component
-
-        app:navGraph="@navigation/nav_graph"
-          → Vincula el grafo que define todas las pantallas
-
-        app:defaultNavHost="true"
-          → Solo UNO por layout puede ser true.
-            Permite que este NavHost capture el botón Atrás del sistema.
-            Sin esto, el Back no navegaría hacia atrás en el grafo.
-    -->
+    <!-- NavHostFragment -->
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
@@ -56,5 +31,28 @@
         android:layout_height="match_parent"
         app:navGraph="@navigation/nav_graph"
         app:defaultNavHost="true"/>
+
+    <!-- BottomNavigationView
+        BottomNavigationView — fijo en la parte inferior.
+
+        app:menu → los items definidos en bottom_nav_menu.xml
+        app:labelVisibilityMode="labeled" → siempre muestra el texto debajo
+        backgroundTint → fondo oscuro consistente con el tema de la app
+
+        MATERIAL DESIGN:
+          La elevación crea una sombra sutil que separa el nav del contenido.
+          El color del ítem activo usa colorPrimary (#E91E63) automáticamente.
+    -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/bottomNavigationView"
+        android:layout_gravity="bottom"
+        app:menu="@menu/bottom_nav_menu"
+        app:labelVisibilityMode="labeled"
+        android:backgroundTint="#1E1E2E"
+        app:itemIconTint="@color/bottom_nav_selector"
+        app:itemTextColor="@color/bottom_nav_selector"
+        app:elevation="8dp"/>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
