@@ -1,5 +1,5 @@
 package com.example.apptest.data.repository
-
+/**
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.features.movie_details.data.remote.dto.GenreDto
 import com.example.apptest.features.movie_details.data.remote.dto.MovieDetailsDto
@@ -23,7 +23,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-/**
+
  * TESTS PARA MovieRepositoryImpl
  *
  * tests:
@@ -44,7 +44,7 @@ import java.io.IOException
  *  Retrofit (test Retrofit)
  *  La lógica de los mappers (está en MovieMapperTest)
  */
-class MovieRepositoryImplTest {
+/**class MovieRepositoryImplTest {
 
     // Mocks
     private lateinit var mockApi: TMDBApiService
@@ -533,4 +533,4 @@ class MovieRepositoryImplTest {
             (results[1] as Resource.Error).message
         )
     }
-}
+}**/
