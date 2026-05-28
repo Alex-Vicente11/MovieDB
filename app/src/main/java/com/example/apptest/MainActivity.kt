@@ -6,37 +6,23 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupWithNavController
 import com.example.apptest.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 /**
- * Single Activity Container
+ *  CAMBIOS vs versión anterior:
+ *  AGREGADO -> binding.bottomNavigationView.setupWithNavController(navController)
+ *  CAMBIADO -> AppBarConfiguration ahora incluye favoritesFragment como top-level
  *
- * Single Responsibility Principle:
- * Antes: MainActivity manejaba UI, búsqueda, adapter, ViewModel, navegación
- * Ahora: solo gestiona el NavController y el botón Atrás del sistema.
- * El resto se delegó a PopularMoviesFragment
+ *  setupWithNavController() en el BottomNavigationView hace automáticamente:
+ *      Al tocar una pestaña -> navega al fragment correspondiente
+ *      Gestiona el back stack para cada pestaña independiente
+ *      Restaura el estado de cada pestaña al volver a ella
  *
- * Separation of Concerns:
- *  Activity = infraestructura Android (ciclo de vida, window, system back)
- *  Fragment = unidad de UI + lógica de presentación
- *  ViewModel = estado de UI + llamadas a UseCases
- *  UseCase/Repository = lógica de negocio y datos
- *
- *  Ventajas: vs múltiples Activies:
- *      Transiciones y animaciones fluidas entre pantallas
- *      ViewModels compartidos entre Fragments (mismo Scope de Activity)
- *      Back Stack gestionando automáticamente por el Navigation Component
- *      Un solo punto de entrada -> fácil de depurar y probar
- *      Preparado para Deep Links (un intent = una destionation en el grafo)
- */
-
-/**
- * Cambio -> @AndroidEntryPoint
- * Hilt requiere que TODAS las clases en la jerarquia tengan la anotación
- * Los Fragments viven dentro de un activity - si la Activity no tiene @AndroidEntryPint,
- * Hilt no puede inyectar en sus Fragments hijos.
- * Es un requisito de la cadena: Application -> Fragment
+ * AppBarConfiguration con 2 top-level destinations:
+ *    popularMoviesFragment y favoritesFragment son top-level -> sin botón <-
+ *    movieDetailsFragment y videosFragment son secundarios -> con botón <-
  */
 
 @AndroidEntryPoint
@@ -54,31 +40,27 @@ class MainActivity: AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupNavController()
+        setupNavigation()
     }
 
-    /**
-     * Obtiene el NavController desde el NavHostFragment
-     *
-     * IMPORTANTE: Usar finNavController(R.id.nav_host_fragment) directamente desde la Activity
-     * puede fallar si el Fragment aún no está adjunto.
-     * La forma correcta es obtenerlo a través del NavHostFragment directamente
-     *
-     * AppBarConfiguration le dice al NavController cuáles son las pantallas
-     * "raíz" (top-level destinations). En estas pantallas:
-     *      .El botón <- (Up) NO aparece en la Toolbar
-     *      .El botón Back del sistema cierra la app (no navega atrás)
-     *
-     */
-    private fun setupNavController() {
+    private fun setupNavigation() {
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-
         navController = navHostFragment.navController
 
+        // Ambas pestañas del BottomNav son top-level -> sin botón <-
         appBarConfiguration = AppBarConfiguration(
-            setOf(R.id.popularMoviesFragment)
+            setOf(
+                R.id.popularMoviesFragment,
+                R.id.favoritesFragment
+            )
         )
+        /**
+         * Conectar BottomNavigationView con NavController
+         * Cada item del menú tiene el mismo id con su destination en el grafo
+         * Navigation Component maneja la navegación automáticamente
+         */
+        binding.bottomNavigationView.setupWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
