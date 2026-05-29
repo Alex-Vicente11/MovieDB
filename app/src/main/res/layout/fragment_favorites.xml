@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/appBarLayout"
-        android:background="1E1E2E"
+        android:background="#1E1E2E"
         app:elevation="4dp"
         app:liftOnScroll="true"
         app:liftOnScrollTargetViewId="@id/recyclerViewFavorites">

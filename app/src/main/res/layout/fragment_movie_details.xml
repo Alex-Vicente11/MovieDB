@@ -209,8 +209,8 @@
             android:layout_marginEnd="12dp"
             android:src="@drawable/ic_favorite_border"
             android:contentDescription="Agregar a favoritos"
-            app:backgroundTint="#1E1E2E"
-            app:tint="#9E9E9E"
+            app:backgroundTint="#2C2C3E"
+            app:maxImageSize="28dp"
             app:elevation="8dp"
             app:fabSize="normal"/>
 

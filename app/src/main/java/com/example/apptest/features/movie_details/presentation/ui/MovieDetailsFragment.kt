@@ -148,27 +148,27 @@ class MovieDetailsFragment : Fragment() {
     // Actualiza el ícono y calor del botón según el estado
     private fun updateFavoriteBottom(isFavorite: Boolean) {
         if (isFavorite) {
-            // Favorito → corazón lleno rosa
             binding.btnFavorite.setImageResource(R.drawable.ic_favorite)
             binding.btnFavorite.backgroundTintList =
                 android.content.res.ColorStateList.valueOf(
                     "#E91E63".toColorInt()
                 )
-            binding.btnFavorite.imageTintList =
-                android.content.res.ColorStateList.valueOf(
-                    android.graphics.Color.WHITE
-                )
+            // Ícono blanco sobre fondo rosa
+            binding.btnFavorite.setColorFilter(
+                android.graphics.Color.WHITE,
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
         } else {
-            // No favorito → corazón outline gris
             binding.btnFavorite.setImageResource(R.drawable.ic_favorite_border)
             binding.btnFavorite.backgroundTintList =
                 android.content.res.ColorStateList.valueOf(
-                    "#1E1E2E".toColorInt()
+                    "#2C2C3E".toColorInt()
                 )
-            binding.btnFavorite.imageTintList =
-                android.content.res.ColorStateList.valueOf(
-                    "#9E9E9E".toColorInt()
-                )
+            // Ícono rosa sobre fondo oscuro — mejor contraste que blanco
+            binding.btnFavorite.setColorFilter(
+                "#E91E63".toColorInt(),
+                android.graphics.PorterDuff.Mode.SRC_IN
+            )
         }
     }
 

@@ -1,6 +1,7 @@
 package com.example.apptest
 
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -26,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
  */
 
 @AndroidEntryPoint
-class MainActivity: AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
@@ -61,6 +62,18 @@ class MainActivity: AppCompatActivity() {
          * Navigation Component maneja la navegación automáticamente
          */
         binding.bottomNavigationView.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.popularMoviesFragment,
+                R.id.favoritesFragment -> {
+                    binding.bottomNavigationView.visibility = View.VISIBLE
+                }
+                else -> {
+                    binding.bottomNavigationView.visibility = View.GONE
+                }
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {
