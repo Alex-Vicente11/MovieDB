@@ -134,4 +134,7 @@ dependencies {
 
     //Test-robolectric
     testImplementation(libs.robolectric)
+
+    // Paging 3
+    implementation(libs.androidx.paging.runtime.ktx)
 }

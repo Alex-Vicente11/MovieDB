@@ -88,7 +88,7 @@ object NetworkModule {
                 level = if (NetworkConfig.isLoggingEnabled)
                     HttpLoggingInterceptor.Level.BODY
                 else
-                    HttpLoggingInterceptor.Level.BODY
+                    HttpLoggingInterceptor.Level.NONE
             })
             // Timeouts
             .connectTimeout(NetworkConfig.CONNECT_TIMEOUT, TimeUnit.SECONDS)

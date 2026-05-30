@@ -17,20 +17,14 @@
         android:icon="@drawable/ic_movies"
         android:title="Películas" />
 
-    <!-- Favoritos — nuevo feature con Room -->
-    <item
-        android:id="@+id/favoritesFragment"
-        android:icon="@drawable/ic_favorite"
-        android:title="Favoritos" />
-
-    <!--
-        Géneros — preparado para futura implementación
-        Descomentar cuando el feature esté listo:
-
     <item
         android:id="@+id/genresFragment"
         android:icon="@drawable/ic_genres"
         android:title="Géneros"/>
-    -->
+
+    <item
+        android:id="@+id/favoritesFragment"
+        android:icon="@drawable/ic_favorite"
+        android:title="Favoritos" />
 
 </menu>

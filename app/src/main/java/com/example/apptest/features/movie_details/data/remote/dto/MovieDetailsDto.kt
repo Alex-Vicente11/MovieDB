@@ -1,5 +1,6 @@
 package com.example.apptest.features.movie_details.data.remote.dto
 
+import com.example.apptest.core.data.remote.dto.GenreDto
 import com.google.gson.annotations.SerializedName
 
 /**
@@ -89,22 +90,4 @@ data class MovieDetailsDto(
 
     @SerializedName("adult")
     val adult: Boolean
-)
-
-/**
- * DTO para género
- *
- * UBICACIÓN: features/movie_details/data/remote/dto/
- *
- * Decisión de diseño:
- * - Solo se usa en MovieDetailsDto
- * - No aparece en otros endpoints
- * - Por lo tanto, va en el feature movie_details
- */
-data class GenreDto(
-    @SerializedName("id")
-    val id: Int,
-
-    @SerializedName("name")
-    val name: String
 )

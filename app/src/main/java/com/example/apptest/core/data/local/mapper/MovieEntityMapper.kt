@@ -4,9 +4,9 @@ import com.example.apptest.core.data.local.entity.FavoriteEntity
 import com.example.apptest.core.data.local.entity.MovieDetailsEntity
 import com.example.apptest.core.data.local.entity.MovieEntity
 import com.example.apptest.core.data.local.entity.VideoEntity
+import com.example.apptest.core.domain.model.Genre
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.favorites.domain.model.Favorite
-import com.example.apptest.features.movie_details.domain.model.Genre
 import com.example.apptest.features.movie_details.domain.model.MovieDetails
 import com.example.apptest.features.videos.domain.model.Video
 import com.google.gson.Gson

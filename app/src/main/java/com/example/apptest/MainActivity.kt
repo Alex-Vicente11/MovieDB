@@ -53,6 +53,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.popularMoviesFragment,
+                R.id.genresFragment,
                 R.id.favoritesFragment
             )
         )
@@ -66,9 +67,11 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.popularMoviesFragment,
+                R.id.genresFragment,
                 R.id.favoritesFragment -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }
+
                 else -> {
                     binding.bottomNavigationView.visibility = View.GONE
                 }

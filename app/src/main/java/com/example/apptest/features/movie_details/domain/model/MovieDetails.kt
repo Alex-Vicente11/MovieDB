@@ -1,5 +1,7 @@
 package com.example.apptest.features.movie_details.domain.model
 
+import com.example.apptest.core.domain.model.Genre
+
 /**
  * MODELO DE DOMINIO - MovieDetails
  *
@@ -125,26 +127,3 @@ data class MovieDetails(
         }
     }
 }
-
-/**
- * MODELO DE DOMINIO - Genre
- *
- * UBICACIÓN: features/movie_details/domain/model/
- *
- * Responsabilidad:
- * - Representar un género de película
- *
- * Decisión de diseño:
- * ¿Por qué Genre va en movie_details/ y NO en core/?
- *
- * - Genre solo se usa en MovieDetails
- * - Movie.kt (core) tiene genreIds: List<Int> pero NO objetos Genre
- * - Si en el futuro otro feature necesita Genre, lo movemos a core
- *
- * Cambios vs versión legacy:
- * ✅ Package actualizado: movies.domain.model → movie_details.domain.model
- */
-data class Genre(
-    val id: Int,
-    val name: String
-)

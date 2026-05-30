@@ -13,4 +13,14 @@
 
     <!-- fragment_videos -->
     <string name="no_videos">No hay videos disponibles</string>
+
+    <!-- res/values/strings.xml -->
+    <string name="genres_title">Géneros</string>
+    <string name="retry">Reintentar</string>
+
+    <!-- item_movie -->
+    <string name="movie_poster">Poster de la película</string>
+
+    <!-- GenresFragment -->
+    <string name="error_loading_movies">Error al cargar películas</string>
 </resources>

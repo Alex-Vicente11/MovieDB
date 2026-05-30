@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="72dp"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:background="#1A1A2E">
+
+    <!-- Visible mientras Paging 3 carga la siguiente página -->
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:indicatorColor="#E91E63"
+        app:indicatorSize="32dp"
+        app:trackColor="#2C2C3E" />
+
+    <!-- Visible si falla la carga de la siguiente página -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnRetry"
+        style="@style/Widget.Material3.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/retry"
+        android:visibility="gone"
+        app:strokeColor="#E91E63"
+        app:rippleColor="#E91E63" />
+
+</LinearLayout>
