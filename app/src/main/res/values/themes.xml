@@ -1,18 +1,24 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
+<resources>
     <style name="Theme.AppTest" parent="Theme.MaterialComponents.DayNight.NoActionBar">
-        <!-- Colores primarios -->
         <item name="colorPrimary">#E91E63</item>
         <item name="colorPrimaryVariant">#C2185B</item>
         <item name="colorOnPrimary">#FFFFFF</item>
-
-        <!-- Colores secundarios -->
         <item name="colorSecondary">#4CAF50</item>
         <item name="colorSecondaryVariant">#388E3C</item>
         <item name="colorOnSecondary">#FFFFFF</item>
+        <item name="android:windowBackground">#1A1A2E</item>
+        <item name="colorSurface">#1E1E2E</item>
+        <item name="colorOnSurface">#FFFFFF</item>
+        <item name="android:statusBarColor">#1A1A2E</item>
+        <item name="android:navigationBarColor">#1A1A2E</item>
+        <item name="chipStyle">@style/AppChipStyle</item>
+    </style>
 
-        <!-- Background -->
-        <item name="android:windowBackground">#1E1E1E</item>
-        <item name="colorSurface">#2C2C2C</item>
+    <style name="AppChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/chip_background_selector</item>
+        <item name="android:textColor">@color/chip_text_selector</item>
+        <item name="chipStrokeColor">@color/chip_stroke_selector</item>
+        <item name="chipStrokeWidth">1.5dp</item>
+        <item name="chipCornerRadius">20dp</item>
     </style>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.apptest.features.genres.presentation.dialog
+package com.example.apptest.features.genres.presentation
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -17,10 +17,8 @@ import com.example.apptest.R
 import com.example.apptest.core.domain.model.Genre
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.databinding.FragmentGenresBinding
-import com.example.apptest.features.genres.presentation.GenresUiState
 import com.example.apptest.features.genres.presentation.adapter.MoviesByGenreAdapter
 import com.example.apptest.features.genres.presentation.adapter.MoviesLoadStateAdapter
-import com.example.apptest.features.genres.presentation.ui.GenresViewModel
 import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest

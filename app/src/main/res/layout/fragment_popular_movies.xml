@@ -1,54 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="#1A1A2E">
 
-    <!-- AppBar con comportamiento scroll -->
     <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/appBarLayout"
+        android:background="#1A1A2E"
+        app:elevation="0dp"
         app:liftOnScroll="true"
         app:liftOnScrollTargetViewId="@id/recyclerView">
 
         <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:id="@+id/toolbar"
-            android:contentDescription="@string/app_name"
+            android:background="#1A1A2E"
             app:title="@string/app_name"
-            app:layout_scrollFlags="scroll|enterAlways|snap"/>
+            app:titleTextColor="#FFFFFF"
+            app:layout_scrollFlags="scroll|enterAlways|snap" />
 
-        <!-- Campo de búsqueda Material 3 -->
+        <!-- Search bar redondeado -->
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/searchInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/searchInputLayout"
-            style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
             android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="12dp"
+            app:boxCornerRadiusTopStart="28dp"
+            app:boxCornerRadiusTopEnd="28dp"
+            app:boxCornerRadiusBottomStart="28dp"
+            app:boxCornerRadiusBottomEnd="28dp"
+            app:boxBackgroundColor="#1E1E2E"
+            app:boxStrokeColor="#3A3A5C"
+            app:boxStrokeWidth="1dp"
+            app:boxStrokeWidthFocused="2dp"
+            app:hintTextColor="#E91E63"
             app:startIconDrawable="@drawable/ic_search"
+            app:startIconTint="#9E9E9E"
             app:endIconMode="clear_text"
-            app:hintEnabled="true"
-            app:layout_scrollFlags="scroll|enterAlways|snap">
+            app:endIconTint="#9E9E9E"
+            app:layout_scrollFlags="noScroll">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:id="@+id/etSearch"
+                android:layout_width="match_parent"
+                android:layout_height="52dp"
                 android:hint="@string/search_hint"
                 android:inputType="text"
                 android:maxLines="1"
                 android:imeOptions="actionSearch"
-                android:background="@color/pink_clear"/>
+                android:textColor="#FFFFFF"
+                android:textColorHint="#888888"
+                android:textSize="15sp"
+                android:background="@null" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <!-- Contenido principal -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -58,44 +73,49 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- Lista de peliculas -->
+            <!-- Lista de películas -->
             <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/recyclerView"
-                android:nestedScrollingEnabled="false"
                 android:clipToPadding="false"
-                android:paddingBottom="16dp"/>
+                android:nestedScrollingEnabled="false"
+                android:paddingBottom="16dp" />
 
             <!-- Estado: cargando -->
             <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:id="@+id/progressBar"
-                android:layout_gravity="center"
-                android:visibility="gone"
-                app:indicatorSize="48dp"/>
-
-            <!-- Estado: error -->
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="48dp"
+                android:visibility="gone"
+                app:indicatorColor="#E91E63"
+                app:indicatorSize="52dp"
+                app:trackColor="#2C2C3E" />
+
+            <!-- Estado: error — mismo ID que antes, Fragment no cambia -->
+            <TextView
                 android:id="@+id/tvError"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_margin="24dp"
                 android:textAlignment="center"
+                android:textColor="#9E9E9E"
                 android:visibility="gone"
-                style="@style/TextAppearance.Material3.BodyLarge"/>
+                style="@style/TextAppearance.MaterialComponents.Body1" />
 
-            <!-- Estado: sin resultados -->
+            <!-- Estado: sin resultados — mismo ID que antes -->
             <TextView
+                android:id="@+id/tvEmpty"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/tvEmpty"
                 android:layout_gravity="center"
                 android:text="@string/no_results"
+                android:textColor="#9E9E9E"
                 android:visibility="gone"
-                style="@style/TextAppearance.Material3.BodyLarge"/>
+                style="@style/TextAppearance.MaterialComponents.Body1" />
 
         </FrameLayout>
 

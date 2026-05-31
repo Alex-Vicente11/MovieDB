@@ -82,6 +82,14 @@ class MovieDetailsFragment : Fragment() {
     // SETUP
     private fun setupToolbar() {
         binding.toolbar.setupWithNavController(findNavController())
+
+        binding.toolbar.navigationIcon =
+            androidx.core.content.ContextCompat.getDrawable(
+                requireContext(), R.drawable.ic_arrow_back
+            )
+        binding.toolbar.setNavigationIconTint(
+            android.graphics.Color.WHITE
+        )
     }
 
     private fun setupListeners() {

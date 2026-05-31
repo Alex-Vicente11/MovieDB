@@ -1,12 +1,12 @@
 package com.example.apptest.features.videos.presentation.ui
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -16,7 +16,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.apptest.MyApplication
+import com.example.apptest.R
 import com.example.apptest.databinding.FragmentVideosBinding
 import com.example.apptest.features.videos.domain.model.Video
 import com.example.apptest.features.videos.presentation.adapter.VideosAdapter
@@ -26,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import kotlin.getValue
+import androidx.core.net.toUri
 
 /**
  * ANTES: VideosActivity
@@ -90,6 +91,10 @@ class VideosFragment: Fragment() {
      */
     private fun setupToolbar() {
         binding.toolbar.setupWithNavController(findNavController())
+
+        binding.toolbar.navigationIcon =
+            ContextCompat.getDrawable(requireContext(), R.drawable.ic_arrow_back)
+        binding.toolbar.setNavigationIconTint(android.graphics.Color.WHITE)
         binding.toolbar.title = args.movieTitle ?: "Videos"
     }
 
@@ -195,7 +200,8 @@ class VideosFragment: Fragment() {
     private fun tryOpenYoutubeApp(video: Video): Boolean {
         return try {
             // Usar URL directa en lugar de vnd.youtube: — más compatible
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.youtube.com/watch?v=${video.key}")).apply {
+            val intent = Intent(Intent.ACTION_VIEW,
+                "https://www.youtube.com/watch?v=${video.key}".toUri()).apply {
                 setPackage("com.google.android.youtube")
             }
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
@@ -211,7 +217,7 @@ class VideosFragment: Fragment() {
 
     private fun tryOpenInBrowser(video: Video): Boolean {
         return try {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(video.getYoutubeUrl()))
+            val intent = Intent(Intent.ACTION_VIEW, video.getYoutubeUrl().toUri())
             if (intent.resolveActivity(requireActivity().packageManager) != null) {
                 startActivity(intent)
                 Log.d(TAG, "Opened in browser")

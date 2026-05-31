@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/genresFragment"
-        android:name="com.example.apptest.features.genres.presentation.dialog.GenresFragment"
+        android:name="com.example.apptest.features.genres.presentation.GenresFragment"
         android:label="Géneros"
         tools:layout="@layout/fragment_genres">
 

@@ -1,4 +1,4 @@
-package com.example.apptest.features.genres.presentation.ui
+package com.example.apptest.features.genres.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -8,8 +8,8 @@ import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.genres.domain.usecase.GetGenresUseCase
 import com.example.apptest.features.genres.domain.usecase.GetMoviesByGenreUseCase
-import com.example.apptest.features.genres.presentation.GenresUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -34,6 +34,7 @@ class GenresViewModel @Inject constructor(
     val currentGenreId: Int?
         get() = _selectedGenreId.value
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     val movies: Flow<PagingData<Movie>> = _selectedGenreId
         .filterNotNull()
         .flatMapLatest { genreId ->
