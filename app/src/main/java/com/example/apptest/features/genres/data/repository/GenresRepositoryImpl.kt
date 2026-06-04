@@ -20,7 +20,7 @@ class GenresRepositoryImpl @Inject constructor(
         } catch (e: HttpException) {
             Resource.Error("Error del servidor: ${e.code()}")
         } catch (e: IOException) {
-            Resource.Error("Sin conexión a internet")
+            Resource.Error("Sin conexión a internet $e")
         }
     }
 }

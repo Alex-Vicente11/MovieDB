@@ -23,6 +23,8 @@ class MoviesByGenreRepositoryImpl @Inject constructor(
                 prefetchDistance = 5
             ),
             pagingSourceFactory = {
+                // lambda que crea una nueva instancia de PagingSource cada vez que se necesita refrescar
+                // No llama una sola vez, la recrea cuando hay refresh o cuando cambia el género.
                 MoviesByGenrePagingSource(api, genreId, language)
             }
         ).flow

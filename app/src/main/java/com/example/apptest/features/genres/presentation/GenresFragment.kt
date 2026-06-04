@@ -105,8 +105,8 @@ class GenresFragment: Fragment() {
         }
 
         //Sincroniza chip visual con género activo en ViewModel (sobrevive rotación)
-        val currendId = viewModel.currentGenreId
-        val index = genres.indexOfFirst { it.id == currendId }
+        val currentId = viewModel.currentGenreId
+        val index = genres.indexOfFirst { it.id == currentId }
         val targetIndex = if (index >= 0) index else 0
         (binding.chipGroupGenres.getChildAt(targetIndex) as? Chip)?.isChecked = true
     }
