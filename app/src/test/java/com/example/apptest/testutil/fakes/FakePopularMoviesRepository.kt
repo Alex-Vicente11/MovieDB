@@ -70,7 +70,7 @@ class FakePopularMoviesRepository : PopularMoviesRepository {
     var shouldEmitCacheFirst: Boolean = false
     var cachedMovies: List<Movie> = emptyList()
 
-    // ── Registro de llamadas — para verificar interacciones ──────────────────
+    // Registro de llamadas — para verificar interacciones
 
     /**
      * Cuenta cuántas veces fue llamado getPopularMovies().
@@ -83,7 +83,7 @@ class FakePopularMoviesRepository : PopularMoviesRepository {
     var getPopularMoviesCallCount: Int = 0
         private set // solo el fake puede incrementarlo
 
-    // ── Implementación ────────────────────────────────────────────────────────
+    // Implementación
 
     override fun getPopularMovies(): Flow<Resource<List<Movie>>> = flow {
         // Registra que fue llamado

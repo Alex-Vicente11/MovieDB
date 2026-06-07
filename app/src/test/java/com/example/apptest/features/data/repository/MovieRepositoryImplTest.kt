@@ -1,4 +1,4 @@
-package com.example.apptest.data.repository
+package com.example.apptest.features.data.repository
 /**
 import com.example.apptest.movies.data.remote.api.TMDBApiService
 import com.example.apptest.features.movie_details.data.remote.dto.GenreDto

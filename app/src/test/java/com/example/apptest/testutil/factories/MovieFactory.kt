@@ -7,7 +7,7 @@ import com.example.apptest.core.domain.model.Movie
 /**
  * Responsabilidad: Centralizar la creación de objetos Movie y MovieDto para tests.
  *
- * Sin esta factory, cada archivo de test difine su propio createTestMovie()
+ * Sin esta factory, cada archivo de test define su propio createTestMovie()
  * Cuando Movie agrega o cambia un campo, hay que actualizar N archivos.
  * Con MovieFactory, el cambio se hace en un solo lugar.
  *
@@ -55,7 +55,7 @@ object MovieFactory {
     fun createMovies(size: Int): List<Movie> =
         (1..size).map { index ->
             createMovie(
-                id = 1,
+                id = index,
                 title = "Movie $index",
                 popularity = (100 - index).toDouble() // popularidad decreciente, orden realista
             )
@@ -91,7 +91,7 @@ object MovieFactory {
         releaseDate = releaseDate,
         popularity = popularity,
         // campos obligatorios del DTO que no usa el dominio
-         adult = false,
+        adult = false,
         originalLanguage = "en",
         originalTitle = title,
         video = false,

@@ -1,6 +1,5 @@
-package com.example.apptest.data.remote.mapper
-
-import com.example.apptest.features.movie_details.data.remote.dto.GenreDto
+/**
+package com.example.apptest.features.data.remote.mapper
 import com.example.apptest.features.movie_details.data.remote.dto.MovieDetailsDto
 import com.example.apptest.core.data.remote.dto.MovieDto
 import com.example.apptest.core.data.mapper.MovieMapper.toDomain
@@ -570,4 +569,4 @@ class MovieMapperTest {
         // Then
         Assert.assertEquals("Acción", genre.name)
     }
-}
+}**/

@@ -18,8 +18,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.core.util.Constants
 import com.example.apptest.databinding.FragmentPopularMoviesBinding
+import com.example.apptest.features.popular_movies.presentation.MainUiState
 import com.example.apptest.features.popular_movies.presentation.adapter.MovieAdapter
-import com.example.apptest.features.popular_movies.presentation.main.MainUiState
 import com.example.apptest.features.popular_movies.presentation.main.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Job

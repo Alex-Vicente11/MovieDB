@@ -2,9 +2,9 @@ package com.example.apptest.features.popular_movies.presentation.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.popular_movies.domain.usecase.GetPopularMoviesUseCase
 import com.example.apptest.core.data.util.Resource
+import com.example.apptest.features.popular_movies.presentation.MainUiState
 import com.example.apptest.features.search.domain.usecase.SearchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -84,34 +84,3 @@ class MainViewModel @Inject constructor(
     }
 }
 
-/**
- * ESTADOS DE UI para MainActivity
- *
- * Sealed class que representa todos los posibles estados
- */
-sealed class MainUiState {
-    /**
-     * Estado inicial (sin acción)
-     */
-    object Idle : MainUiState()
-
-    /**
-     * Cargando datos
-     */
-    object Loading : MainUiState()
-
-    /**
-     * Datos cargados exitosamente
-     */
-    data class Success(val movies: List<Movie>) : MainUiState()
-
-    /**
-     * Error al cargar datos
-     */
-    data class Error(val message: String) : MainUiState()
-
-    /**
-     * Búsqueda sin resultados
-     */
-    object Empty : MainUiState()
-}
