@@ -52,7 +52,7 @@ object MovieFactory {
      *      val movies = MovieFactory.createMovies(3)
      *      -> [Movie(id=1, title="Movie 1"), Movie(id=2, title="Movie 2"), Movie(id=3, title="Movie 3")]
      */
-    fun createMovies(size: Int): List<Movie> =
+    fun createMovieList(size: Int): List<Movie> =
         (1..size).map { index ->
             createMovie(
                 id = index,
