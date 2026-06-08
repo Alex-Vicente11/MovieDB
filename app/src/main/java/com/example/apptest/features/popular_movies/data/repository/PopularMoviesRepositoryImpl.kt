@@ -2,7 +2,6 @@ package com.example.apptest.features.popular_movies.data.repository
 
 import android.util.Log
 import com.example.apptest.core.data.local.dao.MovieDao
-import com.example.apptest.core.data.local.entity.MovieEntity
 import com.example.apptest.core.data.local.mapper.toDomain
 import com.example.apptest.core.data.local.mapper.toEntity
 import com.example.apptest.core.data.mapper.MovieMapper
