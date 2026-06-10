@@ -109,7 +109,7 @@ class MainViewModelTest {
             // hasta que no queda trabajo por hacer
             advanceUntilIdle()
 
-            // Loading: traducción de Resource.Success -> MainState.Success
+            // Loading: traducción de Resource.Loading -> MainState.Loading
             assertThat(awaitItem()).isInstanceOf(MainUiState.Loading::class.java)
 
             // Success: traducción de Resource.Success -> MainState.Success
@@ -134,7 +134,7 @@ class MainViewModelTest {
             viewModel.getPopularMovies()
             advanceUntilIdle()
 
-            // Loading: traducción de Resource.Success -> MainState.Success
+            // Loading: traducción de Resource.Loading -> MainState.Loading
             assertThat(awaitItem()).isInstanceOf(MainUiState.Loading::class.java)
 
             val error = awaitItem()
