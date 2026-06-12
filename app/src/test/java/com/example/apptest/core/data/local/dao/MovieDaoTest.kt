@@ -8,8 +8,6 @@ import com.example.apptest.core.data.local.AppDatabase
 import com.example.apptest.core.data.local.entity.MovieEntity
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -23,7 +21,7 @@ import org.robolectric.annotation.Config
  *
  * ¿Por qué Robolectric aquí?
  *  Room necesita un Context real de Android para crear la base de datos.
- *  Robolectric sumila ese Context en la JVM sin necesitar emulador.
+ *  Robolectric simula ese Context en la JVM sin necesitar emulador.
  *  Room.inMemoryDatabaseBuilder() crea una DB que vive solo durante el test
  *  y se destruye al terminar - cada test parte de cero.
  *
@@ -249,7 +247,6 @@ class MovieDaoTest {
     @Test
     fun whenMultipleMoviesInserted_getLastCacheTimeReturnsAnyTimestamp() = runTest {
         // Given - la query usa LIMIT 1, retorna el cached_at de cualquier película popular
-        // Lo importante es que no sea null - indica que hay caché
         val entities = listOf(
             createEntity(id = 1, cachedAt = 1_000L),
             createEntity(id = 2, cachedAt = 2_000L),
@@ -262,6 +259,10 @@ class MovieDaoTest {
 
         // Then - retorna un valor no nulo (el repositorio puede calcular el TTL)
         assertThat(cacheTime).isNotNull()
+
+        assertThat(cacheTime).isEqualTo(3_000L) // si usa MAX(cached_at)
+
+        assertThat(cacheTime).isEqualTo(1_000L) // si usa LIMIT 1 sin ORDER BY
     }
 
     @Test
