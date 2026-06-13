@@ -47,7 +47,7 @@ interface MovieDao {
     // suspend (sin Flow) para lecturas de un solo valor que no necesitan
     // ser reactivas - por ejemplo verificar si el caché expiró
 
-    @Query("SELECT cached_at FROM movies WHERE is_popular = 1 LIMIT 1")
+    @Query("SELECT MAX(cached_at) FROM movies WHERE is_popular = 1")
     suspend fun getLastCacheTime(): Long?
 
     // Escritura

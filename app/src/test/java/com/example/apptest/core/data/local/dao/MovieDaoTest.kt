@@ -246,7 +246,7 @@ class MovieDaoTest {
 
     @Test
     fun whenMultipleMoviesInserted_getLastCacheTimeReturnsAnyTimestamp() = runTest {
-        // Given - la query usa LIMIT 1, retorna el cached_at de cualquier película popular
+        // Given
         val entities = listOf(
             createEntity(id = 1, cachedAt = 1_000L),
             createEntity(id = 2, cachedAt = 2_000L),
@@ -257,12 +257,9 @@ class MovieDaoTest {
         dao.insertMovies(entities)
         val cacheTime = dao.getLastCacheTime()
 
-        // Then - retorna un valor no nulo (el repositorio puede calcular el TTL)
+        // Then
         assertThat(cacheTime).isNotNull()
-
-        assertThat(cacheTime).isEqualTo(3_000L) // si usa MAX(cached_at)
-
-        assertThat(cacheTime).isEqualTo(1_000L) // si usa LIMIT 1 sin ORDER BY
+        assertThat(cacheTime).isEqualTo(3_000L) // MAX(cached_at)
     }
 
     @Test
