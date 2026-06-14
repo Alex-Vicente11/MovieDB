@@ -122,6 +122,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.androidx.espresso.contrib)
 
     //Hilt
     implementation(libs.hilt.android)
@@ -142,10 +143,8 @@ dependencies {
 
     // Hilt en androidTest — permite @HiltAndroidTest y @BindValue en tests instrumentados
     androidTestImplementation(libs.hilt.android.testing)
-
     // KSP para Hilt en androidTest — genera el código de inyección para los tests
     kspAndroidTest(libs.hilt.compiler)
-
     // Navigation Testing — provee TestNavHostController para verificar navegación
     androidTestImplementation(libs.androidx.navigation.testing)
 
