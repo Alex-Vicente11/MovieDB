@@ -110,6 +110,9 @@ room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 
+# MockK para tests instrumentados (androidTest) — variante específica para Android
+mockk-android = { group = "io.mockk", name = "mockk-android", version.ref = "mockk" }
+
 # Testing instrumentado — Hilt
 # Usa la misma versión de hilt que ya tienes declarada (2.52)
 hilt-android-testing = { group = "com.google.dagger", name = "hilt-android-testing", version.ref = "hilt" }
