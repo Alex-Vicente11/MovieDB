@@ -26,7 +26,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.apptest.CustomTestRunner"
 
         buildConfigField(
             "String",
@@ -65,6 +65,32 @@ android {
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
+        }
+    }
+
+    sourceSets {
+        // testShared se agrega como carpeta fuente adicional
+        // tanto para unit tests como para tests instrumentados
+        getByName("test") {
+            java.srcDirs("src/testShared/java")
+        }
+        getByName("androidTest") {
+            java.srcDirs("src/testShared/java")
+        }
+    }
+
+    packaging {
+        resources {
+            excludes += setOf(
+                "META-INF/LICENSE.md",
+                "META-INF/LICENSE-notice.md",
+                "META-INF/LICENSE",
+                "META-INF/LICENSE.txt",
+                "META-INF/NOTICE",
+                "META-INF/NOTICE.txt",
+                "META-INF/DEPENDENCIES",
+                "META-INF/INDEX.LIST"
+            )
         }
     }
 }
@@ -122,7 +148,6 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(libs.androidx.espresso.contrib)
 
     //Hilt
     implementation(libs.hilt.android)
@@ -147,5 +172,7 @@ dependencies {
     kspAndroidTest(libs.hilt.compiler)
     // Navigation Testing — provee TestNavHostController para verificar navegación
     androidTestImplementation(libs.androidx.navigation.testing)
-
+    androidTestImplementation(libs.androidx.espresso.contrib)
+    androidTestImplementation(libs.mockk.android)
+    androidTestImplementation(libs.truth)
 }
