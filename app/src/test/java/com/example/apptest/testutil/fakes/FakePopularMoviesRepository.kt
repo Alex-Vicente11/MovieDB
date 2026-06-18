@@ -3,7 +3,6 @@ package com.example.apptest.testutil.fakes
 import com.example.apptest.core.data.util.Resource
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.popular_movies.domain.repository.PopularMoviesRepository
-import com.example.apptest.testutil.factories.MovieFactory
 import com.example.apptest.testutil.factories.ResourceFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
