@@ -1,3 +1,5 @@
+package com.example.apptest.features.data.remote.mapper
+
 /**
 package com.example.apptest.features.data.remote.mapper
 import com.example.apptest.features.movie_details.data.remote.dto.MovieDetailsDto
