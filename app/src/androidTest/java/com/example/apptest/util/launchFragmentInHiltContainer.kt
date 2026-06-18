@@ -3,8 +3,10 @@ package com.example.apptest.util
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.Navigation
@@ -37,7 +39,6 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
     fragmentFactory: FragmentFactory? = null,
     crossinline action: T.() -> Unit = {}
 ) {
-    // Intent explícito que apunta a HiltTestActivity
     val startActivityIntent = Intent.makeMainActivity(
         ComponentName(
             ApplicationProvider.getApplicationContext(),
@@ -45,47 +46,46 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         )
     )
 
-    ActivityScenario.launch<HiltTestActivity>(startActivityIntent).use { scenario ->
-        scenario.onActivity { activity ->
+    // ❌ ANTES: .use { scenario -> ... } cerraba la Activity
+    //    automáticamente al salir del bloque, ANTES de que
+    //    Espresso pudiera hacer onView(...).check(...)
+    //
+    // ✅ AHORA: sin .use{} — la Activity permanece RESUMED
+    //    durante todoo el test. Se destruye al finalizar el
+    //    proceso de test (o se podría cerrar manualmente
+    //    en @After si se requiere limpieza explícita)
+    val scenario = ActivityScenario.launch<HiltTestActivity>(startActivityIntent)
 
-            // Si se provee una factory personalizada, la registramos en la Activity
-            fragmentFactory?.let {
-                activity.supportFragmentManager.fragmentFactory = it
-            }
+    scenario.onActivity { activity ->
 
-            // Creamos el Fragment usando la factory (o la por defecto)
-            val fragment = activity.supportFragmentManager.fragmentFactory
-                .instantiate(
-                    checkNotNull(T::class.java.classLoader),
-                    T::class.java.name
-                )
-
-            // Asignamos los argumentos si se proporcionaron (Safe Args bundle)
-            fragment.arguments = fragmentArgs
-
-            // Si se proporcionó un NavHostController de test, lo asignamos
-            // ANTES de que el Fragment se agregue para que esté disponible en onViewCreated
-            navHostController?.let { navController ->
-                val observer = object : Observer<LifecycleOwner?> {
-                    override fun onChanged(value: LifecycleOwner?) {
-                        if (value != null) {
-                            Navigation.setViewNavController(fragment.requireView(), navController)
-                            fragment.viewLifecycleOwnerLiveData.removeObserver(this) // En caso de que el observer sea llamado más de una vez
-                            // para muchos test en el mismo proceso y no acumular observers colgados
-                        }
-                    }
-                }
-                fragment.viewLifecycleOwnerLiveData.observeForever(observer)
-            }
-
-            // Agregamos el Fragment al contenedor de la Activity
-            activity.supportFragmentManager
-                .beginTransaction()
-                .add(android.R.id.content, fragment, "")
-                .commitNow()
-
-            // Ejecutamos el bloque de acción con el Fragment listo
-            (fragment as T).action()
+        fragmentFactory?.let {
+            activity.supportFragmentManager.fragmentFactory = it
         }
+
+        val fragment = activity.supportFragmentManager.fragmentFactory
+            .instantiate(
+                checkNotNull(T::class.java.classLoader),
+                T::class.java.name
+            )
+        fragment.arguments = fragmentArgs
+
+        // CLAVE: el contenedor (android.R.id.content) YA EXISTE
+        // desde que la Activity se crea — antes de agregar el Fragment.
+        // findNavController() camina hacia arriba desde la vista del
+        // Fragment y encontrará el tag en este contenedor PADRE,
+        // sin depender de timing de onCreateView/onViewCreated del Fragment.
+        navHostController?.let { navController ->
+            Navigation.setViewNavController(
+                activity.findViewById(android.R.id.content),
+                navController
+            )
+        }
+
+        activity.supportFragmentManager
+            .beginTransaction()
+            .add(android.R.id.content, fragment, "")
+            .commitNow()
+
+        (fragment as T).action()
     }
 }
