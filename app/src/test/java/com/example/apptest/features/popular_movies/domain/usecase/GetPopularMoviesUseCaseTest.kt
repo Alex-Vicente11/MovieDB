@@ -5,7 +5,6 @@ import com.example.apptest.features.popular_movies.domain.repository.PopularMovi
 import com.example.apptest.testutil.extensions.awaitError
 import com.example.apptest.testutil.extensions.awaitLoading
 import com.example.apptest.testutil.extensions.awaitSuccess
-import com.example.apptest.testutil.factories.MovieFactory
 import com.example.apptest.testutil.factories.ResourceFactory
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
