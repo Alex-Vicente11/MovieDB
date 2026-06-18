@@ -5,7 +5,6 @@ import com.example.apptest.features.popular_movies.domain.usecase.GetPopularMovi
 import com.example.apptest.features.popular_movies.presentation.MainUiState
 import com.example.apptest.features.search.domain.repository.SearchRepository
 import com.example.apptest.features.search.domain.usecase.SearchMoviesUseCase
-import com.example.apptest.testutil.factories.MovieFactory
 import com.example.apptest.testutil.factories.ResourceFactory
 import com.example.apptest.testutil.fakes.FakePopularMoviesRepository
 import com.google.common.truth.Truth.assertThat
