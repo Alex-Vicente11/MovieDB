@@ -166,6 +166,8 @@ dependencies {
 
     // Testing instrumentado (androidTest/)
 
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
     // Hilt en androidTest — permite @HiltAndroidTest y @BindValue en tests instrumentados
     androidTestImplementation(libs.hilt.android.testing)
     // KSP para Hilt en androidTest — genera el código de inyección para los tests
