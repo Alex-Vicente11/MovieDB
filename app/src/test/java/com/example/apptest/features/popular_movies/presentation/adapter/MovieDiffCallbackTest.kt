@@ -1,6 +1,7 @@
 package com.example.apptest.features.popular_movies.presentation.adapter
 
 import com.example.apptest.core.domain.model.Movie
+import com.example.apptest.testutil.factories.MovieFactory
 import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
