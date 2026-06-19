@@ -70,17 +70,21 @@ class GenresFragment: Fragment() {
                         is GenresUiState.Loading -> {
                             binding.progressBarGenres.isVisible = true
                             binding.scrollViewChips.isVisible = false
+                            binding.layoutError.isVisible = false
                         }
 
                         is GenresUiState.Success -> {
                             binding.progressBarGenres.isVisible = false
                             binding.scrollViewChips.isVisible = true
+                            binding.layoutError.isVisible = false
                             setupChips(state.genres)
                         }
 
                         is GenresUiState.Error -> {
                             binding.progressBarGenres.isVisible = false
                             binding.scrollViewChips.isVisible = false
+                            binding.layoutError.isVisible = true
+                            binding.tvError.text = state.message
                         }
                     }
                 }
