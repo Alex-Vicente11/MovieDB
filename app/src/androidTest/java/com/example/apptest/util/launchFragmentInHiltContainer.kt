@@ -74,11 +74,16 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         // findNavController() camina hacia arriba desde la vista del
         // Fragment y encontrará el tag en este contenedor PADRE,
         // sin depender de timing de onCreateView/onViewCreated del Fragment.
+        // Observer con lateinit var — evita memory leak y auto-se-remueve
         navHostController?.let { navController ->
-            Navigation.setViewNavController(
-                activity.findViewById(android.R.id.content),
-                navController
-            )
+            lateinit var observer: Observer<LifecycleOwner?>
+            observer = Observer { viewLifecycleOwner ->
+                if (viewLifecycleOwner != null) {
+                    Navigation.setViewNavController(fragment.requireView(), navController)
+                    fragment.viewLifecycleOwnerLiveData.removeObserver(observer)
+                }
+            }
+            fragment.viewLifecycleOwnerLiveData.observeForever(observer)
         }
 
         activity.supportFragmentManager
@@ -88,4 +93,6 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
 
         (fragment as T).action()
     }
+    // scenario permanece abierto — Espresso lo cierra automáticamente
+    // al final del test cuando el proceso termina naturalmente
 }
