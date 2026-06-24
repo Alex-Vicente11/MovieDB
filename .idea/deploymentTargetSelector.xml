@@ -46,7 +46,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="whenGenresLoadSuccessfully_chipTextsMatchGenreNames()">
+      <SelectionState runConfigName="whenNoMoviesAvailable_recyclerViewIsNotDisplayed()">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2026-06-05T23:29:57.803366500Z">
           <Target type="DEFAULT_BOOT">
@@ -57,7 +57,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="whenGenresLoadSuccessfully_firstChipIsCheckedByDefault()">
+      <SelectionState runConfigName="whenAppendFails_footerShowsRetryButton()">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2026-06-05T23:29:57.803366500Z">
           <Target type="DEFAULT_BOOT">
@@ -68,7 +68,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="whenGenresFailToLoad_errorLayoutIsVisible()">
+      <SelectionState runConfigName="whenInitialLoadFails_errorLayoutIsVisible()">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2026-06-05T23:29:57.803366500Z">
           <Target type="DEFAULT_BOOT">
@@ -79,7 +79,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="whenChipClicked_triggersMoviesLoadForThatGenre()">
+      <SelectionState runConfigName="whenRetryButtonClicked_layoutErrorDisappearsAndMoviesLoad()">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2026-06-05T23:29:57.803366500Z">
           <Target type="DEFAULT_BOOT">
@@ -90,7 +90,7 @@
         </DropdownSelection>
         <DialogSelection />
       </SelectionState>
-      <SelectionState runConfigName="whenGenresReturnEmptyList_noChipsAreShown()">
+      <SelectionState runConfigName="MoviesByGenrePagingUiTest">
         <option name="selectionMode" value="DROPDOWN" />
         <DropdownSelection timestamp="2026-06-05T23:29:57.803366500Z">
           <Target type="DEFAULT_BOOT">
