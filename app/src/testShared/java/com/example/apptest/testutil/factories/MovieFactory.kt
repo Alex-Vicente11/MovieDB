@@ -116,4 +116,13 @@ object MovieFactory {
             createMovieDto(id = index, title = "Movie $index")
         }
     )
+
+    fun createMovieDtoList(size: Int): List<MovieDto> =
+        (1..size).map { i ->
+            createMovieDto(
+                id = i,
+                title = "Movie $i",
+                popularity = (100 - i).toDouble() // popularidad decreciente, orden realista
+            )
+        }
 }
