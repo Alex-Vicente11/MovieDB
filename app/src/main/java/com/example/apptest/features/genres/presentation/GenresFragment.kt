@@ -116,30 +116,32 @@ class GenresFragment: Fragment() {
     }
 
     private fun observeMovies() {
+        // Registrar listener ANTES de adjuntar al RecyclerView
+        moviesAdapter.addLoadStateListener { loadState ->
+            val refresh = loadState.refresh
+            binding.progressBarMovies.isVisible = refresh is LoadState.Loading
+            binding.layoutError.isVisible = refresh is LoadState.Error
+
+            if (refresh is LoadState.Error) {
+                binding.tvError.text = refresh.error.localizedMessage
+                    ?: getString(R.string.error_loading_movies)
+            }
+        }
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.movies.collectLatest { pagingData ->
-                    moviesAdapter.submitData(pagingData)
+                // onPagesUpdatedFlow emite DESPUÉS de que el differ
+                // procesó el PagingData y actualizó itemCount
+                moviesAdapter.onPagesUpdatedFlow.collect {
+                    binding.recyclerViewMovies.isVisible = moviesAdapter.itemCount > 0
                 }
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                moviesAdapter.loadStateFlow.collectLatest { loadState ->
-                    val refresh = loadState.refresh
-                    binding.progressBarMovies.isVisible = refresh is LoadState.Loading
-                    // Mostar lista cuando hay datos 0 cuando terminó de cargar
-                    // No depender solo de NotLoading porque es también el estado inicial vacio
-                    binding.recyclerViewMovies.isVisible =
-                        refresh is LoadState.NotLoading && moviesAdapter.itemCount > 0
-
-                    binding.layoutError.isVisible = refresh is LoadState.Error
-
-                    if (refresh is LoadState.Error) {
-                        binding.tvError.text = refresh.error.localizedMessage
-                            ?: getString(R.string.error_loading_movies)
-                    }
+                viewModel.movies.collectLatest { pagingData ->
+                    moviesAdapter.submitData(pagingData)
                 }
             }
         }
