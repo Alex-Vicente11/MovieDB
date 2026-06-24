@@ -5,7 +5,7 @@ import androidx.paging.PagingState
 import com.example.apptest.core.data.mapper.MovieMapper.toDomain
 import com.example.apptest.core.domain.model.Movie
 import com.example.apptest.features.genres.data.remote.api.MoviesByGenreApi
-import okio.IOException
+import java.io.IOException
 import retrofit2.HttpException
 
 class MoviesByGenrePagingSource(
