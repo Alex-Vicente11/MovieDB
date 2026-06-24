@@ -100,6 +100,7 @@ dependencies {
     // ── UI Components ─────────────────────────────────────────────────────────
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.paging.testing)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.fragment.ktx)
@@ -163,9 +164,9 @@ dependencies {
 
     // Paging 3
     implementation(libs.androidx.paging.runtime.ktx)
+    testImplementation(libs.androidx.paging.testing)
 
     // Testing instrumentado (androidTest/)
-
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     // Hilt en androidTest — permite @HiltAndroidTest y @BindValue en tests instrumentados

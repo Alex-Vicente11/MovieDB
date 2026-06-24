@@ -97,6 +97,7 @@ mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", versio
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 androidx-test-core = { group = "androidx.test", name = "core", version.ref = "androidxTestCore" }
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-paging-testing = { group = "androidx.paging", name = "paging-testing", version.ref = "pagingRuntimeKtx" }
 
 #Hilt
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
