@@ -9,6 +9,7 @@ import com.example.apptest.features.favorites.domain.usecase.GetFavoritesUseCase
 import com.example.apptest.features.favorites.domain.usecase.IsFavoriteUseCase
 import com.example.apptest.features.favorites.domain.usecase.RemoveFavoriteUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -49,6 +50,8 @@ class FavoritesViewModel @Inject constructor(
     private val _isFavoriteState = MutableStateFlow(false)
     val isFavoriteState: StateFlow<Boolean> = _isFavoriteState.asStateFlow()
 
+    private var isFavoriteJob: Job? = null
+
     // Guardamos la película actual para usarla en toggleFavorite()
     private var currentMovie: Movie? = null
 
@@ -79,6 +82,7 @@ class FavoritesViewModel @Inject constructor(
      */
     fun observeIsFavorite(movie: Movie) {
         currentMovie = movie
+        isFavoriteJob?.cancel()
         viewModelScope.launch {
             isFavoriteUseCase(movie.id).collect { isFav ->
                 _isFavoriteState.value = isFav
@@ -120,9 +124,3 @@ class FavoritesViewModel @Inject constructor(
     }
 }
 
-// Estado de UI
-sealed class FavoritesUiState {
-    object Loading: FavoritesUiState()
-    object Empty: FavoritesUiState()
-    data class Success(val favorites: List<Favorite>): FavoritesUiState()
-}
