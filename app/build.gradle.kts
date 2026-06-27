@@ -36,6 +36,11 @@ android {
     }
 
     buildTypes {
+        debug {
+            // Habilita la instrumentación de bytecode para medir cobertura
+            enableUnitTestCoverage = true
+            enableAndroidTestCoverage = true
+        }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -65,6 +70,14 @@ android {
         unitTests {
             isReturnDefaultValues = true
             isIncludeAndroidResources = true
+            // Necesario para que JaCoCo pueda instrumentar clases con lambdas
+            // que el compilador Kotlin genera sin información de línea (ej. coroutines)
+            all {
+                it.extensions.configure(JacocoTaskExtension::class.java) {
+                    isIncludeNoLocationClasses = true
+                    excludes = listOf("jdk.internal.*")
+                }
+            }
         }
     }
 
@@ -97,85 +110,159 @@ android {
 
 dependencies {
 
-    // ── UI Components ─────────────────────────────────────────────────────────
+    // ── Core Android ──────────────────────────────────────────────────────────
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.androidx.activity)
+
+    // ── UI ────────────────────────────────────────────────────────────────────
     implementation(libs.androidx.constraintlayout)
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.paging.testing)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.fragment.ktx)
+    implementation(libs.material)
+    implementation(libs.androidx.material3)
+    implementation(libs.glide)
 
-// ── Lifecycle ─────────────────────────────────────────────────────────────
+    // ── Lifecycle ─────────────────────────────────────────────────────────────
+    implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
-// ── Navigation ────────────────────────────────────────────────────────────
+    // ── Navigation ────────────────────────────────────────────────────────────
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-// ── Red ───────────────────────────────────────────────────────────────────
+    // ── Red ───────────────────────────────────────────────────────────────────
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.gson)
     implementation(libs.okhttp)
     implementation(libs.logging.interceptor)
 
-// ── Coroutines ────────────────────────────────────────────────────────────
-    implementation(libs.kotlinx.coroutines.android)
+    // ── Coroutines ────────────────────────────────────────────────────────────
     implementation(libs.kotlinx.coroutines.core)
+    implementation(libs.kotlinx.coroutines.android)
 
-// ── Images ──────────────────────────────────────────────────────────────
-    implementation(libs.glide)
-
-// ── Material ──────────────────────────────────────────────────────────────
-    implementation(libs.material)
-// ── Testing ───────────────────────────────────────────────────────────────
-    testImplementation(libs.kotlinx.coroutines.test)
-    testImplementation(libs.mockk)
-    testImplementation(libs.turbine)
-    testImplementation(libs.mockwebserver)
-    testImplementation(libs.truth)
-    testImplementation(libs.androidx.test.core)
-
-    // Android Core
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.androidx.activity)
-
-    // Lifecycle
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-
-    // Testing
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-
-    //Hilt
+    // ── Hilt ──────────────────────────────────────────────────────────────────
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
 
-    //Room
+    // ── Room ──────────────────────────────────────────────────────────────────
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    //Test-robolectric
-    testImplementation(libs.robolectric)
-
-    // Paging 3
+    // ── Paging 3 ──────────────────────────────────────────────────────────────
     implementation(libs.androidx.paging.runtime.ktx)
+
+    // ── Unit tests (test/) ────────────────────────────────────────────────────
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.truth)
+    testImplementation(libs.turbine)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockwebserver)
+    testImplementation(libs.androidx.test.core)
     testImplementation(libs.androidx.paging.testing)
 
-    // Testing instrumentado (androidTest/)
-    androidTestImplementation(libs.turbine)
-    androidTestImplementation(libs.kotlinx.coroutines.test)
-    // Hilt en androidTest — permite @HiltAndroidTest y @BindValue en tests instrumentados
-    androidTestImplementation(libs.hilt.android.testing)
-    // KSP para Hilt en androidTest — genera el código de inyección para los tests
-    kspAndroidTest(libs.hilt.compiler)
-    // Navigation Testing — provee TestNavHostController para verificar navegación
-    androidTestImplementation(libs.androidx.navigation.testing)
+    // ── Robolectric — unit tests con contexto Android sin emulador ────────────
+    testImplementation(libs.robolectric)
+
+    // ── Instrumented tests (androidTest/) ─────────────────────────────────────
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(libs.androidx.espresso.contrib)
     androidTestImplementation(libs.mockk.android)
     androidTestImplementation(libs.truth)
+    androidTestImplementation(libs.turbine)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
+    androidTestImplementation(libs.androidx.paging.testing)
+    // Hilt — permite @HiltAndroidTest y @BindValue en tests instrumentados
+    androidTestImplementation(libs.hilt.android.testing)
+    kspAndroidTest(libs.hilt.compiler)
+    // Navigation — provee TestNavHostController para verificar navegación
+    androidTestImplementation(libs.androidx.navigation.testing)
+}
+
+// ── JaCoCo report task ────────────────────────────────────────────────────────
+// Combina los .exec de unit tests con las clases compiladas de Kotlin/Java
+// para generar un reporte HTML en build/reports/jacoco/jacocoTestReport/html/
+
+tasks.register("jacocoTestReport") {
+    dependsOn("testDebugUnitTest")
+
+    doLast {
+        val exclusiones = listOf(
+            "**/R.class",
+            "**/R\$*.class",
+            "**/BuildConfig.*",
+            "**/Manifest*.*",
+            "**/*Test*.*",
+            // Hilt / Dagger
+            "**/*_HiltModules*",
+            "**/Hilt_*.class",
+            "**/*_Factory*",
+            "**/*_Provide*Factory*",
+            "**/*Module_*",
+            "**/*MembersInjector*",
+            "**/dagger/**",
+            "**/hilt_aggregated_deps/**",
+            "**/dagger/hilt/internal/**",
+            // Room
+            "**/*_Impl*.class",
+            "**/*Dao_Impl*",
+            // Navigation SafeArgs
+            "**/*Args*",
+            "**/*Directions*",
+            // DataBinding — código generado por el compilador de ViewBinding/DataBinding
+            "**/databinding/**",
+            "**/*Binding.class",
+            "**/*BindingImpl*.class",
+            // Android internals
+            "android/**/*.*"
+        )
+
+        val kotlinClasses = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
+            exclude(exclusiones)
+        }
+        val javaClasses = fileTree("${layout.buildDirectory.get()}/intermediates/javac/debug") {
+            exclude(exclusiones)
+        }
+
+        val executionData = fileTree(layout.buildDirectory.get()) {
+            include(
+                "outputs/unit_test_code_coverage/**/*.exec",
+                "jacoco/testDebugUnitTest.exec"
+            )
+        }
+
+        ant.withGroovyBuilder {
+            "taskdef"(
+                "name" to "jacocoReport",
+                "classname" to "org.jacoco.ant.ReportTask",
+                "classpath" to configurations.detachedConfiguration(
+                    dependencies.create("org.jacoco:org.jacoco.ant:0.8.12")
+                ).asPath
+            )
+            "jacocoReport" {
+                "executiondata" {
+                    executionData.forEach { file ->
+                        "file"("file" to file)
+                    }
+                }
+                "structure"("name" to "AppTest Coverage") {
+                    "classfiles" {
+                        kotlinClasses.forEach { "fileset"("file" to it) }
+                        javaClasses.forEach { "fileset"("file" to it) }
+                    }
+                    "sourcefiles" {
+                        "fileset"("dir" to "src/main/java")
+                    }
+                }
+                "html"("destdir" to "${layout.buildDirectory.get()}/reports/jacoco/html")
+                "xml"("destfile" to "${layout.buildDirectory.get()}/reports/jacoco/jacoco.xml")
+            }
+        }
+    }
 }
