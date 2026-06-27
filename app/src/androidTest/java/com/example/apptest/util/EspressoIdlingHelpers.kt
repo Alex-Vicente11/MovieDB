@@ -1,4 +1,4 @@
-package com.example.apptest.util.genres
+package com.example.apptest.util
 
 import android.view.View
 import androidx.test.espresso.Espresso.onView

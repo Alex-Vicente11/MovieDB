@@ -23,7 +23,7 @@ import com.example.apptest.features.genres.domain.repository.GenresRepository
 import com.example.apptest.features.genres.domain.repository.MoviesByGenreRepository
 import com.example.apptest.features.genres.presentation.GenresFragment
 import com.example.apptest.testutil.factories.MovieFactory
-import com.example.apptest.util.genres.waitForView
+import com.example.apptest.util.waitForView
 import com.example.apptest.util.launchFragmentInHiltContainer
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
