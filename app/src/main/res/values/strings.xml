@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">AppTest</string>
+    <string name="app_name">MovieDB</string>
 
     <!-- fragment_popular_movies -->
     <string name="search_hint">Buscar película</string>
