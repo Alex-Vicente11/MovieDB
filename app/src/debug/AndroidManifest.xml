@@ -7,7 +7,7 @@
             y el test crashea con ActivityNotFoundException.
         -->
         <activity
-            android:name="debug.java.com.example.apptest.HiltTestActivity"
+            android:name="debug.java.com.alexvicente.apptest.HiltTestActivity"
             android:exported="false" />
     </application>
 </manifest>

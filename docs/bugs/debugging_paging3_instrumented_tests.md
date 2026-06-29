@@ -1,6 +1,6 @@
 # Debugging Report: Tests Instrumentados con Paging 3 en Android
 
-**Proyecto:** `com.example.apptest`  
+**Proyecto:** `com.alexvicente.moviedb`  
 **Archivo bajo prueba:** `MoviesByGenrePagingUiTest.kt`  
 **Fecha de resolución:** Junio 2026  
 **Severidad:** Alta — bugs de producción descubiertos a través de tests instrumentados
@@ -646,4 +646,4 @@ Para proyectos con muchos tests instrumentados y CI, el siguiente paso evolutivo
 ---
 
 *Documentación generada a partir de una sesión real de debugging — Junio 2026*  
-*Proyecto: `com.example.apptest` — Android Developer: Ale (Joaquín Alejandro Vicente Sánchez)*
+*Proyecto: `com.alexvicente.moviedb` — Android Developer: Ale (Joaquín Alejandro Vicente Sánchez)*

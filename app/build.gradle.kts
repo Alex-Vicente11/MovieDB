@@ -16,17 +16,17 @@ if (localPropertiesFile.exists()) {
 }
 
 android {
-    namespace = "com.example.apptest"
+    namespace = "com.alexvicente.moviedb"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.apptest"
+        applicationId = "com.alexvicente.moviedb"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "com.example.apptest.CustomTestRunner"
+        testInstrumentationRunner = "com.alexvicente.moviedb.CustomTestRunner"
 
         buildConfigField(
             "String",

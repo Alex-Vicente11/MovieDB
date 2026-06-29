@@ -20,7 +20,7 @@
 
     <fragment
         android:id="@+id/popularMoviesFragment"
-        android:name="com.example.apptest.features.popular_movies.presentation.ui.PopularMoviesFragment"
+        android:name="com.alexvicente.moviedb.features.popular_movies.presentation.ui.PopularMoviesFragment"
         android:label="Popular Movies"
         tools:layout="@layout/fragment_popular_movies">
 
@@ -38,7 +38,7 @@
     <!-- Favorites -->
     <fragment
         android:id="@+id/favoritesFragment"
-        android:name="com.example.apptest.features.favorites.presentation.FavoritesFragment"
+        android:name="com.alexvicente.moviedb.features.favorites.presentation.FavoritesFragment"
         android:label="Favoritos"
         tools:layout="@layout/fragment_favorites">
 
@@ -54,7 +54,7 @@
 
     <fragment
         android:id="@+id/genresFragment"
-        android:name="com.example.apptest.features.genres.presentation.GenresFragment"
+        android:name="com.alexvicente.moviedb.features.genres.presentation.GenresFragment"
         android:label="Géneros"
         tools:layout="@layout/fragment_genres">
 
@@ -73,7 +73,7 @@
     <!-- MovieDetailsFragment Recibe movieId como argumento obligatorio -->
     <fragment
         android:id="@+id/movieDetailsFragment"
-        android:name="com.example.apptest.features.movie_details.presentation.ui.MovieDetailsFragment"
+        android:name="com.alexvicente.moviedb.features.movie_details.presentation.ui.MovieDetailsFragment"
         android:label="Movie Details"
         tools:layout="@layout/fragment_movie_details">
 
@@ -94,7 +94,7 @@
     <!-- Recibe movieId y movieTitle -->
     <fragment
         android:id="@+id/videosFragment"
-        android:name="com.example.apptest.features.videos.presentation.ui.VideosFragment"
+        android:name="com.alexvicente.moviedb.features.videos.presentation.ui.VideosFragment"
         android:label="Videos"
         tools:layout="@layout/fragment_videos">
 

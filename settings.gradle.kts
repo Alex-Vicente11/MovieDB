@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "AppTest"
+rootProject.name = "MovieDB"
 include(":app")
  
