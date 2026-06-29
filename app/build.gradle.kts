@@ -108,6 +108,10 @@ android {
     }
 }
 
+kotlin {
+    jvmToolchain(21)
+}
+
 dependencies {
 
     // ── Core Android ──────────────────────────────────────────────────────────
