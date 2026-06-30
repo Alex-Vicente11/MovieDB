@@ -1,5 +1,5 @@
 <resources>
-    <style name="Theme.AppTest" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.MovieDB" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="colorPrimary">#E91E63</item>
         <item name="colorPrimaryVariant">#C2185B</item>
         <item name="colorOnPrimary">#FFFFFF</item>

@@ -44,17 +44,15 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideAppDatabase(
-        @ApplicationContext context: Context  // Hilt inyecta el ApplicationContext
+        @ApplicationContext context: Context
     ): AppDatabase {
         return Room.databaseBuilder(
             context,
             AppDatabase::class.java,
-            "apptest_database"        //nombre del archivo .db en el dispositivo
+            "moviedb_database"
         )
-        // fallbackToDestructiveMigration() -> si no hay Migration para un cambio
-        // de versión, borra y recrea la base de datos.
-        // SOLO para desarrollo. En producción usar .addMigrations(...) para
-            .fallbackToDestructiveMigration()
+
+            .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
     }
 

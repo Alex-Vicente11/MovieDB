@@ -106,7 +106,6 @@ object NetworkModule {
      * Útil cuando la API no sigue exactamente el estándar JSON
      */
     private fun provideGson() = GsonBuilder()
-        .setLenient()
         .create()
 
     // RETROFIT (SINGLETON COMPARTIDO)
