@@ -14,8 +14,6 @@ object Constants {
     const val SEARCH_DEBOUNCE_DELAY = 500L  // milisegundos
     const val MIN_SEARCH_LENGTH = 2
 
-    // Intent Extras
-    const val EXTRA_MOVIE_ID = "extra_movie_id"
 
     // Error Messages
     const val ERROR_NETWORK = "Error de conexión. Verifica tu internet."

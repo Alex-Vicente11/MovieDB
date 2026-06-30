@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.core.data.network
 
 import com.alexvicente.moviedb.BuildConfig
+import com.alexvicente.moviedb.core.util.Constants
 
 /**
  * CONFIGURACIÓN DE RED
@@ -25,7 +26,7 @@ object NetworkConfig {
     // API CONFIGURATION
     // ═══════════════════════════════════════════════════════
 
-    const val BASE_URL = "https://api.themoviedb.org/3/"
+    const val BASE_URL = Constants.BASE_URL
 
     /**
      * Token de acceso para TMDB API
