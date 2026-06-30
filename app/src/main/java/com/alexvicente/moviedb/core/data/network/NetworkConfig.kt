@@ -69,7 +69,6 @@ object NetworkConfig {
 
     const val HEADER_AUTHORIZATION = "Authorization"
     const val HEADER_ACCEPT = "Accept"
-    const val HEADER_CONTENT_TYPE = "Content-Type"
 
     const val CONTENT_TYPE_JSON = "application/json"
 }

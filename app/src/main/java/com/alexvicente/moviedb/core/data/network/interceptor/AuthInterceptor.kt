@@ -1,5 +1,8 @@
 package com.alexvicente.moviedb.core.data.network.interceptor
 
+import com.alexvicente.moviedb.core.data.network.NetworkConfig.CONTENT_TYPE_JSON
+import com.alexvicente.moviedb.core.data.network.NetworkConfig.HEADER_ACCEPT
+import com.alexvicente.moviedb.core.data.network.NetworkConfig.HEADER_AUTHORIZATION
 import okhttp3.Interceptor
 import okhttp3.Response
 
@@ -18,8 +21,8 @@ class AuthInterceptor(
         val originalRequest = chain.request()
 
         val newRequest = originalRequest.newBuilder()
-            .addHeader("Authorization", "Bearer $accessToken")
-            .addHeader("Accept", "application/json")
+            .addHeader(HEADER_AUTHORIZATION, "Bearer $accessToken")
+            .addHeader(HEADER_ACCEPT, CONTENT_TYPE_JSON)
             .build()
 
         return chain.proceed(newRequest)
