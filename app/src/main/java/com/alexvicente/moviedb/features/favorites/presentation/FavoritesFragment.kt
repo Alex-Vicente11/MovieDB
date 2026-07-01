@@ -13,18 +13,9 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alexvicente.moviedb.databinding.FragmentFavoritesBinding
 import com.alexvicente.moviedb.features.favorites.domain.model.Favorite
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
-
-/**
- * Pantalla de lista de favoritos.
- * Observa FavoritesViewModel.uiState -> Room emite actualizaciones automáticas.
- * No hay llamada a API - todoo es local
- *
- * PATRÓN de navegación:
- *   Tocar un item -> FavoritesFragmentDirections.actionFavoritesToMovieDetails(movieId)
- *   El usuario puede ver los detalles de cualquier favorito
- */
 
 @AndroidEntryPoint
 class FavoritesFragment: Fragment() {
@@ -32,9 +23,7 @@ class FavoritesFragment: Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
 
-    // mismo ViewModel que usa MovieDetailsFragment
     private val viewModel: FavoritesViewModel by viewModels()
-
     private lateinit var adapter: FavoritesAdapter
 
     override fun onCreateView(
@@ -50,6 +39,7 @@ class FavoritesFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         setupRecyclerView()
         observeUiState()
+        observeErrors()
     }
 
     private fun setupRecyclerView() {
@@ -73,6 +63,16 @@ class FavoritesFragment: Fragment() {
                         is FavoritesUiState.Empty -> showEmpty()
                         is FavoritesUiState.Success -> showFavorites(state.favorites)
                     }
+                }
+            }
+        }
+    }
+
+    private fun observeErrors() {
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.errorEvent.collect { message ->
+                    Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
                 }
             }
         }
