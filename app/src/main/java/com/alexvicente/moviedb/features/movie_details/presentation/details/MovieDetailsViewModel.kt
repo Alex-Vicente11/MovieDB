@@ -12,30 +12,14 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-/**
- * VIEWMODEL para MovieDetailsActivity
- *
- * Responsabilidades:
- * - Cargar detalles de una película por ID
- * - Exponer estado de UI mediante StateFlow
- */
-// CAMBIOS: @HiltViewModel + @Inject constructor
-// El cuerpo (loadMovieDetails, estados) NO cambia.
 @HiltViewModel
 class MovieDetailsViewModel @Inject constructor(
     private val getMovieDetailsUseCase: GetMovieDetailsUseCase
 ) : ViewModel() {
 
-    // Estado privado (mutable)
     private val _uiState = MutableStateFlow<MovieDetailsUiState>(MovieDetailsUiState.Idle)
-    // Estado público (inmutable) - lo observa la UI
     val uiState: StateFlow<MovieDetailsUiState> = _uiState.asStateFlow()
 
-    /**
-     * Cargar detalles de una película
-     *
-     * @param movieId ID de la película
-     */
     fun loadMovieDetails(movieId: Int) {
         viewModelScope.launch {
             getMovieDetailsUseCase(movieId).collect { resource ->
@@ -49,27 +33,12 @@ class MovieDetailsViewModel @Inject constructor(
     }
 }
 
-/**
- * ESTADOS DE UI para MovieDetailsActivity
- */
 sealed class MovieDetailsUiState {
-    /**
-     * Estado inicial
-     */
     object Idle : MovieDetailsUiState()
 
-    /**
-     * Cargando detalles
-     */
     object Loading : MovieDetailsUiState()
 
-    /**
-     * Detalles cargados exitosamente
-     */
     data class Success(val movieDetails: MovieDetails) : MovieDetailsUiState()
 
-    /**
-     * Error al cargar detalles
-     */
     data class Error(val message: String) : MovieDetailsUiState()
 }

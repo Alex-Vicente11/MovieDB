@@ -15,4 +15,5 @@ object Constants {
     const val ERROR_SERVER     = "Error del servidor. Intenta más tarde"
     const val ERROR_RATE_LIMIT = "Demasiadas peticiones. Intenta más tarde"
     const val ERROR_DATABASE   = "Error interno. Intenta de nuevo."
+    const val ERROR_INVALID_ID = "ID de película inválido"
 }
