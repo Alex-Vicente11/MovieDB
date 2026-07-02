@@ -3,9 +3,6 @@ package com.alexvicente.moviedb.features.popular_movies.presentation.adapter
 import androidx.recyclerview.widget.DiffUtil
 import com.alexvicente.moviedb.core.domain.model.Movie
 
-/**
- * DiffUtil Callback para calcular diferencias entre listas de películas
- */
 class MovieDiffCallback(
     private val oldList: List<Movie>,
     private val newList: List<Movie>
@@ -36,9 +33,6 @@ class MovieDiffCallback(
     }
 }
 
-/**
- * Data class para representar qué campos cambiaron
- */
 data class MovieChangePayload(
     val titleChanged: Boolean = false,
     val ratingChanged: Boolean = false,

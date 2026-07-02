@@ -2,7 +2,6 @@ package com.alexvicente.moviedb.features.popular_movies.presentation
 
 import com.alexvicente.moviedb.core.domain.model.Movie
 
-
 sealed class MainUiState {
 
     object Idle : MainUiState()

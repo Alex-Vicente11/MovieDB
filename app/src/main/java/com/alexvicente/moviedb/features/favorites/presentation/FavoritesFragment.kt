@@ -11,8 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alexvicente.moviedb.core.util.showSnackbar
 import com.alexvicente.moviedb.databinding.FragmentFavoritesBinding
 import com.alexvicente.moviedb.features.favorites.domain.model.Favorite
+import com.alexvicente.moviedb.features.favorites.presentation.adapter.FavoritesAdapter
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -72,7 +74,7 @@ class FavoritesFragment: Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 viewModel.errorEvent.collect { message ->
-                    Snackbar.make(binding.root, message, Snackbar.LENGTH_LONG).show()
+                    binding.root.showSnackbar(message)
                 }
             }
         }

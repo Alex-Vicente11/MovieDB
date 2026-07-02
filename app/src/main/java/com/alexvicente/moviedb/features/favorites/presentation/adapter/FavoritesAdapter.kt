@@ -1,4 +1,4 @@
-package com.alexvicente.moviedb.features.favorites.presentation
+package com.alexvicente.moviedb.features.favorites.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -7,19 +7,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.alexvicente.moviedb.R
+import com.alexvicente.moviedb.core.util.loadUrl
 import com.alexvicente.moviedb.databinding.ItemFavoriteBinding
 import com.alexvicente.moviedb.features.favorites.domain.model.Favorite
-
-/**
- * Igual que MovieAdapter pero para Favorite en lugar de Movie.
- * Dos callbacks:
- *  onItemClick -> navegar a detalles de la película
- *  onRemoveClick -> eliminar favoritos (llama RemoveFavoriteUseCase)
- *
- * DiffUtil -> actualiza solo los items que cambiaron.
- *  Cuando el usuario elimina un favorito, Room emite la lista actualizada automáticamente
- *  y DiffUtil anima solo la eliminación del item correcto.
- */
 
 class FavoritesAdapter(
     private val onItemClick: (Favorite) -> Unit,
@@ -38,23 +28,10 @@ class FavoritesAdapter(
             binding.tvFavoriteYear.text = favorite.getReleaseYear()
             binding.tvFavoriteOverview.text = favorite.overview
 
-            // Cargar poster con Glide
-            val posterUrl = favorite.getPosterUrl()
-            if (posterUrl.isNotEmpty()) {
-                Glide.with(binding.root.context)
-                    .load(posterUrl)
-                    .placeholder(R.drawable.ic_movie_placeholder)
-                    .error(R.drawable.ic_movie_placeholder)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(binding.ivFavoritePoster)
-            } else {
-                binding.ivFavoritePoster.setImageResource(R.drawable.ic_movie_placeholder)
-            }
+            binding.ivFavoritePoster.loadUrl(favorite.getPosterUrl())
 
-            // Click en la card -> detalles
             binding.root.setOnClickListener { onItemClick(favorite) }
 
-            // Click en el corazón -> eliminar favorito
             binding.btnRemoveFavorite.setOnClickListener { onRemoveClick(favorite) }
         }
     }
@@ -79,7 +56,6 @@ class FavoritesAdapter(
     }
 }
 
-// DiffUtil callback para animaciones eficientes
 private class FavoritesDiffCallback(
     private val old: List<Favorite>,
     private val new: List<Favorite>
