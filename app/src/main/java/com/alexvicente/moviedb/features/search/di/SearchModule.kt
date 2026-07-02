@@ -11,8 +11,6 @@ import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import javax.inject.Singleton
 
-// Reemplaza SearchContainer.kt — ELIMINAR el container.
-
 @Module
 @InstallIn(SingletonComponent::class)
 abstract class SearchModule {

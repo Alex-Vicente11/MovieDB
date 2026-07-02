@@ -9,7 +9,7 @@ object Constants {
 
     const val ERROR_NETWORK    = "Sin conexión. Verifica tu internet."
     const val ERROR_UNKNOWN    = "Error desconocido. Intenta de nuevo."
-    const val ERROR_EMPTY_QUERY = "Ingresa un término de búsqueda"
+    const val ERROR_EMPTY_QUERY = "Ingresa al menos 2 caracteres"
     const val ERROR_AUTH       = "Error de autenticación. Verifica el token"
     const val ERROR_NOT_FOUND  = "Recurso no encontrado"
     const val ERROR_SERVER     = "Error del servidor. Intenta más tarde"
