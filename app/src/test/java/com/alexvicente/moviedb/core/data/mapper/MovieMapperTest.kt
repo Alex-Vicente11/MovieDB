@@ -1,27 +1,13 @@
-package com.alexvicente.moviedb.features.data.remote.mapper
+package com.alexvicente.moviedb.core.data.mapper
 
-/**
-package com.example.com.alexvicente.com.alexvicente.alexvicente.com.alexvicente.com.alexvicente.moviedb.features.data.remote.mapper
-import com.example.com.alexvicente.com.alexvicente.alexvicente.com.alexvicente.com.alexvicente.moviedb.features.movie_details.data.remote.dto.MovieDetailsDto
-import com.example.com.alexvicente.com.alexvicente.alexvicente.com.alexvicente.com.alexvicente.moviedb.core.data.remote.dto.MovieDto
-import com.example.com.alexvicente.com.alexvicente.alexvicente.com.alexvicente.com.alexvicente.moviedb.core.data.mapper.MovieMapper.toDomain
+import com.alexvicente.moviedb.core.data.mapper.GenreMapper.toDomain
+import com.alexvicente.moviedb.core.data.mapper.MovieMapper.toDomain
+import com.alexvicente.moviedb.core.data.remote.dto.GenreDto
+import com.alexvicente.moviedb.core.data.remote.dto.MovieDto
+import com.alexvicente.moviedb.features.movie_details.data.remote.dto.MovieDetailsDto
 import org.junit.Assert
 import org.junit.Test
 
-/**
- * TESTS PARA MovieMapper
- *
- * Tests:
- *  Transformación correcta de DTOs a modelos de dominio
- *  Manejo de valores nulos con defaults
- *  Normalización de datos (trim)
- *  Mapeo de listas
- *  Mapeo de objetos anidados (géneros)
- *
- * No testear:
- *  La serialización/deserialización de Gson (eso lo hace Gson)
- *  Las llamadas a la API (eso es responsabilidad del Repository)
- */
 class MovieMapperTest {
 
     // ═══════════════════════════════════════════════════════
@@ -115,7 +101,6 @@ class MovieMapperTest {
 
     @Test
     fun `map MovieDto to Movie with all fields correctly`() {
-        // Given
         val dto = createTestMovieDto(
             id = 1,
             title = "Avengers",
@@ -128,10 +113,8 @@ class MovieMapperTest {
             popularity = 100.0
         )
 
-        // When
         val movie = dto.toDomain()
 
-        // Then
         Assert.assertEquals(1, movie.id)
         Assert.assertEquals("Avengers", movie.title)
         Assert.assertEquals("Earth's mightiest heroes", movie.overview)
@@ -145,125 +128,61 @@ class MovieMapperTest {
 
     @Test
     fun `map MovieDto with null overview returns default message`() {
-        // Given
-        val dto = createTestMovieDto(overview = null)
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(overview = null).toDomain()
         Assert.assertEquals("Sin descripción disponible", movie.overview)
     }
 
     @Test
     fun `map MovieDto with null posterPath returns null`() {
-        // Given
-        val dto = createTestMovieDto(posterPath = null)
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(posterPath = null).toDomain()
         Assert.assertNull(movie.posterPath)
     }
 
     @Test
     fun `map MovieDto with null backdropPath returns null`() {
-        // Given
-        val dto = createTestMovieDto(backdropPath = null)
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(backdropPath = null).toDomain()
         Assert.assertNull(movie.backdropPath)
     }
 
     @Test
     fun `map MovieDto with null releaseDate returns empty string`() {
-        // Given
-        val dto = createTestMovieDto(releaseDate = null)
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(releaseDate = null).toDomain()
         Assert.assertEquals("", movie.releaseDate)
     }
 
     @Test
     fun `map MovieDto trims title with leading and trailing spaces`() {
-        // Given
-        val dto = createTestMovieDto(title = "  Batman  ")
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(title = "  Batman  ").toDomain()
         Assert.assertEquals("Batman", movie.title)
     }
 
     @Test
     fun `map MovieDto trims overview with leading and trailing spaces`() {
-        // Given
-        val dto = createTestMovieDto(overview = "  Great movie  ")
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(overview = "  Great movie  ").toDomain()
         Assert.assertEquals("Great movie", movie.overview)
     }
 
     @Test
     fun `map MovieDto trims posterPath with spaces`() {
-        // Given
-        val dto = createTestMovieDto(posterPath = "  /poster.jpg  ")
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(posterPath = "  /poster.jpg  ").toDomain()
         Assert.assertEquals("/poster.jpg", movie.posterPath)
     }
 
     @Test
     fun `map MovieDto trims backdropPath with spaces`() {
-        // Given
-        val dto = createTestMovieDto(backdropPath = "  /backdrop.jpg  ")
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(backdropPath = "  /backdrop.jpg  ").toDomain()
         Assert.assertEquals("/backdrop.jpg", movie.backdropPath)
     }
 
     @Test
     fun `map MovieDto trims releaseDate with spaces`() {
-        // Given
-        val dto = createTestMovieDto(releaseDate = "  2024-01-01  ")
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(releaseDate = "  2024-01-01  ").toDomain()
         Assert.assertEquals("2024-01-01", movie.releaseDate)
     }
 
     @Test
     fun `map MovieDto with zero values maps correctly`() {
-        // Given
-        val dto = createTestMovieDto(
-            voteAverage = 0.0,
-            voteCount = 0,
-            popularity = 0.0
-        )
-
-        // When
-        val movie = dto.toDomain()
-
-        // Then
+        val movie = createTestMovieDto(voteAverage = 0.0, voteCount = 0, popularity = 0.0).toDomain()
         Assert.assertEquals(0.0, movie.voteAverage, 0.001)
         Assert.assertEquals(0, movie.voteCount)
         Assert.assertEquals(0.0, movie.popularity, 0.001)
@@ -274,52 +193,15 @@ class MovieMapperTest {
     // ═══════════════════════════════════════════════════════
 
     @Test
-    fun `map empty list of MovieDto returns empty list`() {
-        // Given
-        val emptyList = emptyList<MovieDto>()
-
-        // When
-        val movies = emptyList.toDomain()
-
-        // Then
-        Assert.assertTrue(movies.isEmpty())
-    }
-
-    @Test
-    fun `map list of MovieDto returns correct number of Movies`() {
-        // Given
+    fun `map list of MovieDto to list of Movie`() {
         val dtoList = listOf(
-            createTestMovieDto(id = 1, title = "Movie 1"),
-            createTestMovieDto(id = 2, title = "Movie 2"),
-            createTestMovieDto(id = 3, title = "Movie 3")
-        )
-
-        // When
-        val movies = dtoList.toDomain()
-
-        // Then
-        Assert.assertEquals(3, movies.size)
-        Assert.assertEquals(1, movies[0].id)
-        Assert.assertEquals("Movie 1", movies[0].title)
-        Assert.assertEquals(2, movies[1].id)
-        Assert.assertEquals("Movie 2", movies[1].title)
-        Assert.assertEquals(3, movies[2].id)
-        Assert.assertEquals("Movie 3", movies[2].title)
-    }
-
-    @Test
-    fun `map list with mixed null values handles all correctly`() {
-        // Given
-        val dtoList = listOf(
-            createTestMovieDto(id = 1, overview = "Has overview", posterPath = "/poster1.jpg"),
+            createTestMovieDto(id = 1, overview = "Has overview", posterPath = "/p1.jpg"),
             createTestMovieDto(id = 2, overview = null, posterPath = null),
-            createTestMovieDto(id = 3, overview = "Another overview", posterPath = "/poster3.jpg")
+            createTestMovieDto(id = 3, overview = "Another overview", posterPath = "/p3.jpg")
         )
 
-        // When
         val movies = dtoList.toDomain()
 
-        // Then
         Assert.assertEquals(3, movies.size)
         Assert.assertEquals("Has overview", movies[0].overview)
         Assert.assertNotNull(movies[0].posterPath)
@@ -335,7 +217,6 @@ class MovieMapperTest {
 
     @Test
     fun `map MovieDetailsDto to MovieDetails with all fields correctly`() {
-        // Given
         val dto = createTestMovieDetailsDto(
             id = 1,
             title = "Inception",
@@ -349,17 +230,12 @@ class MovieMapperTest {
             runtime = 148,
             budget = 160_000_000,
             revenue = 829_895_144,
-            genres = listOf(
-                GenreDto(28, "Action"),
-                GenreDto(878, "Science Fiction")
-            ),
+            genres = listOf(GenreDto(28, "Action"), GenreDto(878, "Science Fiction")),
             tagline = "Your mind is the scene of the crime"
         )
 
-        // When
         val movieDetails = dto.toDomain()
 
-        // Then
         Assert.assertEquals(1, movieDetails.id)
         Assert.assertEquals("Inception", movieDetails.title)
         Assert.assertEquals("A mind-bending thriller", movieDetails.overview)
@@ -378,127 +254,60 @@ class MovieMapperTest {
 
     @Test
     fun `map MovieDetailsDto with null overview returns default message`() {
-        // Given
-        val dto = createTestMovieDetailsDto(overview = null)
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
+        val movieDetails = createTestMovieDetailsDto(overview = null).toDomain()
         Assert.assertEquals("Sin descripción disponible", movieDetails.overview)
     }
 
     @Test
     fun `map MovieDetailsDto with null runtime returns null`() {
-        // Given
-        val dto = createTestMovieDetailsDto(runtime = null)
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
-        Assert.assertNull(movieDetails.runtime)
+        Assert.assertNull(createTestMovieDetailsDto(runtime = null).toDomain().runtime)
     }
 
     @Test
     fun `map MovieDetailsDto with null budget returns null`() {
-        // Given
-        val dto = createTestMovieDetailsDto(budget = null)
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
-        Assert.assertNull(movieDetails.budget)
+        Assert.assertNull(createTestMovieDetailsDto(budget = null).toDomain().budget)
     }
 
     @Test
     fun `map MovieDetailsDto with null revenue returns null`() {
-        // Given
-        val dto = createTestMovieDetailsDto(revenue = null)
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
-        Assert.assertNull(movieDetails.revenue)
+        Assert.assertNull(createTestMovieDetailsDto(revenue = null).toDomain().revenue)
     }
 
     @Test
     fun `map MovieDetailsDto with null genres returns empty list`() {
-        // Given
-        val dto = createTestMovieDetailsDto(genres = null)
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
-        Assert.assertTrue(movieDetails.genres.isEmpty())
+        Assert.assertTrue(createTestMovieDetailsDto(genres = null).toDomain().genres.isEmpty())
     }
 
     @Test
     fun `map MovieDetailsDto with empty genres list returns empty list`() {
-        // Given
-        val dto = createTestMovieDetailsDto(genres = emptyList())
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
-        Assert.assertTrue(movieDetails.genres.isEmpty())
+        Assert.assertTrue(createTestMovieDetailsDto(genres = emptyList()).toDomain().genres.isEmpty())
     }
 
     @Test
     fun `map MovieDetailsDto with null tagline returns null`() {
-        // Given
-        val dto = createTestMovieDetailsDto(tagline = null)
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
-        Assert.assertNull(movieDetails.tagline)
+        Assert.assertNull(createTestMovieDetailsDto(tagline = null).toDomain().tagline)
     }
 
     @Test
     fun `map MovieDetailsDto trims title with spaces`() {
-        // Given
-        val dto = createTestMovieDetailsDto(title = "  Spider-Man  ")
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
+        val movieDetails = createTestMovieDetailsDto(title = "  Spider-Man  ").toDomain()
         Assert.assertEquals("Spider-Man", movieDetails.title)
     }
 
     @Test
     fun `map MovieDetailsDto trims overview with spaces`() {
-        // Given
-        val dto = createTestMovieDetailsDto(overview = "  Amazing story  ")
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
+        val movieDetails = createTestMovieDetailsDto(overview = "  Amazing story  ").toDomain()
         Assert.assertEquals("Amazing story", movieDetails.overview)
     }
 
     @Test
     fun `map MovieDetailsDto trims tagline with spaces`() {
-        // Given
-        val dto = createTestMovieDetailsDto(tagline = "  The best movie ever  ")
-
-        // When
-        val movieDetails = dto.toDomain()
-
-        // Then
+        val movieDetails = createTestMovieDetailsDto(tagline = "  The best movie ever  ").toDomain()
         Assert.assertEquals("The best movie ever", movieDetails.tagline)
     }
 
     @Test
     fun `map MovieDetailsDto with multiple genres maps all correctly`() {
-        // Given
         val dto = createTestMovieDetailsDto(
             genres = listOf(
                 GenreDto(28, "Action"),
@@ -508,10 +317,8 @@ class MovieMapperTest {
             )
         )
 
-        // When
         val movieDetails = dto.toDomain()
 
-        // Then
         Assert.assertEquals(4, movieDetails.genres.size)
         Assert.assertEquals("Action", movieDetails.genres[0].name)
         Assert.assertEquals("Adventure", movieDetails.genres[1].name)
@@ -525,50 +332,26 @@ class MovieMapperTest {
 
     @Test
     fun `map GenreDto to Genre correctly`() {
-        // Given
-        val dto = createTestGenreDto(id = 28, name = "Action")
-
-        // When
-        val genre = dto.toDomain()
-
-        // Then
+        val genre = createTestGenreDto(id = 28, name = "Action").toDomain()
         Assert.assertEquals(28, genre.id)
         Assert.assertEquals("Action", genre.name)
     }
 
     @Test
     fun `map GenreDto trims name with spaces`() {
-        // Given
-        val dto = createTestGenreDto(name = "  Drama  ")
-
-        // When
-        val genre = dto.toDomain()
-
-        // Then
+        val genre = createTestGenreDto(name = "  Drama  ").toDomain()
         Assert.assertEquals("Drama", genre.name)
     }
 
     @Test
     fun `map GenreDto with special characters in name`() {
-        // Given
-        val dto = createTestGenreDto(name = "Science Fiction & Fantasy")
-
-        // When
-        val genre = dto.toDomain()
-
-        // Then
+        val genre = createTestGenreDto(name = "Science Fiction & Fantasy").toDomain()
         Assert.assertEquals("Science Fiction & Fantasy", genre.name)
     }
 
     @Test
     fun `map GenreDto with different languages`() {
-        // Given
-        val dto = createTestGenreDto(name = "Acción")
-
-        // When
-        val genre = dto.toDomain()
-
-        // Then
+        val genre = createTestGenreDto(name = "Acción").toDomain()
         Assert.assertEquals("Acción", genre.name)
     }
-}**/
+}

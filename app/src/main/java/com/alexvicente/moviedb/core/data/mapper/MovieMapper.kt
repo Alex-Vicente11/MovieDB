@@ -23,7 +23,7 @@ object MovieMapper {
     /**
      * Convierte MovieDto a Movie (dominio)
      */
-    fun MovieDto.toDomain(): Movie {
+    fun MovieDto. toDomain(): Movie {
         return Movie(
             id = this.id,
             title = this.title.trim(),

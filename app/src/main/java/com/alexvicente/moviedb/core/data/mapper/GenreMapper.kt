@@ -8,7 +8,7 @@ object GenreMapper {
     fun GenreDto.toDomain(): Genre {
         return Genre(
             id = this.id,
-            name = this.name
+            name = this.name.trim()
         )
     }
 
