@@ -24,28 +24,7 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-/**
- * Tests del repositorio de películas populares.
- *
- * Complejidad adicional vs SearchMoviesRepositoryImplTest:
- *   - Dos dependencias: PopularMoviesApi + MovieDao
- *   - Lógica offline-first con TTL (Time To Live) de 30 minutos
- *   - El repositorio puede emitir hasta 3 estados en secuencia:
- *     Loading -> Success(cache) -> Success(red)
- *
- * Estrategia mixta:
- *   MockWebServer -> simula respuestas HTTP reales de Retrofit
- *   Mockk (movieDao) -> controla el estado de Room sin BD real
- *
- * ¿Por qué Mockk para el Dao y no Robolectric + Room real?
- *   Mockk es más rápido y aisla la lógica del repositorio.
- *   Los tests del DAO con Room real van en una clase separada (MovieDaoTest)
- *   usando Robolectric, donde se testea SQL, no lógica de negocio.
- */
-
 class PopularMoviesRepositoryImplTest {
-
-    // Dependencias
 
     // Servidor HTTP falso - Retrofit apuntará aquí en lugar de TMDB
     private lateinit var mockWebServer: MockWebServer
@@ -326,15 +305,13 @@ class PopularMoviesRepositoryImplTest {
 
     @Test
     fun whenCacheEmptyAnd404_emitsLoadingThenNotFoundError() = runTest {
-        // Given
         setupEmptyCache()
         enqueueMockResponse(code = 404, body = """{"status_message":"Not found"}""")
 
-        // When / Then
         repository.getPopularMovies().test {
             awaitLoading()
             awaitError { message ->
-                assertThat(message).isEqualTo("Películas populares no disponibles")
+                assertThat(message).isEqualTo("Recurso no encontrado")
             }
             awaitComplete()
         }
