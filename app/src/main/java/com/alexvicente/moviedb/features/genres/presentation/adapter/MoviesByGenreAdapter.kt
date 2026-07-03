@@ -5,10 +5,8 @@ import android.view.ViewGroup
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
-import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.domain.model.Movie
+import com.alexvicente.moviedb.core.util.loadUrl
 import com.alexvicente.moviedb.databinding.ItemMovieBinding
 
 class MoviesByGenreAdapter(
@@ -24,7 +22,6 @@ class MoviesByGenreAdapter(
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         getItem(position)?.let { holder.bind(it) }
-        // getItem puede ser null — Paging 3 lo maneja con placeholders
     }
 
     inner class MovieViewHolder(
@@ -33,19 +30,11 @@ class MoviesByGenreAdapter(
 
         fun bind(movie: Movie) {
             binding.apply {
-                tvMovieTitle.text = movie.title
-                tvMovieRating.text = movie.getFormattedRating()
+                tvMovieTitle.text    = movie.title
+                tvMovieRating.text   = movie.getFormattedRating()
                 tvMovieOverview.text = movie.overview
-                tvMovieYear.text = movie.getReleaseYear()
-
-                // Reutiliza getPosterUrl() de tu Movie.kt
-                Glide.with(ivMoviePoster)
-                    .load(movie.getPosterUrl())
-                    .placeholder(R.drawable.ic_movie_placeholder)
-                    .error(R.drawable.ic_movie_placeholder)
-                    .transition(DrawableTransitionOptions.withCrossFade())
-                    .into(ivMoviePoster)
-
+                tvMovieYear.text     = movie.getReleaseYear()
+                ivMoviePoster.loadUrl(movie.getPosterUrl())
                 root.setOnClickListener { onMovieClick(movie) }
             }
         }

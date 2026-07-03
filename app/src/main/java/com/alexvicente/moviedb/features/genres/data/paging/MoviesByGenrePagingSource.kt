@@ -24,7 +24,6 @@ class MoviesByGenrePagingSource(
                 language = language
             )
 
-            // Usa el mapper existente
             val movies = response.results.map { it.toDomain() }
 
             LoadResult.Page(
@@ -39,7 +38,6 @@ class MoviesByGenrePagingSource(
         }
     }
 
-    // Define qué página cargar al refrescar
     override fun getRefreshKey(state: PagingState<Int, Movie>): Int? {
         return state.anchorPosition?.let { anchor ->
             state.closestPageToPosition(anchor)?.prevKey?.plus(1)

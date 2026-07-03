@@ -14,6 +14,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.alexvicente.moviedb.R
+import com.alexvicente.moviedb.core.data.util.ErrorMapper
+import com.alexvicente.moviedb.core.data.util.toUserMessage
 import com.alexvicente.moviedb.core.domain.model.Genre
 import com.alexvicente.moviedb.core.domain.model.Movie
 import com.alexvicente.moviedb.databinding.FragmentGenresBinding
@@ -52,7 +54,7 @@ class GenresFragment: Fragment() {
         moviesAdapter = MoviesByGenreAdapter { movie ->
             navigateToDetails(movie)
         }
-        // LayoutManager explícito - evita "No layout manager attached"
+
         binding.recyclerViewMovies.layoutManager =
             LinearLayoutManager(requireContext())
 
@@ -108,7 +110,6 @@ class GenresFragment: Fragment() {
             binding.chipGroupGenres.addView(chip)
         }
 
-        //Sincroniza chip visual con género activo en ViewModel (sobrevive rotación)
         val currentId = viewModel.currentGenreId
         val index = genres.indexOfFirst { it.id == currentId }
         val targetIndex = if (index >= 0) index else 0
@@ -116,22 +117,18 @@ class GenresFragment: Fragment() {
     }
 
     private fun observeMovies() {
-        // Registrar listener ANTES de adjuntar al RecyclerView
         moviesAdapter.addLoadStateListener { loadState ->
             val refresh = loadState.refresh
             binding.progressBarMovies.isVisible = refresh is LoadState.Loading
             binding.layoutError.isVisible = refresh is LoadState.Error
 
             if (refresh is LoadState.Error) {
-                binding.tvError.text = refresh.error.localizedMessage
-                    ?: getString(R.string.error_loading_movies)
+                binding.tvError.text = ErrorMapper.map(refresh.error).toUserMessage()
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                // onPagesUpdatedFlow emite DESPUÉS de que el differ
-                // procesó el PagingData y actualizó itemCount
                 moviesAdapter.onPagesUpdatedFlow.collect {
                     binding.recyclerViewMovies.isVisible = moviesAdapter.itemCount > 0
                 }

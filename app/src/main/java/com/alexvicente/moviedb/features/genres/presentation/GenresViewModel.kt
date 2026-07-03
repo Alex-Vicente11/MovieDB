@@ -29,8 +29,6 @@ class GenresViewModel @Inject constructor(
     val genresState: StateFlow<GenresUiState> = _genresState.asStateFlow()
 
     private val _selectedGenreId = MutableStateFlow<Int?>(null)
-
-    // Expuesto para que GenresFragment sincronice el chip al rotal pantalla
     val currentGenreId: Int?
         get() = _selectedGenreId.value
 
@@ -51,7 +49,6 @@ class GenresViewModel @Inject constructor(
             when (val result = getGenresUseCase()) {
                 is Resource.Success -> {
                     _genresState.value = GenresUiState.Success(result.data)
-                    // Selecciona Acción (id=28) por defecto o el primero disponible
                     _selectedGenreId.value = result.data.firstOrNull()?.id
                 }
 
