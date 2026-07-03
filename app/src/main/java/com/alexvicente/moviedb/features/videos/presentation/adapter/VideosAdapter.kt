@@ -7,22 +7,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.alexvicente.moviedb.databinding.ItemVideoBinding
 import com.alexvicente.moviedb.features.videos.domain.model.Video
 
-/**
- * Responsabilidades:
- * - Mostrar lista de videos en RecyclerView
- * - Usar DiffUtil para actualizaciones eficientes
- * - Manejar clicks en items
- *
- * Patron ViewHolder:
- * - Adapter: Gestiona la lista y crea ViewHolders
- * - ViewHolder: Renderiza cada item individual
- *
- * DiffUtil:
- * - Calcula diferencias entre lista vieja y nueva
- * - Solo actualiza items que cambiaron
- * - Animaciones automaticas
- */
-
 class VideosAdapter(
     private val onVideoClick: (Video) -> Unit
 ): RecyclerView.Adapter<VideoViewHolder>() {
@@ -44,13 +28,6 @@ class VideosAdapter(
 
     override fun getItemCount(): Int = videos.size
 
-    /**
-     * Actualizar lista de videos usando DiffUtil
-     *
-     * - Solo actualiza items que cambiaron
-     * - Animaciones automáticas
-     * - Mejor performance que notifyDataSetChanged()
-     */
     fun updateVideos(newVideos: List<Video>) {
         val diffCallback = VideosDiffCallback(videos, newVideos)
         val diffResult = DiffUtil.calculateDiff(diffCallback)
@@ -59,8 +36,6 @@ class VideosAdapter(
         diffResult.dispatchUpdatesTo(this)
     }
 }
-
-// DiffUtil.Callback para calcular diferencias entre listas
 
 class VideosDiffCallback(
     private val oldList: List<Video>,

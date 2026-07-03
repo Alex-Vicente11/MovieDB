@@ -16,4 +16,5 @@ object Constants {
     const val ERROR_RATE_LIMIT = "Demasiadas peticiones. Intenta más tarde"
     const val ERROR_DATABASE   = "Error interno. Intenta de nuevo."
     const val ERROR_INVALID_ID = "ID de película inválido"
+    const val ERROR_VIDEO_NOT_AVAILABLE = "No se puede abrir el video. Verifica que YouTube esté instalado."
 }
