@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.features.popular_movies.domain.usecase
 
 import app.cash.turbine.test
+import com.alexvicente.moviedb.core.util.Constants
 import com.alexvicente.moviedb.features.popular_movies.domain.repository.PopularMoviesRepository
 import com.alexvicente.moviedb.testutil.extensions.awaitError
 import com.alexvicente.moviedb.testutil.extensions.awaitLoading
@@ -15,22 +16,6 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.Before
 import org.junit.Test
-
-/**
- * Tests unitarios para GetPopularMoviesUseCase
- *
- * Diferencia clave vs SearchMoviesUseCase:
- *   GetPopularMoviesUseCase NO tiene validaciones propias - solo delega.
- *   Por eso los tests se enfocan en verificar que la delegación es correcta
- *   y que todos los estados del repositorio se propagan sin modificación.
- *
- * Herramientas usadas:
- *   Mockk     -> simula PopularMoviesRepository
- *   Turbine   -> colecta y verifica emisiones del Flow
- *   FlowTestExtensions  -> awaitLoading/awaitSuccess/awaitError (helpers propios)
- *   MovieFactory  -> crea datos de prueba desde un solo lugar
- *   ResourceFactory -> estandariza los estados Resource<T>
- */
 
 class GetPopularMoviesUseCaseTest {
 
@@ -97,21 +82,17 @@ class GetPopularMoviesUseCaseTest {
 
     @Test
     fun whenRepositoryEmitsError_propagatesMessageUnmodified() = runTest {
-        // Given
         coEvery { mockRepository.getPopularMovies() } returns flowOf(
             ResourceFactory.networkError()
         )
 
-        // When / Then
         useCase().test {
-            // El UseCase no debe devolver ni modificar el mensaje de error
             awaitError { message ->
-                assertThat(message).isEqualTo("Error de conexión. Verifica tu internet.")
+                assertThat(message).isEqualTo(Constants.ERROR_NETWORK) // ← antes: string hardcodeado
             }
             awaitComplete()
         }
     }
-
     @Test
     fun whenRepositoryEmitsLoading_propagatesLoadingState() = runTest {
         // Given

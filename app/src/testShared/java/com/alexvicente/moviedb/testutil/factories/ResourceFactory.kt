@@ -3,64 +3,33 @@ package com.alexvicente.moviedb.testutil.factories
 
 import com.alexvicente.moviedb.core.data.util.Resource
 import com.alexvicente.moviedb.core.domain.model.Movie
-
-/**
- * Responsabilidades: Centralizar la creación de Resource<T> para tests.
- *
- * Resource.Success(data), Resource.Error(message), Resource.Loading() aparecen
- * repetidamente en todos los tests de UseCase, Repository y ViewModel.
- * Esta factory reduce el boilerplate y estandariza los mensajes de error,
- * evitando strings duplicados que son difíciles de mantener
- *
- * Patrón aplicado: Factory Method
- * Métodos estáticos con nombres semánticos que describen el escenario,
- * no solo el tipo. Ej: networkError() en lugar de Resource.Error("...")
- */
+import com.alexvicente.moviedb.core.util.Constants
 
 object ResourceFactory {
 
-    // se emite al inicio de cualquier operación en el repositorio
     fun <T> loading(): Resource<T> = Resource.Loading()
 
-    /**
-     * Uso:
-     *    coEvery { repository.getPopularMovies() } returns flowOf(
-     *          ResourceFactory.successMovies(MovieFactory.createMovies(3)))
-            )
-     */
-    fun successMovies(movies: List<Movie> = listOf(MovieFactory.createMovie())): Resource<List<Movie>> =
-        Resource.Success(movies)
+    fun successMovies(
+        movies: List<Movie> = listOf(MovieFactory.createMovie())
+    ): Resource<List<Movie>> = Resource.Success(movies)
 
-    /**
-     * Operación exitosa con lista vacía
-     * Caso específico: la API respondió bien pero no hay resultados
-     * Es un válido - no es un error
-     */
-    fun emptyMovies(): Resource<List<Movie>> =
-        Resource.Success(emptyList())
+    fun emptyMovies(): Resource<List<Movie>> = Resource.Success(emptyList())
 
-    /**
-     * Errores tipificados - mapean a los mensajes reales del repositorio
-     *
-     * Cada función de error corresponde a un mensaje real definido en el repositorio.
-     * Si el repositorio cambia el mensaje, solo se actualiza aquí y en el repositorio
-     * Los tests que usan estas funciones no se rompen
-     */
     fun networkError(): Resource<List<Movie>> =
-        Resource.Error("Error de conexión. Verifica tu internet.")
+        Resource.Error(Constants.ERROR_NETWORK)
 
     fun authError(): Resource<List<Movie>> =
-        Resource.Error("Error de autenticación")
+        Resource.Error(Constants.ERROR_AUTH)
 
     fun notFoundError(): Resource<List<Movie>> =
-        Resource.Error("No se encontraron películas")
+        Resource.Error(Constants.ERROR_NOT_FOUND)
 
     fun serverError(code: Int): Resource<List<Movie>> =
-        Resource.Error("Error del servidor: $code")
+        Resource.Error(Constants.ERROR_SERVER)
 
-    fun unknownError(message: String = "Error desconocido"): Resource<List<Movie>> =
+    fun unknownError(message: String = Constants.ERROR_UNKNOWN): Resource<List<Movie>> =
         Resource.Error(message)
 
-    fun searchValidationError(message: String): Resource<List<Movie>> =
+    fun searchValidationError(message: String = Constants.ERROR_EMPTY_QUERY): Resource<List<Movie>> =
         Resource.Error(message)
 }
