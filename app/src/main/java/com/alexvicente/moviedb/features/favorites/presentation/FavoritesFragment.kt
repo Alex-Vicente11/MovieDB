@@ -15,7 +15,6 @@ import com.alexvicente.moviedb.core.util.showSnackbar
 import com.alexvicente.moviedb.databinding.FragmentFavoritesBinding
 import com.alexvicente.moviedb.features.favorites.domain.model.Favorite
 import com.alexvicente.moviedb.features.favorites.presentation.adapter.FavoritesAdapter
-import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 

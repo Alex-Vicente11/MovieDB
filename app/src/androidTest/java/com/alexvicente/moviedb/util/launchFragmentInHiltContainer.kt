@@ -11,7 +11,7 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import debug.java.com.example.apptest.HiltTestActivity
+import debug.java.com.alexvicente.apptest.HiltTestActivity
 
 /**
  * Reemplaza launchFragmentInContainer para proyectos con Hilt

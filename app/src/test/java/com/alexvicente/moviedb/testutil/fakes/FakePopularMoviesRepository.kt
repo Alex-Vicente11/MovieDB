@@ -9,7 +9,6 @@ import com.alexvicente.moviedb.testutil.factories.ResourceFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
-
 class FakePopularMoviesRepository : PopularMoviesRepository {
 
     var movies: List<Movie> = listOf(MovieFactory.createMovie())

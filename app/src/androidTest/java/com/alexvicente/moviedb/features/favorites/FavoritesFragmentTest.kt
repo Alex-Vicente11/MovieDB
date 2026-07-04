@@ -13,6 +13,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.matcher.ViewMatchers.withText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alexvicente.moviedb.R
+import com.alexvicente.moviedb.core.data.util.Resource
 import com.alexvicente.moviedb.features.favorites.di.FavoritesModule
 import com.alexvicente.moviedb.features.favorites.domain.model.Favorite
 import com.alexvicente.moviedb.features.favorites.domain.repository.FavoritesRepository
@@ -39,15 +40,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/**
- * Tests instrumentados para FavoritesFragment.
- *
- * Favorites es 100% local (Room) — no hay red.
- * Esto simplifica el setup: solo mockeamos FavoritesRepository.
- *
- * IDs del layout confirmados:
- *   progressBar, recyclerViewFavorites, emptyState
- */
 @HiltAndroidTest
 @UninstallModules(FavoritesModule::class)
 @RunWith(AndroidJUnit4::class)
@@ -223,7 +215,8 @@ class FavoritesFragmentTest {
         every { favoritesRepository.isFavoriteRepo(any()) } returns flowOf(false)
 
         coEvery { favoritesRepository.removeFavoriteRepo(42) } coAnswers {
-            favoritesFlow.tryEmit(emptyList()) // ← tryEmit en vez de runBlocking + emit
+            favoritesFlow.tryEmit(emptyList())
+            Resource.Success(Unit)
         }
 
         // tryEmit para la emisión inicial también — no necesita corrutina
