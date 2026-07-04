@@ -6,18 +6,6 @@ import com.google.common.truth.Truth.assertThat
 import org.junit.Before
 import org.junit.Test
 
-/**
- * ¿Por qué testear DiffCallback?
- *   DiffUtil decide qué items se redibujan, animan o actualizan en el RecyclerView.
- *   Un bug aquí causa:
- *     - Flickering: items que se redibujan innecesariamente
- *     - Animaciones incorrectas: ítems que no se animan cuando deberían
- *     - Payload incorrecto: campos que no se actualizan en bind parcial
- *
- * No necesita Android framework - es lógica pura kotlin
- * Corre en JVM con JUnit + Truth sin emulador
- */
-
 class MovieDiffCallbackTest {
 
     // Película base reutilizada en múltiples tests

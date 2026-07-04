@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.features.popular_movies.presentation.main
 
 import app.cash.turbine.test
+import com.alexvicente.moviedb.core.util.Constants
 import com.alexvicente.moviedb.features.popular_movies.domain.usecase.GetPopularMoviesUseCase
 import com.alexvicente.moviedb.features.popular_movies.presentation.MainUiState
 import com.alexvicente.moviedb.features.search.domain.repository.SearchRepository
@@ -125,7 +126,7 @@ class MainViewModelTest {
     fun whenGetPopularMoviesReturnsError_emitsLoadingThenError() = runTest {
         // Given
         fakePopularMoviesRepository.shouldReturnError = true
-        fakePopularMoviesRepository.errorMessage = "Sin conexión. Verifica tu internet."
+        fakePopularMoviesRepository.errorMessage = Constants.ERROR_NETWORK
 
         // When / Then
         viewModel.uiState.test {
@@ -142,7 +143,7 @@ class MainViewModelTest {
             assertThat(error).isInstanceOf(MainUiState.Error::class.java)
             //Verifica que el mensaje llega intacto a la UI
             assertThat((error as MainUiState.Error).message)
-                .isEqualTo("Sin conexión. Verifica tu internet.")
+                .isEqualTo(Constants.ERROR_NETWORK)
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -246,7 +247,7 @@ class MainViewModelTest {
             val error = awaitItem()
             assertThat(error).isInstanceOf(MainUiState.Error::class.java)
             assertThat((error as MainUiState.Error).message)
-                .isEqualTo("Error de conexión. Verifica tu internet.")
+                .isEqualTo(Constants.ERROR_NETWORK)
 
             cancelAndIgnoreRemainingEvents()
         }
@@ -267,7 +268,7 @@ class MainViewModelTest {
             val error = awaitItem()
             assertThat(error).isInstanceOf(MainUiState.Error::class.java)
             assertThat((error as MainUiState.Error).message)
-                .isEqualTo("El término de búsqueda no puede estar vacío")
+                .isEqualTo(Constants.ERROR_EMPTY_QUERY)
 
             cancelAndIgnoreRemainingEvents()
         }
