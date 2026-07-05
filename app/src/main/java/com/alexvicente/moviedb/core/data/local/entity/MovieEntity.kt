@@ -4,32 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/**
- * ¿Qué es una @Entity
- *      Es una clase de datos que representa UNA TABLA en SQLite.
- *      Cada propiedad de la data class = una columna en la tabla.
- *      Cada instancia de la clase = una fila en la tabla.
- *
- * ¿Por qué está en core/ y no en popular_movies/?
- *      MovieEntity se usa tanto para películas populares como para resultados
- *      de búsqueda - ambos features usan el mismo modelo Movie del dominio
- *      y la misma tabla de base de datos. Centralizar evita duplicación
- *
- * @PrimaryKey -> columna que identifica únicamente cada fila
- *      autoGenerate = false porque el ID viene de la API de TMDB.
- *
- * @ColumnInfo(name = "...") -> define el nombre de la columna en SQLite.
- *      Si no se especifica, Room usa el nombre de la propiedad de Kotlin.
- *      Se usan snake_case por convención de bases de datos.
- *
- * SEPARACIÓN DE CAPAS:
- *      MovieEntity (Data Layer) != Movie(Domain Layer)
- *      Son clases diferentes a propósito:
- *      -MovieEntity tiene campos específicos de base de datos (timestamps, etc.)
- *      -Movie es puro dominio sin anotaciones de Room
- *      -MovieEntityMapper convierte entre ellas
- */
-
 @Entity(tableName = "movies")
 data class MovieEntity(
 

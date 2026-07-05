@@ -2,12 +2,6 @@ package com.alexvicente.moviedb.core.data.remote.dto
 
 import com.google.gson.annotations.SerializedName
 
-/**
- * DTO para la respuesta de búsqueda y películas populares
- * Representa la estructura exacta del JSON de la API
- *
- * Es DTO es usado por múltiples features
- */
 data class MovieResponseDto(
     @SerializedName("page")
     val page: Int,
@@ -22,10 +16,6 @@ data class MovieResponseDto(
     val totalResults: Int
 )
 
-/**
- * DTO para película individual en búsquedas y populares
- * Solo contiene anotaciones de Gson
- */
 data class MovieDto(
     @SerializedName("id")
     val id: Int,

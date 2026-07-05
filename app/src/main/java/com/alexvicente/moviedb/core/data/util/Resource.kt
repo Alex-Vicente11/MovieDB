@@ -1,11 +1,5 @@
 package com.alexvicente.moviedb.core.data.util
 
-/**
- * RESOURCE - Envoltorio de estados
- *
- * Reemplaza a NetworkResult con una estructura más limpia
- * Representa el estado de una operación asíncrona
- */
 sealed class Resource<out T> {
 
     data class Loading<out T>(val data: T? = null) : Resource<T>()

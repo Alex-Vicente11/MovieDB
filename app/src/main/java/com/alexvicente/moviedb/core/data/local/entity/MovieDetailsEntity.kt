@@ -4,22 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-/**
- * ¿Por qué está en movie_details/ y no en core/?
- *      MovieDetailsEntity tiene campos que SOLO usa la pantalla de detalles
- *      (runtime, budget, revenue, genres, tagline). Nunca se usa en listas.
- *      Principio YAGNI: no lo movemos a core hasta que otro feature lo necesite.
- *
- * genres: String -> los géneros se serializan como JSON con Converters.kt
- *      En dominio: List<Genre> = [Genre(28, "Action"), Genre(878, "Sci-Fi")]
- *      En SQLite: genres TEXT = '[{"id":28, "name":"Action"},{"id":878,"name":"Sci-Fi"}]'
- *
- * cached_at -> permite caché perpetuo para detalles.
- *      La estrategia para detalles es cache-first sin expiración:
- *      si existe en Room, se devuelve sin llamar a la API.
- *      Solo se refresca si el usuario lo fuerza explícitamente.
- */
-
 @Entity(tableName = "movie_details")
 data class MovieDetailsEntity(
 

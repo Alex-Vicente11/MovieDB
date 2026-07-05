@@ -6,17 +6,6 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.alexvicente.moviedb.core.data.local.entity.MovieDetailsEntity
 
-/**
- * Nótese que getMovieDetails NO retorna Flow sino suspend.
- * ¿Por qué? La pantalla de detalles no necesita ser reactiva - el usuario ve los detalles una sola vez por visita.
- * No hay cambios en tiempo real.
- * suspend es más eficiente que Flow para lecturas puntuales
- *
- * Comparación:
- *      Flow -> para listas que pueden cambiar (populares, favoritos)
- *      suspend -> para objetos únicos que se leen una sola vez (detalles)
- */
-
 @Dao
 interface MovieDetailsDao {
 

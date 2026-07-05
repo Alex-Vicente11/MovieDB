@@ -6,13 +6,6 @@ import com.alexvicente.moviedb.core.data.network.NetworkConfig.HEADER_AUTHORIZAT
 import okhttp3.Interceptor
 import okhttp3.Response
 
-/**
- * INTERCEPTOR DE AUTENTICACIÓN
- *
- * Responsabilidad única:
- * - Agregar el Bearer Token a todas las peticiones
- * - Agregar headers necesarios para la API
- */
 class AuthInterceptor(
     private val accessToken: String
 ) : Interceptor {

@@ -11,21 +11,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.alexvicente.moviedb.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
-/**
- *  CAMBIOS vs versión anterior:
- *  AGREGADO -> binding.bottomNavigationView.setupWithNavController(navController)
- *  CAMBIADO -> AppBarConfiguration ahora incluye favoritesFragment como top-level
- *
- *  setupWithNavController() en el BottomNavigationView hace automáticamente:
- *      Al tocar una pestaña -> navega al fragment correspondiente
- *      Gestiona el back stack para cada pestaña independiente
- *      Restaura el estado de cada pestaña al volver a ella
- *
- * AppBarConfiguration con 2 top-level destinations:
- *    popularMoviesFragment y favoritesFragment son top-level -> sin botón <-
- *    movieDetailsFragment y videosFragment son secundarios -> con botón <-
- */
-
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     private var _binding: ActivityMainBinding? = null

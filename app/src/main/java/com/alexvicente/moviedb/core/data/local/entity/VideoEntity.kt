@@ -5,23 +5,6 @@ import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
 
-/**
- * Relación con MovieDetailsEntity:
- *      Una película tiene múltiples videos (1:N).
- *      movie_id es la Foreign Key que vincula cada video con su película.
- *
- * @Entity con indices:
- *      indices = [Index("movie_id")] -> crea un índice en la columna movie_id.
- *      Esto acelera enormemente la consulta "dame todos los videos de movideId=X"
- *      porque SQLite no tiene que escanear toda la tabla.
- *
- * NOTA: No usamos ForeignKey con onDelete CASCADE porque queremos mantener los videos
- *  aunque se elimine la entrada de movie_details (caché independiente).
- *  Si en el futuro quieres borrado en cascada, agregar:
- *  foreignKeys = [ForeignKey(entity = MovieDetailsEntity::class, parentColumns = ["id"], childColumns = ["movie_id], onDelete = ForeignKey.CASCADE)]
- *
- */
-
 @Entity(
     tableName = "videos",
     indices = [Index(value = ["movie_id"])]

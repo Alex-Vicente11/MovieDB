@@ -8,21 +8,8 @@ import com.alexvicente.moviedb.features.movie_details.domain.model.MovieDetails
 import com.alexvicente.moviedb.features.videos.data.remote.dto.VideoDto
 import com.alexvicente.moviedb.features.videos.domain.model.Video
 
-/**
- * MAPPER: Convierte DTOs a modelos de dominio
- * Este mapper es usado por todos los features que trabajan con Movie
- *
- * Responsabilidades:
- * - Transformar respuestas de API a modelos limpios
- * - Manejar valores nulos con defaults
- * - Normalizar datos (trim, defaults, etc.)
- */
-
 object MovieMapper {
 
-    /**
-     * Convierte MovieDto a Movie (dominio)
-     */
     fun MovieDto. toDomain(): Movie {
         return Movie(
             id = this.id,
@@ -37,16 +24,10 @@ object MovieMapper {
         )
     }
 
-    /**
-     * Convierte lista de MovieDto a lista de Movie
-     */
     fun List<MovieDto>.toDomain(): List<Movie> {
         return this.map { it.toDomain() }
     }
 
-    /**
-     * Convierte MovieDetailsDto a MovieDetails (dominio)
-     */
     fun MovieDetailsDto.toDomain(): MovieDetails {
         return MovieDetails(
             id = this.id,
@@ -68,11 +49,6 @@ object MovieMapper {
         )
     }
 
-    /**
-     * Mapper para Video
-     *
-     * Convierte VideoDto a Video (domino)
-     */
     fun VideoDto.toDomain(): Video {
         return Video(
             id = this.id,
@@ -88,10 +64,6 @@ object MovieMapper {
         )
     }
 
-    /**
-     * Convierte lista de VideoDto a lista de Video
-     * Usado para mapear resultados de /movie/{id}/videos
-     */
     fun List<VideoDto>.toDomainVideos(): List<Video> {
         return this.map { it.toDomain() }
     }

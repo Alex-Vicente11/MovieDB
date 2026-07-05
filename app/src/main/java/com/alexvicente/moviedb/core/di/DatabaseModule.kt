@@ -14,28 +14,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/**
- * ¿Por qué Room necesita un @Provides manual?
- *      Room.databaseBuilder() necesita un Context para crear la base de datos.
- *      Hilt no puede saber esto automáticamente (no hay @Inject constructor).
- *      Por eso necesitamos un @Provides igual que con Retrofit
- *
- * @ApplicationContext -> Hilt provee el Context de la Application.
- *      NUNCA usar ActivityContext para Room - la base de datos debe vivir mientra viva la app,
- *      no solo mientras viva una Activity.
- *      Usar ActivityContext causaría memory leaks.
- *
- * @Singleton -> UNA sola instancia de AppDatabase en toda la app.
- *      Room mantiene un connection pool interno. Tener múltiples instancias
- *      causaría inconsistencias y problemas de concurrencia.
- *
- * Proveemos cada DAO por separado:
- *      Esto sigue el principio de segregación de interfaces.
- *      Los repositorios solo reciben el DAO que necesitan,
- *      no la base de datos completa. Más limpio y más fácil de testear.
- */
-
-
 @Module
 @InstallIn(SingletonComponent::class)
 object DatabaseModule {
@@ -55,11 +33,6 @@ object DatabaseModule {
             .fallbackToDestructiveMigration(dropAllTables = true)
             .build()
     }
-
-    // DAOs
-    // Cada @Provides de DAO recibe AppDatabase y llama al metodo abstracto.
-    // Room ya generó la implementación concreta del DAO en compilación.
-    // Hilt inyectará estos DAOs en los RepositoryImpl que los necesiten
 
     @Provides
     @Singleton

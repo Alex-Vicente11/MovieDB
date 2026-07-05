@@ -4,25 +4,6 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-/**
- * ¿Por qué se necesitan TypeConverters?
- * Room solo puede almacenar tipos primitivos y String directamente en SQLite.
- * Tipos como List<String>, List<Int> o clases personalizadas no son soportados nativamente.
- * Los TypeConverters los transforman a/desde tipos que Room sí puede guardar.
- *
- * @TypeConverter -> anota las funciones de conversión.
- *      Room detecta automáticamente estas funciones cuando la clase está registrada
- *      en @Database con @TypeConverters(Converters::class).
- *
- * Patrón: Serialización JSON con Gson.
- *      - Lista -> String JSON al guardar en SQLite
- *      - String JSON -> Lista al leer de SQLite
- *
- * Ejemplo en base de datos:
- *      genres: List<String> = ["Action", "Sci-Fi"]
- *      se guarda como: genres TEXT = '["Action", "Sci-Fi"]'
- */
-
 class Converters {
     private val gson = Gson()
 

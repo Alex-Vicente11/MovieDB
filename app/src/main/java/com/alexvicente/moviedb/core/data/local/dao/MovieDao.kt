@@ -7,29 +7,6 @@ import androidx.room.Query
 import com.alexvicente.moviedb.core.data.local.entity.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
-/**
- * ¿Qué es un @Dao?
- *      Data Access Object - interfaz que define todas las operaciones
- *      sobre un tabla. Room genera la implementación automáticamante en tiempo de compilación.
- *      Tú defines QUÉ, Room genera el CÓMO
- *
- * @Query -> ejecuta SQL personalizado.
- *      Room verifica la sintaxis SQL en compilación. Si escribes mal una columna o una tabla,
- *      el error aparece al compilar, no en runtime.
- *
- * @Insert -> inserta filas.
- *      onConflict = REPLACE -> si ya existe una película con el mismo id,
- *      la reemplaza. Esto actualiza el caché autmáticamente.
- *
- * @Delete y @Query DELETE -> eliminan filas.
- *
- * Flow<List<MovieEntity>> vs suspend:
- *      - Flow -> para lecturas reactivas. La UI se actualiza automáticamente
- *      cuando cambian los datos. Úsalo en getters.
- *      - suspend -> para escrituras puntuales (insert, delete).
- *      No necesitan ser reactivas - solo se ejecutan una vez.
- */
-
 @Dao
 interface MovieDao {
 
