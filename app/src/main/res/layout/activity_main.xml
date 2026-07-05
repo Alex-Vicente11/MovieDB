@@ -1,21 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    CAMBIO vs versión anterior:
-      ANTES → solo FragmentContainerView
-      AHORA → FragmentContainerView + BottomNavigationView
 
-    BottomNavigationView (Material Design 3):
-      • app:menu → referencia al bottom_nav_menu.xml
-      • Navigation Component lo conecta automáticamente con setupWithNavController()
-        en MainActivity — al tocar una pestaña navega al fragment correcto
-      • app:layout_behavior no se necesita aquí porque BottomNav ya se
-        posiciona con layout_gravity="bottom"
-
-    PATRÓN: el NavHostFragment ocupa todoo el espacio disponible y el
-    BottomNav se superpone en la parte inferior. Los Fragments tienen
-    paddingBottom igual a la altura del BottomNav (56dp) para que
-    el contenido no quede tapado.
--->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -32,17 +16,6 @@
         app:navGraph="@navigation/nav_graph"
         app:defaultNavHost="true"/>
 
-    <!-- BottomNavigationView
-        BottomNavigationView — fijo en la parte inferior.
-
-        app:menu → los items definidos en bottom_nav_menu.xml
-        app:labelVisibilityMode="labeled" → siempre muestra el texto debajo
-        backgroundTint → fondo oscuro consistente con el tema de la app
-
-        MATERIAL DESIGN:
-          La elevación crea una sombra sutil que separa el nav del contenido.
-          El color del ítem activo usa colorPrimary (#E91E63) automáticamente.
-    -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

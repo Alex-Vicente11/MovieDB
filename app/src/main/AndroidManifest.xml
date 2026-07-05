@@ -1,42 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    ════════════════════════════════════════════════════════════════════════════
-    AndroidManifest.xml
-    ════════════════════════════════════════════════════════════════════════════
 
-    CAMBIOS vs versión anterior:
-      ELIMINADAS: MovieDetailsActivity, VideosActivity
-        → Ya no son Activities; son Fragments gestionados por el NavController
-        → No necesitan registro en el Manifest
-        → El sistema operativo solo necesita conocer Activities, no Fragments
-
-      CONSERVADA: MainActivity (única Activity, launcher)
-
-    SOLID → Open/Closed:
-      Para agregar nuevas pantallas en el futuro, solo se modifica nav_graph.xml,
-      NO el Manifest. El Manifest queda cerrado a modificaciones frecuentes.
-
-    MATERIAL DESIGN:
-      android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"
-        → NoActionBar porque cada Fragment maneja su propia MaterialToolbar.
-          Tener la ActionBar del sistema Y una MaterialToolbar = doble barra.
-          NoActionBar da control total del AppBar a cada Fragment/Activity.
-
-    DEEP LINKS (futuro):
-      Si agregas deep links a destinations del grafo, se registrarían aquí
-      como <intent-filter> dentro de MainActivity, no en cada Fragment.
-    ════════════════════════════════════════════════════════════════════════════
--->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permiso de red para llamadas a TheMovieDB API -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
     <queries >
-        <!--YouTube app -->
         <package android:name="com.google.android.youtube"/>
 
-        <!-- Navegador web (fallback) -->
         <intent >
             <action android:name="android.intent.action.VIEW"/>
             <data android:scheme="https"/>
@@ -55,13 +25,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MovieDB">
 
-        <!--
-            ÚNICA ACTIVITY DE LA APLICACIÓN.
-
-            Intent filter LAUNCHER → punto de entrada del sistema operativo.
-            Toda la navegación interna ocurre dentro de esta Activity
-            a través del NavController y el nav_graph.
-        -->
         <activity
             android:name="com.alexvicente.moviedb.MainActivity"
             android:exported="true"
@@ -73,14 +36,6 @@
             </intent-filter>
 
         </activity>
-
-        <!--
-            ELIMINADAS (ya eran Activities, ahora son Fragments):
-            ✗ MovieDetailsActivity → MovieDetailsFragment
-            ✗ VideosActivity       → VideosFragment
-
-            Los Fragments NO se registran en el Manifest.
-        -->
 
     </application>
 

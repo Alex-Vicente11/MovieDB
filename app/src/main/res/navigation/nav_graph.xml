@@ -1,16 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Centraliza
-        .Qué pantallas existen (destinations)
-        .Cómo se conectan (actions)
-        .Qué datos pasan entre ellas (arguments)
-        .Animaciones de transición (enterAnim, exitAnim)
-
-     SAFE ARGS:
-        Los <argument> de cada <fragment> permiten que el plugin Safe Args genere clases tipadas en tiempo de compilación:
-            .PopularMoviesFragmentDirections.toMovieDetails(movieId = 123)
-            .MovieDetailsFragmentArgs.fromBundle(requireArguments()).movieId
-        Esto elimina los "magic strings" de Bundle y detecta errores de tipo en compilación, no en runtime.
--->
 
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

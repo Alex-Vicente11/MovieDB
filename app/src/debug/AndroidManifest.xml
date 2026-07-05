@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
-        <!--
-            Registra HiltTestActivity solo en el build de debug.
-            Sin este registro, el sistema Android no puede instanciarla
-            y el test crashea con ActivityNotFoundException.
-        -->
         <activity
             android:name="debug.java.com.alexvicente.apptest.HiltTestActivity"
             android:exported="false" />

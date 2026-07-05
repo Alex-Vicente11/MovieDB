@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    res/layout/item_favorite.xml
-    ════════════════════════════════════════════════════════════════════════════
-    Reutiliza la estructura visual de item_movie.xml con un cambio:
-      AGREGADO → botón de eliminar favorito (ícono corazón filled en la esquina)
 
-    PATRÓN UX:
-      El botón ❤️ en la esquina superior derecha permite eliminar el favorito
-      directamente desde la lista sin necesidad de entrar a los detalles.
-      Toque en la card → navega a detalles.
-      Toque en el ❤️   → elimina de favoritos con confirmación visual (animación).
-    ════════════════════════════════════════════════════════════════════════════
--->
 <androidx.cardview.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

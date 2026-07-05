@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    ACTUALIZADO
-    CAMBIO vs versión anterior:
-      AGREGADO → botón de favorito (FAB pequeño) junto al FAB de videos.
 
-    Dos FABs en la parte inferior:
-      1. btnFavorite  → FAB circular pequeño — agregar/quitar favorito
-      2. btnWatchVideos → FAB extendido — ver videos
-
-    El btnFavorite tiene dos estados visuales:
-      Favorito     → ícono filled (#E91E63) — ic_favorite
-      No favorito  → ícono outline (#9E9E9E) — ic_favorite_border
-    El Fragment observa isFavorite() de Room y cambia el ícono reactivamente.
--->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

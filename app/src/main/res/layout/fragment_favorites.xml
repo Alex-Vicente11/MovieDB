@@ -1,22 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    res/layout/fragment_favorites.xml
-    ════════════════════════════════════════════════════════════════════════════
-    DISEÑO consistente con fragment_popular_movies.xml:
-      • Misma estructura CoordinatorLayout + AppBarLayout + RecyclerView
-      • Mismos colores de fondo (#1A1A2E) y superficie (#2C2C3E)
-      • El padding inferior (80dp) evita que el BottomNav tape el último item
 
-    ESTADOS de la pantalla:
-      1. Loading → CircularProgressIndicator centrado
-      2. Empty   → ícono de corazón + mensaje motivador
-      3. Content → RecyclerView con la lista de favoritos
-
-    DIFERENCIA con popular_movies:
-      No tiene barra de búsqueda — favoritos es una lista simple.
-      Tiene un estado vacío más elaborado con ícono grande (UX).
-    ════════════════════════════════════════════════════════════════════════════
--->
 <androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"

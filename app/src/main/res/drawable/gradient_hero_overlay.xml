@@ -1,18 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--
-    gradient_hero_overlay.xml
-    ════════════════════════════════════════════════════════════════════════════
-    Gradiente multicapa para el hero del backdrop.
 
-    DISEÑO:
-      • Los primeros 2 colores oscurecen la parte superior (zona del toolbar)
-        para que el ícono ← blanco sea siempre legible sobre cualquier imagen
-      • Los últimos 2 colores funden el backdrop hacia el fondo de la pantalla
-        (#1A1A2E) eliminando el corte brusco entre hero y contenido
-
-    UBICACIÓN: res/drawable/gradient_hero_overlay.xml
-    ════════════════════════════════════════════════════════════════════════════
--->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <gradient
         android:type="linear"

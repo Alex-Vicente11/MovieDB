@@ -1,13 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- BottomNavigationView
-     Cada <item> representa una pestaña:
-     android:id  -> debe coincidir con el android:id del <fragment>
-                 en nav_graph.xml. Navigation Component usa este id para saber
-                 a qué destino navegar al tocar la pestaña.
-     android:icon -> drawable del ícono (filled cuando está activo,
-                     outlined cuando no lo está - Material Design)
-     android:title  -> texto debajo del ícono
--->
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 

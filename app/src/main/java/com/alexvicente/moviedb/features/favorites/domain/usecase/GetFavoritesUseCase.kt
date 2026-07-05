@@ -5,11 +5,6 @@ import com.alexvicente.moviedb.features.favorites.domain.repository.FavoritesRep
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-/**
- *  UseCases de Favoritos - 4 casos de uso, uno por operación
- *  PRINCIPIO: cada UseCase hace una sola cosa (SRP)
- */
-
 class GetFavoritesUseCase @Inject constructor(
     private val repository: FavoritesRepository
 ){
