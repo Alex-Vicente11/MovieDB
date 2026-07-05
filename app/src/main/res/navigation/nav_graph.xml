@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph.xml"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/popularMoviesFragment">
+
+    <fragment
+        android:id="@+id/popularMoviesFragment"
+        android:name="com.alexvicente.moviedb.features.popular_movies.presentation.ui.PopularMoviesFragment"
+        android:label="Popular Movies"
+        tools:layout="@layout/fragment_popular_movies">
+
+        <!-- Action: navegar a detalles de la película
+            Safe Args generará: PopularMoviesFragmentDirections.toMovieDetails(movieId) -->
+        <action
+            android:id="@+id/action_popularMovies_to_movieDetails"
+            app:destination="@+id/movieDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <!-- Favorites -->
+    <fragment
+        android:id="@+id/favoritesFragment"
+        android:name="com.alexvicente.moviedb.features.favorites.presentation.FavoritesFragment"
+        android:label="Favoritos"
+        tools:layout="@layout/fragment_favorites">
+
+        <action
+            android:id="@+id/action_favorites_to_movieDetails"
+            app:destination="@+id/movieDetailsFragment"
+            app:enterAnim="@anim/nav_default_pop_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_exit_anim"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/genresFragment"
+        android:name="com.alexvicente.moviedb.features.genres.presentation.GenresFragment"
+        android:label="Géneros"
+        tools:layout="@layout/fragment_genres">
+
+        <!-- Acción para navegar a detalle desde géneros -->
+        <action
+            android:id="@+id/action_genres_to_movieDetails"
+            app:destination="@+id/movieDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+
+
+    </fragment>
+
+    <!-- MovieDetailsFragment Recibe movieId como argumento obligatorio -->
+    <fragment
+        android:id="@+id/movieDetailsFragment"
+        android:name="com.alexvicente.moviedb.features.movie_details.presentation.ui.MovieDetailsFragment"
+        android:label="Movie Details"
+        tools:layout="@layout/fragment_movie_details">
+
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+
+        <action
+            android:id="@+id/action_movieDetails_to_videos"
+            app:destination="@+id/videosFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <!-- Recibe movieId y movieTitle -->
+    <fragment
+        android:id="@+id/videosFragment"
+        android:name="com.alexvicente.moviedb.features.videos.presentation.ui.VideosFragment"
+        android:label="Videos"
+        tools:layout="@layout/fragment_videos">
+
+        <argument
+            android:name="movieId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+
+        <argument
+            android:name="movieTitle"
+            app:argType="string"
+            app:nullable="true"
+            android:defaultValue="@null"/>
+    </fragment>
+
+</navigation>

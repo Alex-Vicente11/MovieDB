@@ -1,3 +1,27 @@
 <resources>
-    <string name="app_name">AppTest</string>
+    <string name="app_name">MovieDB</string>
+
+    <!-- fragment_popular_movies -->
+    <string name="search_hint">Buscar película</string>
+    <string name="no_results">Sin resultados</string>
+
+    <!-- fragment_movie_details -->
+    <string name="backdrop_desc">imagen de fondo</string>
+    <string name="poster_desc">sin imagen</string>
+    <string name="watch_videos">ver videos</string>
+    <string name="scroll_content_desc">Contenido desplazable</string>
+
+    <!-- fragment_videos -->
+    <string name="no_videos">No hay videos disponibles</string>
+    <string name="video_thumbnail">Miniatura del video</string>
+
+    <!-- res/values/strings.xml -->
+    <string name="genres_title">Géneros</string>
+    <string name="retry">Reintentar</string>
+
+    <!-- item_movie -->
+    <string name="movie_poster">Poster de la película</string>
+
+    <!-- GenresFragment -->
+    <string name="error_loading_movies">Error al cargar películas</string>
 </resources>
