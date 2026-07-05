@@ -34,23 +34,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/**
- * Tests instrumentados para GenresFragment.
- *
- * Complejidad adicional vs PopularMoviesFragmentTest:
- *   - GenresViewModel.init { loadGenres() } se ejecuta inmediatamente
- *     al crear el ViewModel — antes de que el test configure Espresso.
- *     Los mocks DEBEN estar listos antes de launchFragmentInHiltContainer().
- *   - Los chips se generan dinámicamente en runtime (no están en el XML).
- *     No podemos usar withId() para verificarlos — usamos withText() y
- *     hasMinimumChildCount() sobre el ChipGroup.
- *   - Paging 3 (recyclerViewMovies) NO se testea aquí — va en
- *     MoviesByGenrePagingTest para mantener responsabilidades separadas.
- *
- * IDs del layout confirmados:
- *   progressBarGenres, scrollViewChips, chipGroupGenres,
- *   recyclerViewMovies, progressBarMovies, layoutError, btnRetry
- */
+
 @HiltAndroidTest
 @UninstallModules(GenresModule::class)
 @RunWith(AndroidJUnit4::class)
