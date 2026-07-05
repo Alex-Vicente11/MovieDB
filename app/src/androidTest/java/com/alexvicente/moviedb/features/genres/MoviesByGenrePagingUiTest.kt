@@ -43,20 +43,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/**
- * Tests instrumentados de Paging 3 con UI real.
- *
- * Diferencia vs MoviesByGenrePagingSourceTest:
- *   MoviesByGenrePagingSourceTest → unit test, PagingSource.load() puro,
- *                                   sin Android, verifica LoadResult
- *   MoviesByGenrePagingUiTest     → instrumentado, verifica que el
- *                                   RecyclerView renderiza items reales
- *                                   y que el footer de retry funciona
- *
- * Estrategia: PagingData.from() crea un Flow<PagingData<Movie>> estático
- * sin pasar por PagingSource real — perfecto para testear solo el Adapter
- * y el comportamiento visual, sin la complejidad de paginación real.
- */
 @HiltAndroidTest
 @UninstallModules(GenresModule::class)
 @RunWith(AndroidJUnit4::class)

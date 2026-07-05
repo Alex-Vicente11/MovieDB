@@ -39,22 +39,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-/**
- * Diferencia vs PopularMoviesFragmentTest:
- *   PopularMoviesFragmentTest -> Fragment aislado en HiltTestActivity
- *                                NavController de test (TestNavHostController)
- *                                Verifica comportamiento del Fragment en aislamiento
- *
- *   NavigationTest            -> MainActivity COMPLETA con NavHostFragment real
- *                                NavController real del grafo
- *                                Verifica que la navegación entre pantallas funciona
- *                                tal como lo experimentaria el usuario
- * Herramientas:
- *   ActivityScenario<MainActivity> -> lanza la Activity real
- *   Espresso                       -> interactúa con Views reales
- *   BottomNavigationView           -> navega entre pestañas
- *   NavController real             -> verifica destinos actuales
- */
 @HiltAndroidTest
 @UninstallModules(
     PopularMoviesModule::class,

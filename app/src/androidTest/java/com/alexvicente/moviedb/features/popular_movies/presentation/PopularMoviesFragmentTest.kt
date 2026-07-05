@@ -15,6 +15,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.data.util.Resource
+import com.alexvicente.moviedb.core.util.Constants
 import com.alexvicente.moviedb.features.popular_movies.di.PopularMoviesModule
 import com.alexvicente.moviedb.features.popular_movies.domain.repository.PopularMoviesRepository
 import com.alexvicente.moviedb.features.popular_movies.presentation.adapter.MovieAdapter
@@ -37,29 +38,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import com.google.common.truth.Truth.assertThat
 
-/**
- * ¿Qué testeamos aquí que no podemos en unit tests?
- *    - Que las Views reales se muestran/ocultan correctamente
- *    - Que el RecyclerView renderiza los items
- *    - Que escribir en el campo de búsqueda dispara la búsqueda
- *    - Que un click en una película navega a MovieDetailsFragment
- *
- * Herramientas:
- *   @HiltAndroidTest   -> permite inyección de Hilt en el test
- *   @BindValue         -> reemplaza dependencias reales por fakes/mocks
- *   launchFragmentInHiltContainer -> lanza el Fragment en HiltTestActivity
- *   Espresso           -> interactúa con Views como si fuera el usuario
- *   TestNavHostController -> intercepta la navegación sin lanzar Activities reales
- */
-
 @HiltAndroidTest
-/**
- * Desinstala los módulos reales que proveen SearchRepository y PopularMoviesRepository
- * Sin esto, Hilt encuentra DOS bindings para el mismo tipo:
- *    1. El real (SearchModule.bindSearchRepository)
- *    2. El de @BindValue (este mock)
- * y falla con "Found a binding configuration that conflicts"
- */
 @UninstallModules(SearchModule::class, PopularMoviesModule::class)
 @RunWith(AndroidJUnit4::class)
 class PopularMoviesFragmentTest {
@@ -163,11 +142,9 @@ class PopularMoviesFragmentTest {
 
     @Test
     fun whenRepositoryEmitsError_errorMessageIsVisible() {
-        // Given
-        val errorMessage = "Sin conexión. Verifica tu internet."
 
         every { popularMoviesRepository.getPopularMovies() } returns flowOf(
-            Resource.Error(errorMessage)
+            Resource.Error(Constants.ERROR_NETWORK)
         )
 
         // When
@@ -175,7 +152,7 @@ class PopularMoviesFragmentTest {
 
         // Then - tvError visible con el mensaje correcto
         onView(withId(R.id.tvError)).check(matches(isDisplayed()))
-        onView(withId(R.id.tvError)).check(matches(withText(errorMessage)))
+        onView(withId(R.id.tvError)).check(matches(withText(Constants.ERROR_NETWORK)))
         onView(withId(R.id.recyclerView)).check(matches(not(isDisplayed())))
         onView(withId(R.id.progressBar)).check(matches(not(isDisplayed())))
     }
