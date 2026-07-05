@@ -12,29 +12,6 @@ import com.alexvicente.moviedb.features.videos.domain.model.Video
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
-/**
- * PATRÓN: Mapper / Converter
- *
- * Convierte entre las capas:
- *      Entity (Data Layer) <-> Domain Model (Domain Layer)
- *
- * ¿Por qué tener clases separadas (Entity vs Domain)?
- *      - Las Entity tienen anotaciones de Room (@Entity, @ColumnInfo) que
- *      contaminarían el Domain Layer con detalles de implementación.
- *      - Los Domain Models son puros Kotlin sin dependencias externas.
- *      - Si se cambia Room por SQLDelight, solo se cambian los mappers.
- *      y las entidades - los ViewModels y UseCases NO se tocan.
- *      - Principio de inversión de dependencias: el dominio no depende de datos.
- *
- * Extensiones de Kotlin para mappers:
- *      fun MovieEntity.toDomain()  -> convierte UNA entidad a dominio
- *      fun List<MovieEntity>.toDomain() -> convierte UNA lista completa
- *      fun Movie.toEntity() -> convierte dominio a entidad para guardar
- *
- *
- */
-
-
 private val gson = Gson()
 
 // --- Movie <-> MovieEntity ---
@@ -105,7 +82,7 @@ fun MovieDetails.toEntity(): MovieDetailsEntity = MovieDetailsEntity(
     runtime = runtime,
     budget = budget,
     revenue = revenue,
-    genresJson = gson.toJson(genres),  // serializar List<Genre> a JSON
+    genresJson = gson.toJson(genres),
     tagline = tagline,
     cachedAt = System.currentTimeMillis()
 )
