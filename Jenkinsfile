@@ -46,7 +46,7 @@ pipeline {
             archiveArtifacts artifacts: '**/build/outputs/apk/debug/*.apk', fingerprint: true, allowEmptyArchive: true
         }
         success {
-            echo 'Pipeline completado exitosamente 🎉'
+            echo 'Pipeline completado exitosamente'
         }
         failure {
             echo 'El pipeline falló, revisa el Console Output para más detalles.'
