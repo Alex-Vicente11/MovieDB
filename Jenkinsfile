@@ -10,7 +10,7 @@ pipeline {
             steps {
                 git branch: 'main',
                     url: 'git@github.com:Alex-Vicente11/MovieDB.git',
-                    credentialsId: 'jenkins-moviedb-ssh'
+                    credentialsId: 'github-ssh-deploykey-moviedb'
             }
         }
 
