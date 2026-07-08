@@ -8,9 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main',
-                    url: 'git@github.com:Alex-Vicente11/MovieDB.git',
-                    credentialsId: 'github-ssh-deploykey-moviedb'
+                checkout scm
             }
         }
 
@@ -34,6 +32,12 @@ pipeline {
         }
 
         stage('Build APK') {
+            when {
+                anyOf {
+                    branch 'main'
+                    changeRequest()
+                }
+            }
             steps {
                 sh './gradlew assembleDebug'
             }
