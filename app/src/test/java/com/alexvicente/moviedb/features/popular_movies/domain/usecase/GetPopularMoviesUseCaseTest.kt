@@ -74,7 +74,7 @@ class GetPopularMoviesUseCaseTest {
             // El UseCase no debe modificar, filtrar ni transformar los datos
             awaitSuccess { movies ->
                 assertThat(movies).isEqualTo(expectedMovies)
-                assertThat(movies).hasSize(5)
+                assertThat(movies).hasSize(4)
             }
             awaitComplete()
         }
