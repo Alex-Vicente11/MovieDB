@@ -14,7 +14,12 @@ pipeline {
 
         stage('Prepare SDK') {
             steps {
-                sh 'echo "sdk.dir=$ANDROID_HOME" > local.properties'
+                withCredentials([string(credentialsId: 'tmdb-token', variable: 'TMDB_TOKEN')]) {
+                    sh '''
+                echo "sdk.dir=$ANDROID_HOME" > local.properties
+                echo "TMDB_TOKEN=$TMDB_TOKEN" >> local.properties
+            '''
+                }
                 sh 'chmod +x gradlew'
             }
         }
