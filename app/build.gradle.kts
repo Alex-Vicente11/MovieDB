@@ -31,7 +31,7 @@ android {
         buildConfigField(
             "String",
             "TMDB_TOKEN",
-            "\"${localProperties["TMDB_TOKEN"]}\""
+            "\"${localProperties.getProperty("TMDB_TOKEN", "")}\""
         )
     }
 
