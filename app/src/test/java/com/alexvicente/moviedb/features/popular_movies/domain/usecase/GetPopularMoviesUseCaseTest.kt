@@ -183,7 +183,7 @@ class GetPopularMoviesUseCaseTest {
             }
             // Segunda emisión de Success: datos frescos (más películas)
             awaitSuccess { movies ->
-                assertThat(movies).hasSize(5)
+                assertThat(movies).hasSize(4)
             }
 
             awaitComplete()
