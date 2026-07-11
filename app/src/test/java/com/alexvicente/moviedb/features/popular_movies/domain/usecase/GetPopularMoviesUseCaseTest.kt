@@ -178,7 +178,7 @@ class GetPopularMoviesUseCaseTest {
             awaitLoading()
             // Primera emisión de Success: datos del caché (menos películas)
             awaitSuccess { movies ->
-                assertThat(movies).hasSize(4)
+                assertThat(movies).hasSize(2)
             }
             // Segunda emisión de Success: datos frescos (más películas)
             awaitSuccess { movies ->
