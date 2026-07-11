@@ -60,7 +60,6 @@ class GetPopularMoviesUseCaseTest {
     }
 
     // Propagación de estados
-
     @Test
     fun whenRepositoryEmitsSuccess_propagatesDataUnmodified() = runTest {
         // Given - lista con datos específicos para verificar que no se transforman
