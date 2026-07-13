@@ -158,11 +158,11 @@ Este proyecto cuenta con un pipeline de integración continua implementado con *
 
 - **`ci/Dockerfile`**: define un agente Jenkins personalizado (basado en `jenkins/jenkins:lts`) con Android SDK, build-tools y platforms preinstalados, garantizando builds reproducibles sin configuración manual.
 - **`Jenkinsfile`**: define el pipeline como código, con las siguientes etapas:
-    1. **Checkout** — usa `checkout scm`, delegando en la configuración del Multibranch Pipeline para clonar la rama o Pull Request correcto en cada contexto (vía SSH, con Deploy Key de solo lectura)
-    2. **Prepare SDK** — genera `local.properties` dinámicamente
-    3. **Lint** — análisis estático de código
-    4. **Unit Tests** — ejecuta la suite completa de tests unitarios
-    5. **Build APK** — genera el artefacto `.apk` de debug (solo en `main` y en Pull Requests, ver detalle abajo)
+  1. **Checkout** — usa `checkout scm`, delegando en la configuración del Multibranch Pipeline para clonar la rama o Pull Request correcto en cada contexto (vía SSH, con Deploy Key de solo lectura)
+  2. **Prepare SDK** — genera `local.properties` dinámicamente
+  3. **Lint** — análisis estático de código
+  4. **Unit Tests** — ejecuta la suite completa de tests unitarios
+  5. **Build APK** — genera el artefacto `.apk` de debug (solo en `main` y en Pull Requests, ver detalle abajo)
 
 ### Multibranch Pipeline
 
