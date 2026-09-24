@@ -1,0 +1,11 @@
+query PopularMovies($page: Int!) {
+    popularMovies(page: $page) {
+        id
+        title
+        posterPath
+        genres {
+            id
+            name
+        }
+    }
+}

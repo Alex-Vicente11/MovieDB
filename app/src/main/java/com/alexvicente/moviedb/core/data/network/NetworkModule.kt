@@ -1,6 +1,8 @@
 package com.alexvicente.moviedb.core.data.network
 
 import com.alexvicente.moviedb.core.data.network.interceptor.AuthInterceptor
+import com.apollographql.apollo.ApolloClient
+import com.apollographql.apollo.network.okHttpClient
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
@@ -54,4 +56,13 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(provideGson()))
             .build()
+
+    @Provides
+    @Singleton
+    fun provideApolloClient(okHttpClient: OkHttpClient): ApolloClient {
+        return ApolloClient.Builder()
+            .serverUrl("https://moviedb-graphql-proxy.onrender.com/graphql")
+            .okHttpClient(okHttpClient)
+            .build()
+    }
 }

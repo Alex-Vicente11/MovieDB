@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.safeargs)
     alias(libs.plugins.hilt.gradle.plugin)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.apollo)
 }
 
 val localProperties = Properties()
@@ -112,6 +113,12 @@ kotlin {
     jvmToolchain(21)
 }
 
+apollo {
+    service("service") {
+        packageName.set("com.alexvicente.moviedb.graphql")
+    }
+}
+
 dependencies {
 
     // ── Core Android ──────────────────────────────────────────────────────────
@@ -187,6 +194,8 @@ dependencies {
     kspAndroidTest(libs.hilt.compiler)
     // Navigation — provee TestNavHostController para verificar navegación
     androidTestImplementation(libs.androidx.navigation.testing)
+
+    implementation(libs.apollo.runtime)
 }
 
 // ── JaCoCo report task ────────────────────────────────────────────────────────

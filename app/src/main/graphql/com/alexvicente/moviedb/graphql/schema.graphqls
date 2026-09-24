@@ -1,0 +1,18 @@
+type Genre {
+  id: Int!
+  name: String!
+}
+
+type Movie {
+  id: Int!
+  title: String!
+  overview: String!
+  posterPath: String!
+  releaseDate: String!
+  genres: [Genre!]!
+}
+
+type Query {
+  popularMovies(page: Int! = 1): [Movie!]!
+  movieDetail(movieId: Int!): Movie!
+}
