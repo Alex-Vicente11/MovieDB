@@ -42,6 +42,7 @@ android {
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
         }
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true

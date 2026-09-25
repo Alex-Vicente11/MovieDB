@@ -7,5 +7,7 @@ sealed class AppError {
     data class NotFound(val message: String) : AppError()
     data class RateLimited(val message: String) : AppError()
     data class Database(val message: String) : AppError()
+
+    data class GraphQL(val message: String) : AppError()
     data class Unknown(val message: String) : AppError()
 }
