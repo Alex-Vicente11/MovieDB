@@ -8,6 +8,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.CertificatePinner
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -27,8 +28,24 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(authInterceptor: AuthInterceptor): OkHttpClient =
+    fun provideCertificatePinner(): CertificatePinner {
+        return CertificatePinner.Builder()
+            .add(NetworkConfig.Pins.TMDB_HOST, NetworkConfig.Pins.TMDB_INTERMEDIATE)
+            .add(NetworkConfig.Pins.TMDB_HOST, NetworkConfig.Pins.TMDB_LEAF)
+            .add(NetworkConfig.Pins.PROXY_HOST, NetworkConfig.Pins.PROXY_INTERMEDIATE)
+            .add(NetworkConfig.Pins.PROXY_HOST, NetworkConfig.Pins.PROXY_LEAF)
+            .build()
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideOkHttpClient(
+        authInterceptor: AuthInterceptor,
+        certificatePinner: CertificatePinner
+    ): OkHttpClient =
         OkHttpClient.Builder()
+            .certificatePinner(certificatePinner)
             // Interceptores (orden importa: auth primero, logging después)
             .addInterceptor(authInterceptor)
             .addInterceptor(HttpLoggingInterceptor().apply {
