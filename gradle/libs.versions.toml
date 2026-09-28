@@ -7,6 +7,7 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
+timber = "5.0.1"
 activityCompose = "1.10.1"
 composeBom = "2025.04.01"
 appcompat = "1.7.1"
@@ -44,6 +45,7 @@ androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib"
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 apollo-runtime = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollo" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
 
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
 

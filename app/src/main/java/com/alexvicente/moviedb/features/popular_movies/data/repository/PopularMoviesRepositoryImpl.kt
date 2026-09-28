@@ -16,12 +16,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import android.util.Log
 import com.alexvicente.moviedb.core.data.mapper.ApolloMovieMapper
 import javax.inject.Inject
 
 private const val CACHE_TIMEOUT_MS = 30 * 60 * 1000L
-private const val TAG = "PopularMoviesRepo"
 
 class PopularMoviesRepositoryImpl @Inject constructor(
     private val apolloClient: ApolloClient,
@@ -58,10 +56,6 @@ class PopularMoviesRepositoryImpl @Inject constructor(
                     val message = response.errors?.firstOrNull()?.message
                         ?: "Error GraphQL desconocido"
                     throw GraphQLDataException(message)
-                }
-                // Nivel 3: éxito parcial — algunos campos fallaron, pero hay datos usables
-                response.hasErrors() && hasData -> {
-                    Log.w(TAG, "Respuesta parcial de GraphQL: ${response.errors}")
                 }
             }
 

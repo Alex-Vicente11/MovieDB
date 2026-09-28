@@ -196,7 +196,11 @@ dependencies {
     // Navigation — provee TestNavHostController para verificar navegación
     androidTestImplementation(libs.androidx.navigation.testing)
 
+    // Apollo-GraphQL
     implementation(libs.apollo.runtime)
+
+    // Timber
+    implementation(libs.timber)
 }
 
 // ── JaCoCo report task ────────────────────────────────────────────────────────
