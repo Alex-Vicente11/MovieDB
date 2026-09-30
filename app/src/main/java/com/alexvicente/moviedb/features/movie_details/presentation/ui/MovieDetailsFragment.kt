@@ -72,7 +72,7 @@ class MovieDetailsFragment : Fragment() {
         binding.btnWatchVideos.setOnClickListener { navigateToVideos() }
         binding.btnFavorite.setOnClickListener { favoritesViewModel.toggleFavorite() }
 
-        binding.btnCrashTest.setOnClickListener { debugActions.triggerTestCrash() }
+        binding.btnCrashTest.setOnClickListener { debugActions.triggerTestAnr() }
         binding.tvTitleDetail.setOnLongClickListener {
             debugActions.triggerTestCrash()
             true
