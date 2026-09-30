@@ -7,4 +7,6 @@ plugins {
     alias(libs.plugins.hilt.gradle.plugin) apply false
     alias(libs.plugins.ksp) apply false
     alias(libs.plugins.apollo) apply false
+    alias(libs.plugins.google.services) apply false
+    alias(libs.plugins.firebase.crashlytics) apply false
 }

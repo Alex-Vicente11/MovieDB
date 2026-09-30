@@ -2,6 +2,7 @@ package com.alexvicente.moviedb
 
 import android.app.Application
 import com.alexvicente.moviedb.core.util.ReleaseTree
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -14,5 +15,7 @@ class MovieDbApplication : Application() {
         } else {
             Timber.plant(ReleaseTree())
         }
+        FirebaseCrashlytics.getInstance()
+            .setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
     }
 }

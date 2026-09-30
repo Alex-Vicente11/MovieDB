@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.core.util
 
 import android.util.Log
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import timber.log.Timber
 
 class ReleaseTree : Timber.Tree() {
@@ -12,8 +13,10 @@ class ReleaseTree : Timber.Tree() {
     override fun log(priority: Int, tag: String?, message: String, t: Throwable?) {
         if (!isLoggable(tag, priority)) return
 
-        // Punto de extensión futuro: aquí se reportaría a Crashlytics
-        // cuando lo agregues al roadmap (ej. FirebaseCrashlytics.getInstance()
-        //     .log(message) y .recordException(t) si t != null)
+        val crashlytics = FirebaseCrashlytics.getInstance()
+        crashlytics.log(message)
+        if(t != null) {
+            crashlytics.recordException(t)
+        }
     }
 }
