@@ -200,6 +200,7 @@ dependencies {
 
     // Apollo-GraphQL
     implementation(libs.apollo.runtime)
+    testImplementation(libs.apollo.testing.support)
 
     // Timber
     implementation(libs.timber)

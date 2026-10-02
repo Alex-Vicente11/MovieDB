@@ -52,6 +52,7 @@ timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "tim
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+apollo-testing-support = { group = "com.apollographql.apollo", name = "apollo-testing-support", version.ref = "apollo" }
 
 
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
