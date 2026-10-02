@@ -23,13 +23,17 @@ Aplicación Android para explorar películas usando la API de [The Movie Databas
 | Lenguaje | Kotlin |
 | Arquitectura | Clean Architecture + MVVM |
 | DI | Hilt |
-| Red | Retrofit + OkHttp + Gson |
+| Red (REST) | Retrofit + OkHttp + Gson |
+| Red (GraphQL) | Apollo Kotlin, sobre un proxy propio (Flask + Strawberry) |
 | Persistencia | Room |
 | Paginación | Paging 3 |
 | Imágenes | Glide |
 | Navegación | Navigation Component (Single Activity) |
 | Async | Coroutines + StateFlow |
 | UI | ViewBinding + Material Design 3 |
+| Logging | Timber |
+| Crash/ANR reporting | Firebase Crashlytics |
+| Seguridad de red | Certificate Pinning (OkHttp) |
 
 ---
 
@@ -43,16 +47,16 @@ com.alexvicente.moviedb
 │   ├── data/
 │   │   ├── local/             # Room: DAOs, Entities, Database
 │   │   ├── mapper/            # Entity → Domain mappers
-│   │   └── network/           # Retrofit, OkHttp, Interceptors
+│   │   └── network/           # Retrofit, Apollo, OkHttp, Interceptors
 │   ├── di/                    # Módulos Hilt compartidos
 │   ├── domain/model/          # Modelos de dominio
-│   └── util/                  # Constants, Extensions, AppError
+│   └── util/                  # Constants, Extensions, AppError, ReleaseTree
 │
 └── features/
     ├── favorites/             # Favoritos (100% local, sin API)
     ├── genres/                # Géneros + películas por género (Paging 3)
     ├── movie_details/         # Detalle de película
-    ├── popular_movies/        # Películas populares
+    ├── popular_movies/        # Películas populares (vía GraphQL/Apollo)
     ├── search/                # Búsqueda con debounce
     └── videos/                # Videos/trailers de películas
 ```
@@ -70,7 +74,7 @@ feature/
 
 ## Features
 
-- **Películas populares** — listado paginado con caché offline (Room)
+- **Películas populares** — listado paginado con caché offline (Room), consumido vía GraphQL/Apollo
 - **Géneros** — lista de géneros con filtrado de películas por género (Paging 3)
 - **Detalle de película** — información completa con rating, presupuesto, ingresos y géneros
 - **Videos/Trailers** — reproducción de trailers vía app de YouTube o navegador web
@@ -142,11 +146,60 @@ El proyecto cuenta con tres niveles de testing:
 
 **Paging 3 con caché offline** — Las películas populares usan Room como _single source of truth_. La red solo se consulta cuando la caché está vacía o expirada.
 
-**Manejo de errores centralizado** — `AppError` + `ErrorMapper` + `Resource<T>` proveen un sistema unificado de manejo de errores en todas las capas.
+**Manejo de errores centralizado** — `AppError` + `ErrorMapper` + `Resource<T>` proveen un sistema unificado de manejo de errores en todas las capas, extendido para cubrir también los errores de GraphQL (ver sección de GraphQL/Apollo).
 
 **Single Activity** — Toda la navegación ocurre dentro de `MainActivity` mediante Navigation Component.
 
 **Favoritos sin API** — El módulo de favoritos es 100% local — Room es la única fuente de datos, sin Retrofit ni DTOs.
+
+**Convivencia REST + GraphQL** — El proyecto consume datos tanto por Retrofit (REST, directo a TMDB) como por Apollo (GraphQL, vía proxy propio), decisión consciente para demostrar migración incremental sin reescribir toda la capa de red de una vez (ver sección siguiente).
+
+---
+
+## GraphQL / Apollo Kotlin
+
+El feature de **películas populares** consume datos a través de un **proxy GraphQL propio** en vez de hablar directo con el REST de TMDB, mientras el resto de la app (detalle, videos, búsqueda) sigue usando Retrofit sin cambios — una migración **incremental y selectiva**, no un reemplazo total de la capa de red.
+
+### Por qué un proxy
+
+TMDB no ofrece una API GraphQL nativa. El proxy (Flask + [Strawberry](https://strawberry.rocks/)) actúa como capa de traducción: expone un schema GraphQL hacia Android, y por dentro sigue consumiendo el REST de TMDB como cualquier otro cliente — el mismo patrón de **BFF (Backend For Frontend)** que usan empresas con múltiples microservicios detrás de una sola API orientada al cliente.
+
+```
+Android (Apollo Kotlin) → Proxy Flask/Strawberry (Render) → TMDB REST API
+```
+
+- **Repo**: [`moviedb-graphql-proxy`](https://github.com/Alex-Vicente11/moviedb-graphql-proxy)
+- **Desplegado en**: Render (free tier), `https://moviedb-graphql-proxy.onrender.com/graphql`
+
+### Beneficios de infraestructura demostrados (no solo teóricos)
+
+- **Selección de campos** — el cliente pide exactamente los campos que la pantalla necesita (`id`, `title`, `posterPath`), sin los ~20 campos adicionales que TMDB devuelve por defecto.
+- **Un solo round-trip para datos anidados** — géneros se resuelven dentro de la misma query (`popularMovies { genres { name } } }`), evitando una segunda llamada REST a `/genre/movie/list`.
+- **Problema N+1 identificado y resuelto** — el resolver de géneros originalmente repetía la llamada a TMDB por cada película. Se resolvió con un cache en memoria con TTL de 1 hora, verificado empíricamente con logging temporal (1 sola llamada real en vez de 20 por página).
+
+### Hallazgo técnico: incompatibilidad de spec entre Strawberry y Apollo Kotlin
+
+La introspección HTTP estándar de GraphQL falló al descargar el schema: Strawberry incluye `DIRECTIVE_DEFINITION` como ubicación de directiva (parte de una extensión del spec de GraphQL aceptada recientemente), que **Apollo Kotlin no soporta en ninguna versión estable** (confirmado hasta la 4.2.0; solo existe en snapshots 5.x no productivos). Solución: generar el SDL del schema manualmente (`schema.as_str()` de Strawberry) y usarlo como archivo local en vez de depender de `downloadApolloSchema` vía introspección — evita la ruta del ecosistema que aún no está sincronizada, sin perder tipado fuerte ni generación de código.
+
+### Manejo de errores GraphQL (distinto de status codes HTTP)
+
+A diferencia de REST, una respuesta GraphQL casi siempre es `200 OK` — el éxito o fallo se reporta dentro del body, no en el código HTTP. Se implementó manejo diferenciado en 3 niveles, integrado al sistema de errores existente (`AppError`, `ErrorMapper`):
+
+1. **Errores de red/transporte** (`ApolloNetworkException`) → `AppError.Network`
+2. **Errores GraphQL sin datos utilizables** (`response.hasErrors() && data == null`) → excepción custom `GraphQLDataException` → `AppError.GraphQL`
+3. **Éxito parcial** (datos *y* errores en la misma respuesta — posible en GraphQL, no en REST) → se muestran los datos disponibles sin romper la pantalla, con log interno del campo que falló
+
+### Certificate Pinning sobre ambos dominios
+
+El `CertificatePinner` de OkHttp se comparte entre Retrofit y Apollo (mismo `OkHttpClient` inyectado), pinneando hoja + CA intermedia para `api.themoviedb.org` y `moviedb-graphql-proxy.onrender.com`. Pinnear la CA intermedia (no solo la hoja) tolera la rotación automática de certificados del proxy (gestionados por Render) sin romper la app en cada renovación. Verificado corrompiendo los pines a propósito y confirmando `SSLPeerUnverifiedException: Certificate pinning failure!` en Logcat, con el detalle completo de certificados esperados vs. recibidos.
+
+### Testing del flujo GraphQL
+
+A diferencia de Retrofit —donde `MockWebServer` simula respuestas HTTP crudas—, el repositorio de Apollo se testea mockeando directamente el contrato de `ApolloClient` con MockK: se simula lo que `.execute()` devuelve o lanza, sin pasar por una capa de transporte real. La construcción de respuestas falsas usa `ApolloResponse.Builder` para los casos de éxito y error GraphQL (`response.hasErrors() && data == null`), y excepciones reales de Apollo (`ApolloHttpException`, `ApolloNetworkException`) para los casos de error de red/HTTP — preservando toda la cobertura de caché offline-first (válido/expirado/vacío) que ya existía para el repositorio basado en Retrofit, sin cambios de comportamiento.
+
+### Por qué no se migró todo a GraphQL
+
+Fue una decisión deliberada de alcance, no una limitación técnica: extender el proxy para cubrir `movieDetail`, videos y búsqueda es perfectamente viable (el patrón ya está probado), pero no aporta aprendizaje adicional sobre lo ya demostrado con `popularMovies`. Mantener ambos clientes conviviendo también refleja un escenario real de migración incremental, más representativo de cómo ocurre en equipos de producción que una reescritura completa de una sola vez.
 
 ---
 
@@ -273,12 +326,58 @@ Otras herramientas equivalentes: GitLab CI/CD, CircleCI, Azure DevOps Pipelines,
 
 ---
 
+## Seguridad de red
+
+Además del Certificate Pinning documentado en la sección de GraphQL/Apollo (que cubre ambos dominios consumidos por la app), el manejo de secretos sigue esta postura:
+
+- El token de TMDB para el flujo de **películas populares** nunca llega al cliente Android — vive únicamente en el `.env` del proxy desplegado en Render.
+- Los flujos restantes (`movieDetail`, videos) siguen consumiendo TMDB directo vía Retrofit, con el token en `BuildConfig.TMDB_TOKEN` — ver nota en Deuda técnica.
+- `EncryptedSharedPreferences` se evaluó para este proyecto, pero no aplica aquí: protege secretos guardados en runtime (p. ej. un JWT de sesión tras un login), no un valor que ya nace hardcodeado en el binario compilado como `BuildConfig`. Se reserva para otro proyecto con autenticación real de usuario.
+
+---
+
+## Observabilidad
+
+El proyecto integra un stack de logging y monitoreo en producción: **Timber** para logging estructurado, y **Firebase Crashlytics** para reporte de crashes y ANR — ambos con comportamiento diferenciado por build type y verificados empíricamente, no solo compilados.
+
+### Timber
+
+- **Debug**: `Timber.DebugTree()` — auto-tagging por clase, logs completos en Logcat.
+- **Release**: `ReleaseTree` (custom) — descarta todo por debajo de `WARN`; los niveles `WARN`/`ERROR` se reenvían a Crashlytics (`log()` como breadcrumb, `recordException()` para excepciones).
+- **Regla de R8** (`proguard-rules.pro`): `Timber.v/d/i` se eliminan del bytecode en release vía `-assumenosideeffects`; `w`/`e` se preservan intencionalmente para que `ReleaseTree` pueda seguir reportándolos.
+
+Verificado en el `.dex` del APK de release con marcadores únicos por nivel de log: `v`/`d`/`i` ausentes tras la regla, `w`/`e` presentes como control positivo.
+
+### Firebase Crashlytics
+
+- SDK integrado vía Firebase BoM, con recolección restringida a release (`setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)`) para no contaminar el dashboard con pruebas locales.
+- **ANR monitoring** incluido automáticamente por el SDK, sin configuración adicional.
+
+### Patrón de verificación: `DebugActions`
+
+Para probar Crashlytics sin dejar código de prueba alcanzable en producción, se usó una interfaz (`DebugActions`, en `main`) con una implementación distinta por *source set*:
+
+| Source set | Comportamiento |
+|---|---|
+| `debug` | Lanza un `RuntimeException` real y bloquea el hilo principal (10s) para simular un ANR — disparadores reutilizables desde un botón/long-press debug-only en `MovieDetailsFragment` |
+| `release` | No-op |
+
+Gradle nunca fusiona `debug` y `release` en el mismo build, así que el disparador de prueba **no puede compilarse** en producción — una garantía a nivel de compilación, no una condición en runtime. El binding entre la interfaz y la implementación activa se resuelve vía Hilt (`@Binds`), sin ramificar con `BuildConfig.DEBUG` en el código de producción.
+
+Ambos flujos —crash y ANR— se verificaron de extremo a extremo: forzados manualmente (el ANR con `adb shell input` mientras el hilo estaba bloqueado, reproduciendo un timeout real de dispatch), y confirmados en Firebase Console con el stack trace completo hasta el listener exacto.
+
+### Nota de testing: Robolectric y la Application real
+
+Al integrar Crashlytics, los tests de Room con Robolectric (`MovieDaoTest`, `FavoritesDaoTest`) empezaron a fallar con `IllegalStateException` en `FirebaseApp` — Robolectric instancia la `Application` declarada en el manifest por defecto, y su `onCreate()` ahora llama a `FirebaseCrashlytics.getInstance()` antes de que `FirebaseApp` esté inicializado en el entorno simulado (a diferencia de un dispositivo real, donde un `ContentProvider` de Firebase se adelanta). Se resolvió con `@Config(application = Application::class)`, aislando estos tests —que solo necesitan un `Context` válido para Room— de cualquier dependencia de `Application` real.
+
+---
+
 ## Deuda técnica conocida
 
 - Cobertura de tests: ~20% (objetivo: 60% en v1.1)
 - Tests instrumentados pendientes: `MovieDetailsFragment`, `SearchFragment`, `VideosFragment`
 - `fallbackToDestructiveMigration` activo — se eliminará cuando se implementen migraciones de Room
-- `TMDB_TOKEN` queda embebido en el `.apk` compilado (limitación inherente de `BuildConfig`), aceptable en este contexto por tratarse de un token de solo lectura sobre una API pública. En un entorno de producción real, se recomendaría proxear las llamadas a través de un backend propio o una función serverless intermedia.
+- `TMDB_TOKEN` queda embebido en el `.apk` compilado para los flujos no migrados a GraphQL (`movieDetail`, videos, búsqueda) — limitación inherente de `BuildConfig`, aceptable en este contexto por tratarse de un token de solo lectura sobre una API pública. El flujo de **películas populares** ya resuelve esto vía el proxy GraphQL (ver sección GraphQL/Apollo); extender el proxy a los flujos restantes eliminaría el token del cliente por completo, pero se dejó fuera de alcance de este proyecto a propósito — fue una decisión consciente, no una limitación técnica sin solución conocida.
 
 ---
 
