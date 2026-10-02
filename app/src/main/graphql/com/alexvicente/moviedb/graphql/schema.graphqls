@@ -8,7 +8,11 @@ type Movie {
   title: String!
   overview: String!
   posterPath: String!
+  backdropPath: String
   releaseDate: String!
+  voteAverage: Float!
+  voteCount: Int!
+  popularity: Float!
   genres: [Genre!]!
 }
 

@@ -2,7 +2,13 @@ query PopularMovies($page: Int!) {
     popularMovies(page: $page) {
         id
         title
+        overview
         posterPath
+        backdropPath
+        releaseDate
+        voteAverage
+        voteCount
+        popularity
         genres {
             id
             name

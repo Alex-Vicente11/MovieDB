@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import android.app.Application
 
 /**
  * Tests del DAO de favoritos con Room real en memoria + Robolectric.
@@ -24,9 +25,8 @@ import org.robolectric.annotation.Config
  * y que se actualiza reactivamente al agregar/eliminar favoritos.
  */
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [34])
+@Config(sdk = [34], application = Application::class)
 class FavoritesDaoTest {
-
     private lateinit var db: AppDatabase
     private lateinit var dao: FavoritesDao
 

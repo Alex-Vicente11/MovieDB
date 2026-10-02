@@ -7,5 +7,6 @@ fun AppError.toUserMessage(): String = when (this) {
     is AppError.RateLimited  -> message
     is AppError.Server       -> message
     is AppError.Database     -> message
+    is AppError.GraphQL      -> message
     is AppError.Unknown      -> message
 }

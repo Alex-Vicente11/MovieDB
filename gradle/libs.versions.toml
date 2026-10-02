@@ -7,6 +7,7 @@ junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 lifecycleRuntimeKtx = "2.8.7"
+timber = "5.0.1"
 activityCompose = "1.10.1"
 composeBom = "2025.04.01"
 appcompat = "1.7.1"
@@ -35,6 +36,9 @@ hilt = "2.52"
 ksp = "2.0.21-1.0.25"
 robolectric = "4.14.1"
 room = "2.7.1"
+googleServices = "4.4.2"
+firebaseBom = "33.5.1"
+firebaseCrashlyticsPlugin = "3.0.2"
 
 [libraries]
 # Core
@@ -44,6 +48,12 @@ androidx-espresso-contrib = { module = "androidx.test.espresso:espresso-contrib"
 androidx-paging-runtime-ktx = { module = "androidx.paging:paging-runtime-ktx", version.ref = "pagingRuntimeKtx" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 apollo-runtime = { group = "com.apollographql.apollo", name = "apollo-runtime", version.ref = "apollo" }
+timber = { group = "com.jakewharton.timber", name = "timber", version.ref = "timber" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
+apollo-testing-support = { group = "com.apollographql.apollo", name = "apollo-testing-support", version.ref = "apollo" }
+
 
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
 
@@ -132,3 +142,5 @@ safeargs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigati
 hilt-gradle-plugin = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 apollo = { id = "com.apollographql.apollo", version.ref = "apollo" }
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices" }
+firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlyticsPlugin" }

@@ -8,6 +8,8 @@ plugins {
     alias(libs.plugins.hilt.gradle.plugin)
     alias(libs.plugins.ksp)
     alias(libs.plugins.apollo)
+    alias(libs.plugins.google.services)
+    alias(libs.plugins.firebase.crashlytics)
 }
 
 val localProperties = Properties()
@@ -42,6 +44,7 @@ android {
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
         }
+
         release {
             isMinifyEnabled = true
             isShrinkResources = true
@@ -195,7 +198,17 @@ dependencies {
     // Navigation — provee TestNavHostController para verificar navegación
     androidTestImplementation(libs.androidx.navigation.testing)
 
+    // Apollo-GraphQL
     implementation(libs.apollo.runtime)
+    testImplementation(libs.apollo.testing.support)
+
+    // Timber
+    implementation(libs.timber)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.analytics)
 }
 
 // ── JaCoCo report task ────────────────────────────────────────────────────────

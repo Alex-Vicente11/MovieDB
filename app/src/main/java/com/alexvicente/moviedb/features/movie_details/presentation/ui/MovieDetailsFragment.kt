@@ -22,12 +22,17 @@ import com.google.android.material.chip.Chip
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import androidx.core.graphics.toColorInt
+import com.alexvicente.moviedb.BuildConfig
+import com.alexvicente.moviedb.core.debug.DebugActions
 import com.alexvicente.moviedb.core.domain.model.Movie
 import com.alexvicente.moviedb.core.util.loadUrl
 import com.alexvicente.moviedb.core.util.showSnackbarWithAction
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MovieDetailsFragment : Fragment() {
+    @Inject
+    lateinit var debugActions: DebugActions
 
     private var _binding: FragmentMovieDetailsBinding? = null
     private val binding get() = _binding!!
@@ -52,6 +57,8 @@ class MovieDetailsFragment : Fragment() {
         observeUiState()
         observeFavoriteState()
         loadMovieDetails()
+
+        binding.btnCrashTest.visibility = if (BuildConfig.DEBUG) View.VISIBLE else View.GONE
     }
 
     private fun setupToolbar() {
@@ -64,6 +71,12 @@ class MovieDetailsFragment : Fragment() {
     private fun setupListeners() {
         binding.btnWatchVideos.setOnClickListener { navigateToVideos() }
         binding.btnFavorite.setOnClickListener { favoritesViewModel.toggleFavorite() }
+
+        binding.btnCrashTest.setOnClickListener { debugActions.triggerTestAnr() }
+        binding.tvTitleDetail.setOnLongClickListener {
+            debugActions.triggerTestCrash()
+            true
+        }
     }
 
     private fun loadMovieDetails() {

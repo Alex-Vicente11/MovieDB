@@ -3,7 +3,6 @@ package com.alexvicente.moviedb.features.popular_movies.presentation.ui
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -57,7 +56,6 @@ class PopularMoviesFragment: Fragment() {
         setupListeners()
         setupRealtimeSearch()
         observeUiState()
-
         // Cargar películas populares solo la primera vez
         // savedInstanceState == null -> primera creación (no rotación, no vuelta de back stack)
         if (savedInstanceState == null) viewModel.getPopularMovies()

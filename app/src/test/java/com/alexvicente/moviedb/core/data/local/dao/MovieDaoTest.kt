@@ -15,6 +15,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
+import android.app.Application
 
 /**
  * Usando Room en memoria + Robolectric
@@ -37,9 +38,7 @@ import org.robolectric.annotation.Config
  */
 
 @RunWith(RobolectricTestRunner::class)
-// Config: define el SDK de Android que Robolectric simula
-// sdk = 34 es estable y compatible con minSDK = 24
-@Config(sdk = [34])
+@Config(sdk = [34], application = Application::class)
 class MovieDaoTest {
 
     // Base de datos real en memoria - se destruye después de cada test

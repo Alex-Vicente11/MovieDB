@@ -19,3 +19,15 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Timber: strip verbose/debug/info calls in release. Keep w/e so ReleaseTree can report them.
+-assumenosideeffects class timber.log.Timber$Forest {
+    public void v(...);
+    public void d(...);
+    public void i(...);
+}
+-assumenosideeffects class timber.log.Timber {
+    public static void v(...);
+    public static void d(...);
+    public static void i(...);
+}
