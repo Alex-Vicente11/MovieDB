@@ -16,6 +16,6 @@ class MovieDbApplication : Application() {
             Timber.plant(ReleaseTree())
         }
         FirebaseCrashlytics.getInstance()
-            .setCrashlyticsCollectionEnabled(!BuildConfig.DEBUG)
+            .setCrashlyticsCollectionEnabled(BuildConfig.ENABLE_CRASH_REPORTING)
     }
 }
