@@ -61,10 +61,8 @@ class PopularMoviesRepositoryImpl @Inject constructor(
 
             val movies = response.data?.popularMovies.orEmpty()
 
-            movieDao.deletePopularMovies()
-
             val domainMovies = with(ApolloMovieMapper) { movies.map { it.toDomain() } }
-            movieDao.insertMovies(domainMovies.map { it.toEntity(isPopular = true) })
+            movieDao.replacePopularMovies(domainMovies.map { it.toEntity(isPopular = true) })
             emit(Resource.Success(domainMovies))
 
         } catch (e: Exception) {

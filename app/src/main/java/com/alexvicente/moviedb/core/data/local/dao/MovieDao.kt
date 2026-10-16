@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import com.alexvicente.moviedb.core.data.local.entity.MovieEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -39,4 +40,12 @@ interface MovieDao {
 
     @Query("DELETE FROM movies WHERE is_popular = 0")
     suspend fun deleteSearchResults()
+
+    // Borrar + insertar como una unidad: si la corrutina se cancela o falla entre
+// ambas, Room revierte y la caché de populares queda intacta.
+    @Transaction
+    suspend fun replacePopularMovies(movies: List<MovieEntity>) {
+        deletePopularMovies()
+        insertMovies(movies)
+    }
 }

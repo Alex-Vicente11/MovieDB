@@ -208,6 +208,44 @@ class MovieDaoTest {
         assertThat(searchResult).hasSize(1)
     }
 
+    // replacePopularMovies
+
+    @Test
+    fun whenReplacePopularMoviesCalled_replacesPopularAndKeepsSearchResults() = runTest {
+        // Given - populares viejas y un resultado de búsqueda
+        dao.insertMovies(listOf(
+            createEntity(id = 1, title = "Old Popular", isPopular = true),
+            createEntity(id = 2, title = "Old Popular 2", isPopular = true),
+            createEntity(id = 10, title = "Search Result", isPopular = false)
+        ))
+
+        // When
+        dao.replacePopularMovies(listOf(createEntity(id = 3, title = "New Popular")))
+
+        // Then - solo queda la popular nueva y la búsqueda sigue intacta
+        val popular = dao.getPopularMovies().first()
+        assertThat(popular.map { it.title }).containsExactly("New Popular")
+        assertThat(dao.searchMovies("Search").first()).hasSize(1)
+    }
+
+    @Test
+    fun whenReplacePopularMoviesCalledOnEmptyDb_insertsMovies() = runTest {
+        dao.replacePopularMovies(listOf(createEntity(id = 1), createEntity(id = 2)))
+
+        assertThat(dao.getPopularMovies().first()).hasSize(2)
+    }
+
+    @Test
+    fun whenReplacePopularMoviesCalled_cacheTimestampComesFromNewMovies() = runTest {
+        // La vieja tiene un cachedAt MAYOR: si el borrado no ocurriera, MAX(cached_at)
+        // devolvería 9_000 y el test fallaría.
+        dao.insertMovies(listOf(createEntity(id = 1, cachedAt = 9_000L)))
+
+        dao.replacePopularMovies(listOf(createEntity(id = 2, cachedAt = 5_000L)))
+
+        assertThat(dao.getLastCacheTime()).isEqualTo(5_000L)
+    }
+
     @Test
     fun whenDeletePopularCalledOnEmptyDb_doesNotCrash() = runTest {
         // Verificamos que DELETE en tabla vacía no lanza exception
