@@ -38,6 +38,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import com.google.common.truth.Truth.assertThat
+import io.mockk.verify
 
 @HiltAndroidTest
 @UninstallModules(SearchModule::class, PopularMoviesModule::class)
@@ -93,15 +94,9 @@ class PopularMoviesFragmentTest {
      * Lanza el Fragment con el NavController de test ya configurado.
      * Separado en helper para no repetir el setup en cada test.
      */
-    private fun launchFragment() {
-        /**
-         * Ahora solo lanza el Fragment - el NavController ya está completamente
-         * configurado (tag asignado por launchFragmentInHiltContainer + graph listo)
-         */
-        launchFragmentInHiltContainer<PopularMoviesFragment>(
-            navHostController = navController
-        )
-    }
+    private fun launchFragment() = launchFragmentInHiltContainer<PopularMoviesFragment>(
+        navHostController = navController
+    )
 
     // TESTS DE ESTADO DE CARGA
     @Test
@@ -340,5 +335,36 @@ class PopularMoviesFragmentTest {
         val movieId = navController.backStack.last()
             .arguments?.getInt("movieId")
         assertThat(movieId).isEqualTo(42)
+    }
+
+    // TEST DE REGRESIÓN DE H7 (recarga de populares al volver del detalle)
+
+    /**
+     * Reproduce la vuelta del back stack: el Fragment conserva su instancia y su ViewModel,
+     * pero su vista se destruye y se recrea (detach -> attach). Antes del cambio, la guarda
+     * por savedInstanceState no lo evitaba y el EditText, al restaurar su texto, disparaba el
+     * TextWatcher: getPopularMovies() se pedía 2 veces más por cada vuelta (log de H7).
+     */
+    @Test
+    fun whenFragmentViewIsRecreated_popularMoviesAreNotReloaded() {
+        // Given
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(MovieFactory.createMovieList(5))
+        )
+
+        // When - primera vista y luego vista recreada (equivale a ir al detalle y volver)
+        val scenario = launchFragment()
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+
+        scenario.onActivity { activity ->
+            val fragment = activity.supportFragmentManager.findFragmentById(android.R.id.content)!!
+            activity.supportFragmentManager.beginTransaction().detach(fragment).commitNow()
+            activity.supportFragmentManager.beginTransaction().attach(fragment).commitNow()
+        }
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+        // Then - el estado del ViewModel se vuelve a mostrar sin pedir las populares otra vez
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        verify(exactly = 1) { popularMoviesRepository.getPopularMovies() }
     }
 }
