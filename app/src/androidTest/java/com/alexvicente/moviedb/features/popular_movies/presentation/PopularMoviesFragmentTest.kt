@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.features.popular_movies.presentation
 
 import androidx.navigation.testing.TestNavHostController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.clearText
@@ -235,6 +236,57 @@ class PopularMoviesFragmentTest {
 
         // Then - RecyclerView visible con películas populares
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+    }
+
+    // TESTS DE RECICLADO DE LA LISTA (regresión del hallazgo H0 del profiling)
+
+    /**
+     * Protege contra reintroducir un RecyclerView con wrap_content dentro de un NestedScrollView.
+     * En ese diseño el RecyclerView mide e infla TODOS los ítems a la vez, así que
+     * childCount == itemCount y no se recicla nada. Con el layout actual solo hay hijos
+     * para lo visible más la reserva, por lo que childCount < itemCount.
+     */
+    @Test
+    fun whenListIsLong_recyclerViewOnlyInflatesVisibleItems() {
+        // Given - más ítems de los que caben en pantalla
+        val movies = MovieFactory.createMovieList(50)
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(movies)
+        )
+
+        // When
+        launchFragment()
+
+        // Then - el adapter tiene los 50, pero el RecyclerView solo mantiene hijos para los visibles
+        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+            if (noViewFoundException != null) throw noViewFoundException
+            val recyclerView = view as RecyclerView
+            assertThat(recyclerView.adapter?.itemCount).isEqualTo(50)
+            assertThat(recyclerView.childCount).isGreaterThan(0)
+            assertThat(recyclerView.childCount).isLessThan(50)
+        }
+    }
+
+    /**
+     * El AppBarLayout solo reacciona al scroll (ocultar la toolbar, liftOnScroll) si el
+     * RecyclerView participa en el nested scrolling. Con android:nestedScrollingEnabled="false"
+     * la barra superior dejaría de responder.
+     */
+    @Test
+    fun recyclerView_keepsNestedScrollingEnabled_soAppBarCanReact() {
+        // Given
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(MovieFactory.createMovieList(5))
+        )
+
+        // When
+        launchFragment()
+
+        // Then
+        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+            if (noViewFoundException != null) throw noViewFoundException
+            assertThat((view as RecyclerView).isNestedScrollingEnabled).isTrue()
+        }
     }
 
     // TESTS DE NAVEGACIÓN
