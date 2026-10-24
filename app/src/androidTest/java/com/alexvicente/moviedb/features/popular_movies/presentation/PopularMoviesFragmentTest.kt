@@ -367,4 +367,41 @@ class PopularMoviesFragmentTest {
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
         verify(exactly = 1) { popularMoviesRepository.getPopularMovies() }
     }
+
+    // TEST DE REGRESIÓN DE H9 (la vista destruida de la lista retenía su RecyclerView en el detalle)
+
+    /**
+     * Al ir de la lista al detalle el Fragment queda en el back stack: su vista se destruye pero
+     * él conserva el adapter como propiedad. Si el RecyclerView de esa vista sigue registrado
+     * como observer del adapter, toda su jerarquía de vistas queda retenida mientras se está en
+     * el detalle (cadena PopularMoviesFragment.adapter -> mObservers -> RecyclerView, vista con
+     * LeakCanary). Tras destruir la vista, el adapter no debe conservar observers.
+     */
+    @Test
+    fun whenFragmentViewIsDestroyed_adapterIsNoLongerObservedByOldRecyclerView() {
+        // Given
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(MovieFactory.createMovieList(5))
+        )
+
+        // When - se captura el adapter de la primera vista y se destruye esa vista
+        val scenario = launchFragment()
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+
+        lateinit var adapterBefore: RecyclerView.Adapter<*>
+        lateinit var oldRecyclerView: RecyclerView
+        scenario.onActivity { activity ->
+            val fragment = activity.supportFragmentManager.findFragmentById(android.R.id.content)!!
+            oldRecyclerView = fragment.requireView().findViewById(R.id.recyclerView)
+            adapterBefore = oldRecyclerView.adapter!!
+            assertThat(adapterBefore.hasObservers()).isTrue()
+            activity.supportFragmentManager.beginTransaction().detach(fragment).commitNow()
+        }
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+        // Then - el adapter (que conserva el Fragment) ya no mantiene registrado al RecyclerView viejo
+        scenario.onActivity {
+            assertThat(adapterBefore.hasObservers()).isFalse()
+        }
+    }
 }

@@ -173,6 +173,11 @@ class PopularMoviesFragment: Fragment() {
         searchJob?.cancel()
         searchJob = null
 
+        // El Fragment conserva el adapter mientras está en el back stack. Sin esto, el adapter
+        // sigue registrando al RecyclerView de la vista destruida como observer y retiene toda
+        // su jerarquía de vistas (H9).
+        binding.recyclerView.adapter = null
+
         _binding = null
     }
 }
