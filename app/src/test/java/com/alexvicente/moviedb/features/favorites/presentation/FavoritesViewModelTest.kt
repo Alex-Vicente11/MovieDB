@@ -298,6 +298,35 @@ class FavoritesViewModelTest {
         assertThat(viewModel.isFavoriteState.value).isFalse()
     }
 
+    /**
+     * Los flows de Room no terminan: mientras la fila exista siguen emitiendo. Si cada llamada a
+     * observeIsFavorite() deja vivo su collector (el Job anterior no se cancela), tras N llamadas
+     * hay N collectors activos hasta que el ViewModel se limpia. Con flowOf() el flow termina
+     * solo, por eso el test anterior no puede detectarlo: aquí el flow simula uno de Room.
+     */
+    @Test
+    fun whenObserveIsFavoriteCalledTwice_onlyTheLastCollectorStaysActive() = runTest {
+        val movie = MovieFactory.createMovie(id = 99)
+        var activeCollectors = 0
+        every { mockRepository.getAllFavoritesRepo() } returns flowOf(emptyList())
+        every { mockRepository.isFavoriteRepo(99) } returns flow {
+            activeCollectors++
+            try {
+                awaitCancellation()
+            } finally {
+                activeCollectors--
+            }
+        }
+        createViewModel()
+
+        viewModel.observeIsFavorite(movie)
+        advanceUntilIdle()
+        viewModel.observeIsFavorite(movie)
+        advanceUntilIdle()
+
+        assertThat(activeCollectors).isEqualTo(1)
+    }
+
     @Test
     fun whenRemoveFavoriteCalled_uiStateUpdatesToEmpty() = runTest {
         val favorite = createFavorite(id = 1)
