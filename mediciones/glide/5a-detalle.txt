@@ -1,0 +1,3 @@
+--------- beginning of main
+10-19 17:13:22.775 21892 21892 D GlideSrc: REMOTE https://image.tmdb.org/t/p/w780/r08LxMJCbf1SiJIWeyH9aJmdqwC.jpg
+10-19 17:13:22.804 21892 21892 D GlideSrc: REMOTE https://image.tmdb.org/t/p/w500/fBFjaDWfNslvrs6bJjknmG27wOS.jpg

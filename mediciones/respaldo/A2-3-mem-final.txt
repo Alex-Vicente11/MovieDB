@@ -1,0 +1,9 @@
+
+           Java Heap:    18488                          39764
+         Native Heap:    79844                          81600
+            Graphics:    88088                          88088
+           TOTAL PSS:   252808            TOTAL RSS:   392208       TOTAL SWAP PSS:      161
+               Views:      323         ViewRootImpl:        1
+            WebViews:        0
+
+

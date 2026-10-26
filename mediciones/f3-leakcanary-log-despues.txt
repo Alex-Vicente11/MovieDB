@@ -1,0 +1,2 @@
+--------- beginning of main
+10-23 23:53:58.190  7536  7536 D LeakCanary: Watching instance of androidx.coordinatorlayout.widget.CoordinatorLayout (com.alexvicente.moviedb.features.popular_movies.presentation.ui.PopularMoviesFragment received Fragment#onDestroyView() callback (references to its views should be cleared to prevent leaks)) with key 03fc9974-90eb-4bab-8c9b-1c6890dd2cc0

@@ -1,0 +1,58 @@
+Applications Memory Usage (in Kilobytes):
+Uptime: 521260129 Realtime: 1063717971
+
+** MEMINFO in pid 17697 [com.alexvicente.moviedb] **
+                   Pss  Private  Private  SwapPss      Rss     Heap     Heap     Heap
+                 Total    Dirty    Clean    Dirty    Total     Size    Alloc     Free
+                ------   ------   ------   ------   ------   ------   ------   ------
+  Native Heap    32615    32584        0       30    34068    49152    40720     8431
+  Dalvik Heap     4638     4604        0       89     6136    12223     6079     6144
+ Dalvik Other     2870     2052        0        0    21424                           
+        Stack     1948     1948        0        0     1952                           
+       Ashmem       25        0        0        0      544                           
+    Other dev       79        4       64        0      600                           
+     .so mmap    13087      424     1912       20    61792                           
+    .jar mmap     1475        0       64        0    37144                           
+    .apk mmap    28229        0    22012        0    44808                           
+    .ttf mmap      576        0      144        0     1512                           
+    .dex mmap     5062        0     5056        0     5532                           
+    .oat mmap        5        0        0        0      328                           
+    .art mmap     2202     1736        0      180    18056                           
+   Other mmap      166        8       40        0     1552                           
+    GL mtrack    28492    28492        0        0    28492                           
+      Unknown      834      692      128        0     1384                           
+        TOTAL   122622    72544    29420      319   265324    61375    46799    14575
+ 
+ App Summary
+                       Pss(KB)                        Rss(KB)
+                        ------                         ------
+           Java Heap:     6340                          24192
+         Native Heap:    32584                          34068
+                Code:    29620                         169724
+               Stack:     1948                           1952
+            Graphics:    28492                          28492
+       Private Other:     2980
+              System:    20658
+             Unknown:                                    6896
+ 
+           TOTAL PSS:   122622            TOTAL RSS:   265324       TOTAL SWAP PSS:      319
+ 
+ Objects
+               Views:      112         ViewRootImpl:        1
+         AppContexts:       14           Activities:        1
+              Assets:       39        AssetManagers:        0
+       Local Binders:       31        Proxy Binders:       54
+       Parcel memory:       16         Parcel count:       66
+    Death Recipients:        3      OpenSSL Sockets:        6
+            WebViews:        0
+ 
+ SQL
+         MEMORY_USED:      382
+  PAGECACHE_OVERFLOW:      187          MALLOC_SIZE:       46
+ 
+ DATABASES
+      pgsz     dbsz   Lookaside(b)          cache  Dbname
+         4       48             18        28/76/1  /data/user/0/com.alexvicente.moviedb/databases/moviedb_database
+         4        8                         0/0/0    (attached) temp
+         4       48             15         4/23/1  /data/user/0/com.alexvicente.moviedb/databases/moviedb_database (1)
+         4       56             46         2/72/5  /data/user/0/com.alexvicente.moviedb/databases/com.google.android.datatransport.events

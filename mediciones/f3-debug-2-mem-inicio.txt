@@ -1,0 +1,10 @@
+
+  Native Heap    27001    26908        0       97    29416    40960    34577     6382
+  Dalvik Heap    11851    11356        0     1327    16900    14403     7202     7201
+           Java Heap:    22708                          47500
+         Native Heap:    26908                          29416
+           TOTAL PSS:   192744            TOTAL RSS:   328832       TOTAL SWAP PSS:     1560
+               Views:      112         ViewRootImpl:        1
+            WebViews:        0
+
+

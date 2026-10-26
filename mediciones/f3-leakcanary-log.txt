@@ -1,0 +1,159 @@
+--------- beginning of main
+10-21 17:11:37.044  4526  8394 D LeakCanary: Analysis in progress, 10% done, working on Extracting metadata
+10-21 17:11:42.631  4526  8394 D LeakCanary: Analysis in progress, 20% done, working on Finding retained objects
+10-21 17:11:42.641  4526  8394 D LeakCanary: Analysis in progress, 30% done, working on Finding paths to retained objects
+10-21 17:12:07.003  4526  8394 D LeakCanary: Analysis in progress, 40% done, working on Finding dominators
+10-21 17:12:07.974  4526  8394 D LeakCanary: Found 1 paths to retained objects
+10-21 17:12:07.975  4526  8394 D LeakCanary: Analysis in progress, 50% done, working on Inspecting objects
+10-21 17:12:08.115  4526  8394 D LeakCanary: Analysis in progress, 60% done, working on Computing native retained size
+10-21 17:12:08.121  4526  8394 D LeakCanary: Analysis in progress, 70% done, working on Computing retained size
+10-21 17:12:08.838  4526  8394 D LeakCanary: Analysis in progress, 80% done, working on Building leak traces
+10-21 17:12:08.854  4526  8394 D LeakCanary: Analysis in progress, 90% done, working on Reporting heap analysis
+10-21 17:12:08.966  4526  8394 D LeakCanary: ÔÇï
+10-21 17:12:08.966  4526  8394 D LeakCanary: ====================================
+10-21 17:12:08.966  4526  8394 D LeakCanary: HEAP ANALYSIS RESULT
+10-21 17:12:08.966  4526  8394 D LeakCanary: ====================================
+10-21 17:12:08.966  4526  8394 D LeakCanary: 1 APPLICATION LEAKS
+10-21 17:12:08.966  4526  8394 D LeakCanary: 
+10-21 17:12:08.966  4526  8394 D LeakCanary: References underlined with "~~~" are likely causes.
+10-21 17:12:08.966  4526  8394 D LeakCanary: Learn more at https://squ.re/leaks.
+10-21 17:12:08.966  4526  8394 D LeakCanary: 
+10-21 17:12:08.966  4526  8394 D LeakCanary: 75319 bytes retained by leaking objects
+10-21 17:12:08.966  4526  8394 D LeakCanary: Signature: 56357fd80363ceefff14b83d0061616777381e44
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö¼ÔöÇÔöÇÔöÇ
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé GC Root: System class
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ android.app.ActivityThread class
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (ActivityThreadÔåô is not leaking and a class is never leaking)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô static ActivityThread.sCurrentActivityThread
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ android.app.ActivityThread instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (MainActivityÔåô is not leaking and ActivityThread is a singleton)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    mInitialApplication instance of com.alexvicente.moviedb.MovieDbApplication
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    mSystemContext instance of android.app.ContextImpl
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    mSystemUiContext instance of android.app.ContextImpl
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô ActivityThread.mActivities
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ android.util.ArrayMap instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (MainActivityÔåô is not leaking)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô ArrayMap.mArray
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ java.lang.Object[] array
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (MainActivityÔåô is not leaking)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô Object[1]
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ android.app.ActivityThread$ActivityClientRecord instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (MainActivityÔåô is not leaking)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    activity instance of com.alexvicente.moviedb.MainActivity with mDestroyed = false
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô ActivityThread$ActivityClientRecord.activity
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ com.alexvicente.moviedb.MainActivity instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (PopularMoviesFragmentÔåô is not leaking and Activity#mDestroyed is false)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    mApplication instance of com.alexvicente.moviedb.MovieDbApplication
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    mBase instance of androidx.appcompat.view.ContextThemeWrapper
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô ComponentActivity.onConfigurationChangedListeners
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ java.util.concurrent.CopyOnWriteArrayList instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (PopularMoviesFragmentÔåô is not leaking)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô CopyOnWriteArrayList[3]
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ androidx.fragment.app.FragmentManager$$ExternalSyntheticLambda0 instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (PopularMoviesFragmentÔåô is not leaking)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô FragmentManager$$ExternalSyntheticLambda0.f$0
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ androidx.fragment.app.FragmentManagerImpl instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (PopularMoviesFragmentÔåô is not leaking)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô FragmentManager.mParent
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ com.alexvicente.moviedb.features.popular_movies.presentation.ui.PopularMoviesFragment instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: NO (Fragment.mLifecycleRegistry.state is CREATED)
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    componentContext instance of dagger.hilt.android.internal.managers.ViewComponentManager$FragmentContextWrapper,
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    wrapping activity com.alexvicente.moviedb.MainActivity with mDestroyed = false
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Fragment.mTag = 3d0ea2bc-02e3-44d8-a7e6-04cfd7ffbf08
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô PopularMoviesFragment.adapter
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé                            ~~~~~~~
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ com.alexvicente.moviedb.features.popular_movies.presentation.adapter.MovieAdapter instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: UNKNOWN
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Retaining 2.5 MB in 6849 objects
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô RecyclerView$Adapter.mObservable
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé                           ~~~~~~~~~~~
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôö£ÔöÇ androidx.recyclerview.widget.RecyclerView$AdapterDataObservable instance
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Leaking: UNKNOWN
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Retaining 2.5 MB in 6847 objects
+10-21 17:12:08.966  4526  8394 D LeakCanary: Ôöé    Ôåô Observable.mObservers
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé                 ~~~~~~~~~~
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôö£ÔöÇ java.util.ArrayList instance
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Leaking: UNKNOWN
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Retaining 2.5 MB in 6846 objects
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Ôåô ArrayList[0]
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé               ~~~
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôö£ÔöÇ androidx.recyclerview.widget.RecyclerView$RecyclerViewDataObserver instance
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Leaking: UNKNOWN
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Retaining 2.5 MB in 6844 objects
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Ôåô RecyclerView$RecyclerViewDataObserver.this$0
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé                                            ~~~~~~
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôö£ÔöÇ androidx.recyclerview.widget.RecyclerView instance
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Leaking: UNKNOWN
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Retaining 2.5 MB in 6843 objects
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    View not part of a window view hierarchy
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    View.mAttachInfo is null (view detached)
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    View.mID = R.id.recyclerView
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    View.mWindowAttachCount = 1
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    mContext instance of dagger.hilt.android.internal.managers.ViewComponentManager$FragmentContextWrapper, wrapping
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    activity com.alexvicente.moviedb.MainActivity with mDestroyed = false
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Ôåô View.mParent
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé           ~~~~~~~
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôö£ÔöÇ android.widget.FrameLayout instance
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Leaking: UNKNOWN
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Retaining 87.4 kB in 1697 objects
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    View not part of a window view hierarchy
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    View.mAttachInfo is null (view detached)
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    View.mWindowAttachCount = 1
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    mContext instance of dagger.hilt.android.internal.managers.ViewComponentManager$FragmentContextWrapper, wrapping
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    activity com.alexvicente.moviedb.MainActivity with mDestroyed = false
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé    Ôåô View.mParent
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôöé           ~~~~~~~
+10-21 17:12:08.967  4526  8394 D LeakCanary: Ôò░ÔåÆ androidx.coordinatorlayout.widget.CoordinatorLayout instance
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     Leaking: YES (ObjectWatcher was watching this because com.alexvicente.moviedb.features.popular_movies.
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     presentation.ui.PopularMoviesFragment received Fragment#onDestroyView() callback (references to its views should
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     be cleared to prevent leaks))
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     Retaining 75.3 kB in 1460 objects
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     key = 14e9cd83-3a53-439b-861a-40c913a4211d
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     watchDurationMillis = 16556
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     retainedDurationMillis = 11551
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     View not part of a window view hierarchy
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     View.mAttachInfo is null (view detached)
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     View.mWindowAttachCount = 1
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     mContext instance of dagger.hilt.android.internal.managers.ViewComponentManager$FragmentContextWrapper, wrapping
+10-21 17:12:08.967  4526  8394 D LeakCanary: ÔÇï     activity com.alexvicente.moviedb.MainActivity with mDestroyed = false
+10-21 17:12:08.967  4526  8394 D LeakCanary: ====================================
+10-21 17:12:08.967  4526  8394 D LeakCanary: 0 LIBRARY LEAKS
+10-21 17:12:08.967  4526  8394 D LeakCanary: 
+10-21 17:12:08.967  4526  8394 D LeakCanary: A Library Leak is a leak caused by a known bug in 3rd party code that you do not have control over.
+10-21 17:12:08.967  4526  8394 D LeakCanary: See https://square.github.io/leakcanary/fundamentals-how-leakcanary-works/#4-categorizing-leaks
+10-21 17:12:08.967  4526  8394 D LeakCanary: ====================================
+10-21 17:12:08.967  4526  8394 D LeakCanary: 0 UNREACHABLE OBJECTS
+10-21 17:12:08.967  4526  8394 D LeakCanary: 
+10-21 17:12:08.967  4526  8394 D LeakCanary: An unreachable object is still in memory but LeakCanary could not find a strong reference path
+10-21 17:12:08.967  4526  8394 D LeakCanary: from GC roots.
+10-21 17:12:08.967  4526  8394 D LeakCanary: ====================================
+10-21 17:12:08.967  4526  8394 D LeakCanary: METADATA
+10-21 17:12:08.967  4526  8394 D LeakCanary: 
+10-21 17:12:08.967  4526  8394 D LeakCanary: Please include this in bug reports and Stack Overflow questions.
+10-21 17:12:08.967  4526  8394 D LeakCanary: 
+10-21 17:12:08.967  4526  8394 D LeakCanary: Build.VERSION.SDK_INT: 31
+10-21 17:12:08.967  4526  8394 D LeakCanary: Build.MANUFACTURER: realme
+10-21 17:12:08.967  4526  8394 D LeakCanary: LeakCanary version: 2.14
+10-21 17:12:08.967  4526  8394 D LeakCanary: App process name: com.alexvicente.moviedb
+10-21 17:12:08.967  4526  8394 D LeakCanary: Class count: 47524
+10-21 17:12:08.967  4526  8394 D LeakCanary: Instance count: 251456
+10-21 17:12:08.967  4526  8394 D LeakCanary: Primitive array count: 187053
+10-21 17:12:08.967  4526  8394 D LeakCanary: Object array count: 42517
+10-21 17:12:08.967  4526  8394 D LeakCanary: Thread count: 44
+10-21 17:12:08.967  4526  8394 D LeakCanary: Heap total bytes: 37813323
+10-21 17:12:08.967  4526  8394 D LeakCanary: Bitmap count: 9
+10-21 17:12:08.967  4526  8394 D LeakCanary: Bitmap total bytes: 6787809
+10-21 17:12:08.967  4526  8394 D LeakCanary: Large bitmap count: 0
+10-21 17:12:08.967  4526  8394 D LeakCanary: Large bitmap total bytes: 0
+10-21 17:12:08.967  4526  8394 D LeakCanary: Db 1: open /data/user/0/com.alexvicente.moviedb/databases/moviedb_database
+10-21 17:12:08.967  4526  8394 D LeakCanary: Db 2: open /data/user/0/com.alexvicente.moviedb/databases/com.google.android.datatransport.events
+10-21 17:12:08.967  4526  8394 D LeakCanary: Db 3: closed /data/user/0/com.alexvicente.moviedb/databases/google_app_measurement_local.db
+10-21 17:12:08.967  4526  8394 D LeakCanary: Stats: LruCache[maxSize=3000,hits=143396,misses=259090,hitRate=35%]
+10-21 17:12:08.967  4526  8394 D LeakCanary: RandomAccess[bytes=12518644,reads=259090,travel=103274187476,range=45298858,size=57174973]
+10-21 17:12:08.967  4526  8394 D LeakCanary: Heap dump reason: 1 retained objects, app is not visible
+10-21 17:12:08.967  4526  8394 D LeakCanary: Analysis duration: 33724 ms
+10-21 17:12:08.967  4526  8394 D LeakCanary: Heap dump file path: /storage/emulated/0/Download/leakcanary-com.alexvicente.moviedb/2026-10-21_17-01-37_146.hprof
+10-21 17:12:08.967  4526  8394 D LeakCanary: Heap dump timestamp: 1792624328853
+10-21 17:12:08.967  4526  8394 D LeakCanary: Heap dump duration: 9225 ms
+10-21 17:12:08.967  4526  8394 D LeakCanary: ====================================

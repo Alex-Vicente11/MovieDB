@@ -1,0 +1,12 @@
+Load: 20.59 / 20.75 / 20.81
+CPU usage from 201333ms to 6966ms ago (2026-10-12 16:30:35.763 to 2026-10-12 16:33:50.130):
+  15% 1871/system_server: 10% user + 4.7% kernel / faults: 36838 minor 9 major
+  6.9% 994/surfaceflinger: 4.5% user + 2.4% kernel / faults: 2668 minor
+  6.7% 886/android.hardware.sensors@2.0-service.multihal-mediatek: 2.4% user + 4.3% kernel
+  0.2% 13526/com.android.settings: 0.1% user + 0% kernel / faults: 128268 minor 63 major
+  3.6% 257/chre_kthread: 0% user + 3.6% kernel
+  3.2% 16126/com.android.launcher: 2.4% user + 0.8% kernel / faults: 18052 minor 20 major
+  2.9% 2331/com.android.systemui: 1.9% user + 0.9% kernel / faults: 4230 minor
+  2.3% 870/android.hardware.graphics.composer@2.3-service: 0.9% user + 1.4% kernel / faults: 21 minor
+  0.1% 1156/installd: 0% user + 0.1% kernel / faults: 13081 minor 2 major
+  1.1% 32134/com.facebook.katana: 0.8% user + 0.2% kernel / faults: 1049 minor
