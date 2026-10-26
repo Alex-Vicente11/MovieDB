@@ -21,3 +21,7 @@ local.properties
 
 # Mediciones
 /trazas/
+# Profiling: dumps y trazas pesados; los heap dumps pueden contener tokens
+*.hprof
+*.trace
+*.perfetto-trace
