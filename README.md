@@ -33,6 +33,7 @@ Aplicación Android para explorar películas usando la API de [The Movie Databas
 | UI | ViewBinding + Material Design 3 |
 | Logging | Timber |
 | Crash/ANR reporting | Firebase Crashlytics |
+| Detección de leaks | LeakCanary (solo `debug`) |
 | Seguridad de red | Certificate Pinning (OkHttp) |
 
 ---
@@ -370,6 +371,37 @@ Ambos flujos —crash y ANR— se verificaron de extremo a extremo: forzados man
 
 Al integrar Crashlytics, los tests de Room con Robolectric (`MovieDaoTest`, `FavoritesDaoTest`) empezaron a fallar con `IllegalStateException` en `FirebaseApp` — Robolectric instancia la `Application` declarada en el manifest por defecto, y su `onCreate()` ahora llama a `FirebaseCrashlytics.getInstance()` antes de que `FirebaseApp` esté inicializado en el entorno simulado (a diferencia de un dispositivo real, donde un `ContentProvider` de Firebase se adelanta). Se resolvió con `@Config(application = Application::class)`, aislando estos tests —que solo necesitan un `Context` válido para Room— de cualquier dependencia de `Application` real.
 
+### LeakCanary
+
+- Dependencia **solo en `debug`** (`debugImplementation`): no llega a `benchmark` ni a `release` (comprobado con `:app:dependencies --configuration <variante>RuntimeClasspath`).
+- Detectó un leak real: el adapter de `PopularMoviesFragment` retenía el `RecyclerView` de la vista destruida mientras se estaba en el detalle (H9, ver [Performance](#performance-y-profiling)). Con el arreglo ya no reporta retención.
+- Uso y problemas conocidos en [`docs/profiling/03-guia-leakcanary.md`](docs/profiling/03-guia-leakcanary.md).
+
+---
+
+## Performance y profiling
+
+Las optimizaciones siguen un método fijo: *primero medir, después optimizar*. Cada cambio va en su propio commit, con un test de regresión que **falla sin el arreglo** y con su medición antes/después. Los tiempos salen de un dispositivo físico (realme 7 5G, Android 12) con el build `benchmark` (R8, no debuggable); la memoria y los leaks se analizaron en `debug` con heap dumps y [LeakCanary](https://square.github.io/leakcanary/). Varios cambios son correcciones de memoria o de trabajo redundante y **no** mejoran tiempos: el informe lo dice así.
+
+| ID | Hallazgo | Estado |
+|---|---|---|
+| H0 | El `RecyclerView` de Popular no reciclaba (20 `ViewHolder` de golpe) | ✅ Corregido. Demostrado en memoria, `Views` y `ViewHolder` creados; indicio (no prueba) de menos jank |
+| — | Scroll: `shader_compile` de 37–65 ms en la `RenderThread`, ~22 s después de empezar el recorrido (T1 y T3) | ✅ Artefacto del protocolo (caché de shaders vacío): con caché lleno (T4) baja a 2.1 ms. n = 1 |
+| — | Apertura del detalle: frames de ~60 ms esperando a la `RenderThread` (compilación de shaders) | ✅ Artefacto del protocolo (T4, n = 1). Con caché lleno queda un `doFrame` de 34.4 ms que espera a la `RenderThread` (capas, texturas y `VectorDrawable`; qué dibuja cada una sin verificar) |
+| — | Volver a la lista: `RV OnLayout` con 5 `onCreateViewHolder` (~44 ms de un `doFrame` de 61.5 ms en T4) y una capa de pantalla completa (T2) | 🔎 Coste real del hilo principal, medido en T3, T4 y T5 (`doFrame` de 57–62 ms en los cuatro `BACK`); qué lo reduciría no se ha probado |
+| H7 | `getPopularMovies()` se llamaba 2 veces al volver del detalle (guarda de `savedInstanceState` + `TextWatcher`) | ✅ Corregido. Demostrado con Logcat, tests de regresión y los traces T3 y T4 (ninguna consulta de populares tras el `BACK`). **Sin mejora de tiempos medida** |
+| — | ~80 % de los frames con Buffer Stuffing, en antes y después | 🔎 Sin diagnosticar |
+| — | Glide: caché de imágenes (lista y detalle) | ✅ Comportamiento esperado: 1 descarga por póster, memoria en el scroll, disco al reiniciar y en modo avión |
+| — | Glide: `placeholder` vectorial + `withCrossFade()` en las imágenes del detalle | 🔎 Apoyada por T5 (n = 1): en la segunda apertura (`MEMORY_CACHE`) desaparecen la rasterización del placeholder y el cross-fade; no se pueden separar sin cambiar código |
+| — | El póster del detalle no reutiliza ninguna descarga de la lista | 🔎 Causa sin investigar |
+| H9 | La vista destruida de Popular seguía retenida mientras se estaba en el detalle (1 `RecyclerView`, 5 `MovieViewHolder` y 6 `Bitmap` de la lista) | ✅ Corregido (`661af70`). Demostrado con un test rojo/verde, LeakCanary y heap dumps (una captura de cada). Es un arreglo de memoria: **sin mejora de tiempos medida** |
+| — | `FavoritesViewModel.observeIsFavorite` dejaba vivo un collector por llamada | ✅ Corregido (`c96331e`). Demostrado con un test rojo/verde (`expected 1 / but was 2`); efecto en la app sin medir |
+| — | Crecimiento de ~12 MB del `Java Heap` durante el escenario A | ✅ No es retención de objetos Java (`Heap Alloc` +1.1 MB, n = 5; sin acumulación en los heap dumps). 🔎 Interpretación como *churn*: sin medir asignaciones; ~4.6 MB sin atribuir |
+| — | LeakCanary en `debug` | ✅ Sin efecto apreciable en `PopularMoviesFragmentTest` (n = 2 por condición, dentro de la variación entre corridas) |
+| B | Escenario B (Genres, Paging 3) | ⏳ Pendiente |
+
+**Estado:** escenario A (Popular) analizado; escenario B (Genres, Paging 3) pendiente. Informe completo, con metodología, evidencia y limitaciones, en [`docs/profiling/PERFORMANCE.md`](docs/profiling/PERFORMANCE.md); protocolos de reproducción y glosario en [`docs/profiling/`](docs/profiling/).
+
 ---
 
 ## Deuda técnica conocida
@@ -378,6 +410,7 @@ Al integrar Crashlytics, los tests de Room con Robolectric (`MovieDaoTest`, `Fav
 - Tests instrumentados pendientes: `MovieDetailsFragment`, `SearchFragment`, `VideosFragment`
 - `fallbackToDestructiveMigration` activo — se eliminará cuando se implementen migraciones de Room
 - `TMDB_TOKEN` queda embebido en el `.apk` compilado para los flujos no migrados a GraphQL (`movieDetail`, videos, búsqueda) — limitación inherente de `BuildConfig`, aceptable en este contexto por tratarse de un token de solo lectura sobre una API pública. El flujo de **películas populares** ya resuelve esto vía el proxy GraphQL (ver sección GraphQL/Apollo); extender el proxy a los flujos restantes eliminaría el token del cliente por completo, pero se dejó fuera de alcance de este proyecto a propósito — fue una decisión consciente, no una limitación técnica sin solución conocida.
+- Perfilado de rendimiento: falta el escenario B (Genres con Paging 3); ver [Performance](#performance-y-profiling)
 
 ---
 
