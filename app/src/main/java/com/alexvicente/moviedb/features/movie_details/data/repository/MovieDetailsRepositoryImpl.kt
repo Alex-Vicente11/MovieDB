@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import javax.inject.Inject
 
+private const val CACHE_TIMEOUT_MS = 30 * 60 * 1000L
+
 class MovieDetailsRepositoryImpl @Inject constructor(
     private val api: MovieDetailsApi,
     private val movieDetailsDao: MovieDetailsDao
@@ -26,7 +28,10 @@ class MovieDetailsRepositoryImpl @Inject constructor(
         emit(Resource.Loading())
 
         val cached = movieDetailsDao.getMovieDetails(movieId)
-        if (cached != null) {
+        val isCacheValid = cached != null &&
+                (System.currentTimeMillis() - cached.cachedAt < CACHE_TIMEOUT_MS)
+
+        if (isCacheValid) {
             emit(Resource.Success(cached.toDomain()))
             return@flow
         }
@@ -36,8 +41,12 @@ class MovieDetailsRepositoryImpl @Inject constructor(
             movieDetailsDao.insertMovieDetails(movieDetails.toEntity())
             emit(Resource.Success(movieDetails))
         } catch (e: Exception) {
-            val error = ErrorMapper.map(e)
-            emit(Resource.Error(error.toUserMessage(), error = error))
+            if (cached != null) {
+                emit(Resource.Success(cached.toDomain()))
+            } else {
+                val error = ErrorMapper.map(e)
+                emit(Resource.Error(error.toUserMessage(), error = error))
+            }
         }
     }.flowOn(Dispatchers.IO)
 }

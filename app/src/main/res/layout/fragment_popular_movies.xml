@@ -64,61 +64,56 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
+
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <FrameLayout
+        <!-- Lista de películas -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp" />
 
-            <!-- Lista de películas -->
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:clipToPadding="false"
-                android:nestedScrollingEnabled="false"
-                android:paddingBottom="16dp" />
+        <!-- Estado: cargando -->
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="48dp"
+            android:visibility="gone"
+            app:indicatorColor="#E91E63"
+            app:indicatorSize="52dp"
+            app:trackColor="#2C2C3E" />
 
-            <!-- Estado: cargando -->
-            <com.google.android.material.progressindicator.CircularProgressIndicator
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="48dp"
-                android:visibility="gone"
-                app:indicatorColor="#E91E63"
-                app:indicatorSize="52dp"
-                app:trackColor="#2C2C3E" />
+        <!-- Estado: error — mismo ID que antes, Fragment no cambia -->
+        <TextView
+            android:id="@+id/tvError"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="24dp"
+            android:textAlignment="center"
+            android:textColor="#9E9E9E"
+            android:visibility="gone" />
 
-            <!-- Estado: error — mismo ID que antes, Fragment no cambia -->
-            <TextView
-                android:id="@+id/tvError"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="24dp"
-                android:textAlignment="center"
-                android:textColor="#9E9E9E"
-                android:visibility="gone"
-                style="@style/TextAppearance.MaterialComponents.Body1" />
+        <!-- Estado: sin resultados — mismo ID que antes -->
+        <TextView
+            android:id="@+id/tvEmpty"
+            style="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/no_results"
+            android:textColor="#9E9E9E"
+            android:visibility="gone" />
 
-            <!-- Estado: sin resultados — mismo ID que antes -->
-            <TextView
-                android:id="@+id/tvEmpty"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/no_results"
-                android:textColor="#9E9E9E"
-                android:visibility="gone"
-                style="@style/TextAppearance.MaterialComponents.Body1" />
+    </FrameLayout>
 
-        </FrameLayout>
-
-    </androidx.core.widget.NestedScrollView>
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -54,13 +54,18 @@ class PopularMoviesFragment: Fragment() {
         setupToolbar()
         setupRecyclerView()
         setupListeners()
-        setupRealtimeSearch()
         observeUiState()
-        // Cargar películas populares solo la primera vez
-        // savedInstanceState == null -> primera creación (no rotación, no vuelta de back stack)
-        if (savedInstanceState == null) viewModel.getPopularMovies()
-        // Si savedInstanceState != null, el ViewModel ya tiene datos ->
-        // observeUiState() re-emitirá el estado actual automaticamente
+        // La fuente de verdad es el estado del ViewModel, no savedInstanceState:
+        // Idle = todavía no se ha cargado nada (primera vez, o proceso restaurado).
+        // Al volver del back stack, al rotar o al recrear la vista, el ViewModel ya
+        // tiene estado y observeUiState() lo re-emite.
+        if (viewModel.uiState.value is MainUiState.Idle) viewModel.getPopularMovies()
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+
+        setupRealtimeSearch()
     }
 
     private fun setupToolbar() {
@@ -167,6 +172,11 @@ class PopularMoviesFragment: Fragment() {
         super.onDestroyView()
         searchJob?.cancel()
         searchJob = null
+
+        // El Fragment conserva el adapter mientras está en el back stack. Sin esto, el adapter
+        // sigue registrando al RecyclerView de la vista destruida como observer y retiene toda
+        // su jerarquía de vistas (H9).
+        binding.recyclerView.adapter = null
 
         _binding = null
     }

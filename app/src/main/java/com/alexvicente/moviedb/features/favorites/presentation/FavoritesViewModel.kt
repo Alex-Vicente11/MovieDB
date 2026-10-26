@@ -58,7 +58,7 @@ class FavoritesViewModel @Inject constructor(
     fun observeIsFavorite(movie: Movie) {
         currentMovie = movie
         isFavoriteJob?.cancel()
-        viewModelScope.launch {
+        isFavoriteJob = viewModelScope.launch {
             isFavoriteUseCase(movie.id).collect { isFav ->
                 _isFavoriteState.value = isFav
             }

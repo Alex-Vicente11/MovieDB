@@ -40,9 +40,9 @@ android {
 
     buildTypes {
         debug {
-            // Habilita la instrumentación de bytecode para medir cobertura
             enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
+            buildConfigField("boolean", "ENABLE_CRASH_REPORTING", "false")
         }
 
         release {
@@ -52,6 +52,15 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("boolean", "ENABLE_CRASH_REPORTING", "true")
+        }
+
+        create("benchmark") {
+            initWith(getByName("release"))
+            signingConfig = signingConfigs.getByName("debug")
+            matchingFallbacks += listOf("release")
+            isDebuggable = false
+            buildConfigField("boolean", "ENABLE_CRASH_REPORTING", "false")
         }
     }
 
@@ -86,13 +95,13 @@ android {
     }
 
     sourceSets {
-        // testShared se agrega como carpeta fuente adicional
-        // tanto para unit tests como para tests instrumentados
-        getByName("test") {
-            java.srcDirs("src/testShared/java")
-        }
-        getByName("androidTest") {
-            java.srcDirs("src/testShared/java")
+        getByName("test") { java.srcDirs("src/testShared/java") }
+        getByName("androidTest") { java.srcDirs("src/testShared/java") }
+
+        // benchmark = release instrumentable: usa los mismos fuentes que release
+        getByName("benchmark") {
+            java.srcDir("src/release/java")
+            kotlin.srcDir("src/release/kotlin")
         }
     }
 
@@ -209,6 +218,9 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
+
+    // LeakCanary
+    debugImplementation(libs.leakcanary.android)
 }
 
 // ── JaCoCo report task ────────────────────────────────────────────────────────

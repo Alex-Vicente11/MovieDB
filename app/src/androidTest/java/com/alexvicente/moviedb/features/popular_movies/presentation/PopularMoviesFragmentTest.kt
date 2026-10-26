@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.features.popular_movies.presentation
 
 import androidx.navigation.testing.TestNavHostController
+import androidx.recyclerview.widget.RecyclerView
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.clearText
@@ -37,6 +38,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import com.google.common.truth.Truth.assertThat
+import io.mockk.verify
 
 @HiltAndroidTest
 @UninstallModules(SearchModule::class, PopularMoviesModule::class)
@@ -92,15 +94,9 @@ class PopularMoviesFragmentTest {
      * Lanza el Fragment con el NavController de test ya configurado.
      * Separado en helper para no repetir el setup en cada test.
      */
-    private fun launchFragment() {
-        /**
-         * Ahora solo lanza el Fragment - el NavController ya está completamente
-         * configurado (tag asignado por launchFragmentInHiltContainer + graph listo)
-         */
-        launchFragmentInHiltContainer<PopularMoviesFragment>(
-            navHostController = navController
-        )
-    }
+    private fun launchFragment() = launchFragmentInHiltContainer<PopularMoviesFragment>(
+        navHostController = navController
+    )
 
     // TESTS DE ESTADO DE CARGA
     @Test
@@ -237,6 +233,57 @@ class PopularMoviesFragmentTest {
         onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
     }
 
+    // TESTS DE RECICLADO DE LA LISTA (regresión del hallazgo H0 del profiling)
+
+    /**
+     * Protege contra reintroducir un RecyclerView con wrap_content dentro de un NestedScrollView.
+     * En ese diseño el RecyclerView mide e infla TODOS los ítems a la vez, así que
+     * childCount == itemCount y no se recicla nada. Con el layout actual solo hay hijos
+     * para lo visible más la reserva, por lo que childCount < itemCount.
+     */
+    @Test
+    fun whenListIsLong_recyclerViewOnlyInflatesVisibleItems() {
+        // Given - más ítems de los que caben en pantalla
+        val movies = MovieFactory.createMovieList(50)
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(movies)
+        )
+
+        // When
+        launchFragment()
+
+        // Then - el adapter tiene los 50, pero el RecyclerView solo mantiene hijos para los visibles
+        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+            if (noViewFoundException != null) throw noViewFoundException
+            val recyclerView = view as RecyclerView
+            assertThat(recyclerView.adapter?.itemCount).isEqualTo(50)
+            assertThat(recyclerView.childCount).isGreaterThan(0)
+            assertThat(recyclerView.childCount).isLessThan(50)
+        }
+    }
+
+    /**
+     * El AppBarLayout solo reacciona al scroll (ocultar la toolbar, liftOnScroll) si el
+     * RecyclerView participa en el nested scrolling. Con android:nestedScrollingEnabled="false"
+     * la barra superior dejaría de responder.
+     */
+    @Test
+    fun recyclerView_keepsNestedScrollingEnabled_soAppBarCanReact() {
+        // Given
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(MovieFactory.createMovieList(5))
+        )
+
+        // When
+        launchFragment()
+
+        // Then
+        onView(withId(R.id.recyclerView)).check { view, noViewFoundException ->
+            if (noViewFoundException != null) throw noViewFoundException
+            assertThat((view as RecyclerView).isNestedScrollingEnabled).isTrue()
+        }
+    }
+
     // TESTS DE NAVEGACIÓN
     @Test
     fun whenMovieClicked_navigatesToMovieDetails() {
@@ -288,5 +335,73 @@ class PopularMoviesFragmentTest {
         val movieId = navController.backStack.last()
             .arguments?.getInt("movieId")
         assertThat(movieId).isEqualTo(42)
+    }
+
+    // TEST DE REGRESIÓN DE H7 (recarga de populares al volver del detalle)
+
+    /**
+     * Reproduce la vuelta del back stack: el Fragment conserva su instancia y su ViewModel,
+     * pero su vista se destruye y se recrea (detach -> attach). Antes del cambio, la guarda
+     * por savedInstanceState no lo evitaba y el EditText, al restaurar su texto, disparaba el
+     * TextWatcher: getPopularMovies() se pedía 2 veces más por cada vuelta (log de H7).
+     */
+    @Test
+    fun whenFragmentViewIsRecreated_popularMoviesAreNotReloaded() {
+        // Given
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(MovieFactory.createMovieList(5))
+        )
+
+        // When - primera vista y luego vista recreada (equivale a ir al detalle y volver)
+        val scenario = launchFragment()
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+
+        scenario.onActivity { activity ->
+            val fragment = activity.supportFragmentManager.findFragmentById(android.R.id.content)!!
+            activity.supportFragmentManager.beginTransaction().detach(fragment).commitNow()
+            activity.supportFragmentManager.beginTransaction().attach(fragment).commitNow()
+        }
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+        // Then - el estado del ViewModel se vuelve a mostrar sin pedir las populares otra vez
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+        verify(exactly = 1) { popularMoviesRepository.getPopularMovies() }
+    }
+
+    // TEST DE REGRESIÓN DE H9 (la vista destruida de la lista retenía su RecyclerView en el detalle)
+
+    /**
+     * Al ir de la lista al detalle el Fragment queda en el back stack: su vista se destruye pero
+     * él conserva el adapter como propiedad. Si el RecyclerView de esa vista sigue registrado
+     * como observer del adapter, toda su jerarquía de vistas queda retenida mientras se está en
+     * el detalle (cadena PopularMoviesFragment.adapter -> mObservers -> RecyclerView, vista con
+     * LeakCanary). Tras destruir la vista, el adapter no debe conservar observers.
+     */
+    @Test
+    fun whenFragmentViewIsDestroyed_adapterIsNoLongerObservedByOldRecyclerView() {
+        // Given
+        every { popularMoviesRepository.getPopularMovies() } returns flowOf(
+            Resource.Success(MovieFactory.createMovieList(5))
+        )
+
+        // When - se captura el adapter de la primera vista y se destruye esa vista
+        val scenario = launchFragment()
+        onView(withId(R.id.recyclerView)).check(matches(isDisplayed()))
+
+        lateinit var adapterBefore: RecyclerView.Adapter<*>
+        lateinit var oldRecyclerView: RecyclerView
+        scenario.onActivity { activity ->
+            val fragment = activity.supportFragmentManager.findFragmentById(android.R.id.content)!!
+            oldRecyclerView = fragment.requireView().findViewById(R.id.recyclerView)
+            adapterBefore = oldRecyclerView.adapter!!
+            assertThat(adapterBefore.hasObservers()).isTrue()
+            activity.supportFragmentManager.beginTransaction().detach(fragment).commitNow()
+        }
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync()
+
+        // Then - el adapter (que conserva el Fragment) ya no mantiene registrado al RecyclerView viejo
+        scenario.onActivity {
+            assertThat(adapterBefore.hasObservers()).isFalse()
+        }
     }
 }

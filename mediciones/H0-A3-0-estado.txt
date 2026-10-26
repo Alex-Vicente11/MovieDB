@@ -1,0 +1,12 @@
+
+  AC powered: false
+  USB powered: true
+  Wireless powered: false
+  level: 89
+  temperature: 292
+Thermal Status: 0
+MemAvailable:    3441668 kB
+    mActiveSfDisplayMode=DisplayMode{id=0, width=1080, height=2400, xDpi=397.565, yDpi=406.4, refreshRate=60.0, appVsyncOffsetNanos=2400001, presentationDeadlineNanos=28600000, 
+group=-1}
+
+

@@ -7,6 +7,7 @@ import com.alexvicente.moviedb.core.data.util.Resource
 import com.alexvicente.moviedb.features.popular_movies.presentation.MainUiState
 import com.alexvicente.moviedb.features.search.domain.usecase.SearchMoviesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,8 +23,11 @@ class MainViewModel @Inject constructor(
     private val _uiState = MutableStateFlow<MainUiState>(MainUiState.Idle)
     val uiState: StateFlow<MainUiState> = _uiState.asStateFlow()
 
+    private var loadJob: Job? = null
+
     fun searchMovies(query: String) {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             searchMoviesUseCase(query).collect { resource ->
                 _uiState.value = when (resource) {
                     is Resource.Loading -> MainUiState.Loading
@@ -43,7 +47,8 @@ class MainViewModel @Inject constructor(
     }
 
     fun getPopularMovies() {
-        viewModelScope.launch {
+        loadJob?.cancel()
+        loadJob = viewModelScope.launch {
             getPopularMoviesUseCase().collect { resource ->
                 _uiState.value = when (resource) {
                     is Resource.Loading -> MainUiState.Loading

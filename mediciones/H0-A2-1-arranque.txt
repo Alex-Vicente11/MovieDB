@@ -1,0 +1,7 @@
+Starting: Intent { cmp=com.alexvicente.moviedb/.MainActivity }
+Status: ok
+LaunchState: COLD
+Activity: com.alexvicente.moviedb/.MainActivity
+TotalTime: 374
+WaitTime: 378
+Complete

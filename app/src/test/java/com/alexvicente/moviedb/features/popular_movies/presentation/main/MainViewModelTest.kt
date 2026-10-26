@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
@@ -23,6 +24,8 @@ import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.flow
 
 /**
  * Responsabilidad del ViewModel:
@@ -314,5 +317,51 @@ class MainViewModelTest {
 
             cancelAndIgnoreRemainingEvents()
         }
+    }
+
+    // CANCELACIÓN DE CARGAS EN CURSO (único Job activo)
+
+    @Test
+    fun whenPopularRequestedWhileSearchInFlight_searchResultDoesNotOverwritePopular() = runTest {
+        // Given - una búsqueda lenta (1 s virtual) y populares inmediatas
+        coEvery { mockSearchRepository.searchMovies("batman") } returns flow {
+            delay(1_000)
+            emit(ResourceFactory.successMovies(MovieFactory.createMovieList(2)))
+        }
+        fakePopularMoviesRepository.movies = MovieFactory.createMovieList(5)
+
+        // When - el usuario busca y, antes de la respuesta, vuelve a populares
+        viewModel.searchMovies("batman")
+        advanceTimeBy(500)
+        viewModel.getPopularMovies()
+        advanceUntilIdle() // avanza de sobra: la búsqueda cancelada no debe emitir
+
+        // Then - el estado final es el de populares
+        val state = viewModel.uiState.value
+        assertThat(state).isInstanceOf(MainUiState.Success::class.java)
+        assertThat((state as MainUiState.Success).movies).hasSize(5)
+    }
+
+    @Test
+    fun whenNewSearchStartsWhileAnotherIsInFlight_onlyLatestResultIsShown() = runTest {
+        // Given - "ba" responde tarde, "bat" responde enseguida
+        coEvery { mockSearchRepository.searchMovies("ba") } returns flow {
+            delay(1_000)
+            emit(ResourceFactory.successMovies(MovieFactory.createMovieList(2)))
+        }
+        coEvery { mockSearchRepository.searchMovies("bat") } returns flowOf(
+            ResourceFactory.successMovies(MovieFactory.createMovieList(3))
+        )
+
+        // When
+        viewModel.searchMovies("ba")
+        advanceTimeBy(100)
+        viewModel.searchMovies("bat")
+        advanceUntilIdle()
+
+        // Then - la respuesta tardía de "ba" no pisa a la de "bat"
+        val state = viewModel.uiState.value
+        assertThat(state).isInstanceOf(MainUiState.Success::class.java)
+        assertThat((state as MainUiState.Success).movies).hasSize(3)
     }
 }

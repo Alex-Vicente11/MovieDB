@@ -153,8 +153,9 @@ class PopularMoviesRepositoryImplTest {
             awaitComplete()
         }
 
-        coVerify(exactly = 1) { mockDao.deletePopularMovies() }
-        coVerify(exactly = 1) { mockDao.insertMovies(any()) }
+        coVerify(exactly = 1) {
+            mockDao.replacePopularMovies(match { it.size == 3 && it.all { e -> e.isPopular } })
+        }
     }
 
     // Tests: caché válido - no expirado
@@ -183,8 +184,7 @@ class PopularMoviesRepositoryImplTest {
             awaitComplete()
         }
 
-        coVerify(exactly = 0) { mockDao.deletePopularMovies() }
-        coVerify(exactly = 0) { mockDao.insertMovies(any()) }
+        coVerify(exactly = 0) { mockDao.replacePopularMovies(any()) }
     }
 
     // Tests: caché expirado - offline-first completo
@@ -214,8 +214,7 @@ class PopularMoviesRepositoryImplTest {
             awaitComplete()
         }
 
-        coVerify(exactly = 1) { mockDao.deletePopularMovies() }
-        coVerify(exactly = 1) { mockDao.insertMovies(any()) }
+        coVerify(exactly = 1) { mockDao.replacePopularMovies(any()) }
     }
 
     // Tests: errores con caché vacío

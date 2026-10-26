@@ -39,6 +39,7 @@ room = "2.7.1"
 googleServices = "4.4.2"
 firebaseBom = "33.5.1"
 firebaseCrashlyticsPlugin = "3.0.2"
+leakcanary = "2.14"
 
 [libraries]
 # Core
@@ -53,6 +54,7 @@ firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashly
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
 apollo-testing-support = { group = "com.apollographql.apollo", name = "apollo-testing-support", version.ref = "apollo" }
+leakcanary-android = { group = "com.squareup.leakcanary", name = "leakcanary-android", version.ref = "leakcanary" }
 
 
 androidx-activity = { group = "androidx.activity", name = "activity-ktx", version.ref = "activity" }
