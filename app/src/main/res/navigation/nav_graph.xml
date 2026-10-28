@@ -98,4 +98,9 @@
             android:defaultValue="@null"/>
     </fragment>
 
+    <fragment
+        android:id="@+id/tvSeriesFragment"
+        android:name="com.alexvicente.moviedb.features.tv_series.presentation.ui.TvSeriesFragment"
+        android:label="Series" />
+
 </navigation>
