@@ -144,8 +144,15 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.material)
-    implementation(libs.androidx.material3)
     implementation(libs.glide)
+
+    // ── Compose ───────────────────────────────────────────────────────────────
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
     implementation(libs.androidx.lifecycle.runtime.ktx)
