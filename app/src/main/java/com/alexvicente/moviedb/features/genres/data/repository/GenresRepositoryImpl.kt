@@ -8,6 +8,7 @@ import com.alexvicente.moviedb.core.domain.model.Genre
 import com.alexvicente.moviedb.features.genres.data.remote.api.GenresApi
 import com.alexvicente.moviedb.features.genres.domain.repository.GenresRepository
 import javax.inject.Inject
+import kotlin.coroutines.cancellation.CancellationException
 
 class GenresRepositoryImpl @Inject constructor(
     private val api: GenresApi
@@ -15,6 +16,9 @@ class GenresRepositoryImpl @Inject constructor(
 
     override suspend fun getGenres(): Resource<List<Genre>> = try {
         Resource.Success(api.getGenres().toDomain())
+
+    }catch (e: CancellationException) {
+        throw e
     } catch (e: Exception) {
         val error = ErrorMapper.map(e)
         Resource.Error(error.toUserMessage(), error = error)
