@@ -20,7 +20,7 @@ class TvSeriesFragment: Fragment() {
             ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
         )
         setContent {
-            MovieDbTheme { TvSeriesScreen() }
+            MovieDbTheme { TvSeriesRoute() }
         }
     }
 }

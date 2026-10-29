@@ -153,6 +153,8 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.lifecycle.runtime.compose)
     debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -208,9 +210,11 @@ dependencies {
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.paging.testing)
+
     // Hilt — permite @HiltAndroidTest y @BindValue en tests instrumentados
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.compiler)
+
     // Navigation — provee TestNavHostController para verificar navegación
     androidTestImplementation(libs.androidx.navigation.testing)
 

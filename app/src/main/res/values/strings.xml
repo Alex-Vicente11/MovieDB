@@ -24,4 +24,9 @@
 
     <!-- GenresFragment -->
     <string name="error_loading_movies">Error al cargar películas</string>
+
+    <!-- Compose -->
+    <string name="tv_series_load_error">No se pudo cargar el contenido</string>
+    <string name="tv_series_retry">Reintentar</string>
+
 </resources>
