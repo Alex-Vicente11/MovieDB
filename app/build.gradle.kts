@@ -155,6 +155,8 @@ dependencies {
     debugImplementation(libs.androidx.compose.ui.tooling)
     implementation(libs.androidx.paging.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
     implementation(libs.androidx.lifecycle.runtime.ktx)

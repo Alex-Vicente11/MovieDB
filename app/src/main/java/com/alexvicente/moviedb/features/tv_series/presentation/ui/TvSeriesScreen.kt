@@ -84,14 +84,7 @@ private fun TvSeriesList(
             key = tvSeries.itemKey { it.id }
         ) { index ->
             tvSeries[index]?.let { series ->
-                Text(
-                    text = series.name,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp, vertical = 12.dp)
-                )
+                TvSeriesItem(series = series)
             }
         }
 
