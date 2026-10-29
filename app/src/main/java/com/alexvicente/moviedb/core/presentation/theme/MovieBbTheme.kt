@@ -7,7 +7,8 @@ import androidx.compose.ui.graphics.Color
 
 private val MovieDbDarkColors = darkColorScheme(
     background = Color(0xFF1A1A2E),
-    surface = Color(0xFF1E1E2E)
+    surface = Color(0xFF1E1E2E),
+    primary = Color(0xFFE91E63) // PROVISIONAL: igualar al color "checked" de res/color/bottom_nav_selector.xml
 )
 
 @Composable

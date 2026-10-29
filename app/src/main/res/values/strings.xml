@@ -28,5 +28,7 @@
     <!-- Compose -->
     <string name="tv_series_load_error">No se pudo cargar el contenido</string>
     <string name="tv_series_retry">Reintentar</string>
+    <string name="tv_series_category_popular">Populares</string>
+    <string name="tv_series_category_top_rated">Mejor valoradas</string>
 
 </resources>
