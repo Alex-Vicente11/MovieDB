@@ -2,6 +2,8 @@ package com.alexvicente.moviedb.testutil.factories
 
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeriesDto
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesDetails
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesStatus
 
 object TvSeriesFactory {
 
@@ -32,4 +34,11 @@ object TvSeriesFactory {
 
     fun createTvSeriesList(size: Int): List<TvSeries> =
         (1..size).map { createTvSeries(id = it, name = "Series $it") }
+
+    fun createTvSeriesDetails(id: Int = 1, name: String = "Series 1") = TvSeriesDetails(
+        id = id, name = name, tagline = "", overview = "Overview", posterPath = null,
+        backdropPath = null, voteAverage = 8.5, voteCount = 100, firstAirDate = "2020-01-15",
+        status = TvSeriesStatus.ENDED, numberOfSeasons = 1, numberOfEpisodes = 10,
+        genres = emptyList(), seasons = emptyList()
+    )
 }

@@ -101,6 +101,26 @@
     <fragment
         android:id="@+id/tvSeriesFragment"
         android:name="com.alexvicente.moviedb.features.tv_series.presentation.ui.TvSeriesFragment"
-        android:label="Series" />
+        android:label="Series">
+
+        <action
+            android:id="@+id/action_tvSeries_to_tvSeriesDetails"
+            app:destination="@+id/tvSeriesDetailsFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/tvSeriesDetailsFragment"
+        android:name="com.alexvicente.moviedb.features.tv_series.presentation.ui.TvSeriesDetailsFragment"
+        android:label="Detalle de serie">
+
+        <argument
+            android:name="seriesId"
+            app:argType="integer"
+            android:defaultValue="-1"/>
+    </fragment>
 
 </navigation>

@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,11 +27,13 @@ import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
 @Composable
 fun TvSeriesItem(
     series: TvSeries,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -84,7 +87,8 @@ private fun TvSeriesItemPreview() {
                 posterPath = null, backdropPath = null, voteAverage = 8.4, voteCount = 100,
                 firstAirDate = "2021-03-14",
                 popularity = 10.0
-            )
+            ),
+            onClick = {}
         )
     }
 }

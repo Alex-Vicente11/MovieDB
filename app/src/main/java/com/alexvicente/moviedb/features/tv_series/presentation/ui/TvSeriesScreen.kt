@@ -1,6 +1,5 @@
 package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -44,6 +43,7 @@ private val BottomNavigationSpace = 80.dp
 
 @Composable
 fun TvSeriesRoute(
+    onSeriesClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TvSeriesViewModel = hiltViewModel()
 ) {
@@ -54,6 +54,7 @@ fun TvSeriesRoute(
         tvSeries = tvSeries,
         selectedCategory = selectedCategory,
         onCategorySelected = viewModel::onCategorySelected,
+        onSeriesClick = onSeriesClick,
         contentPadding = PaddingValues(bottom = BottomNavigationSpace),
         modifier = modifier.statusBarsPadding()
     )
@@ -63,6 +64,7 @@ fun TvSeriesScreen(
     tvSeries: LazyPagingItems<TvSeries>,
     selectedCategory: TvSeriesCategory,
     onCategorySelected: (TvSeriesCategory) -> Unit,
+    onSeriesClick: (Int) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -80,7 +82,7 @@ fun TvSeriesScreen(
                 onRetry = { tvSeries.retry() },
                 modifier = contentModifier
             )
-            else -> TvSeriesList(tvSeries, contentPadding, contentModifier)
+            else -> TvSeriesList(tvSeries, onSeriesClick, contentPadding, contentModifier)
         }
     }
 }
@@ -114,6 +116,7 @@ private fun CategoryTabs(
 @Composable
 private fun TvSeriesList(
     tvSeries: LazyPagingItems<TvSeries>,
+    onSeriesClick: (Int) -> Unit,
     contentPadding: PaddingValues,
     modifier: Modifier = Modifier
 ) {
@@ -126,7 +129,7 @@ private fun TvSeriesList(
             key = tvSeries.itemKey { it.id }
         ) { index ->
             tvSeries[index]?.let { series ->
-                TvSeriesItem(series = series)
+                TvSeriesItem(series = series, onClick = { onSeriesClick(series.id) })
             }
         }
 
@@ -134,29 +137,6 @@ private fun TvSeriesList(
             is LoadState.Loading -> item { AppendLoading() }
             is LoadState.Error -> item { AppendError(onRetry = { tvSeries.retry() }) }
             else -> Unit
-        }
-    }
-}
-
-@Composable
-private fun FullScreenLoading(modifier: Modifier = Modifier) {
-    Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        CircularProgressIndicator()
-    }
-}
-
-@Composable
-private fun FullScreenError(onRetry: () -> Unit, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = stringResource(R.string.tv_series_retry)
-        )
-        Button(onClick = onRetry, modifier = Modifier.padding(top = 16.dp)) {
-            Text(stringResource(R.string.tv_series_retry))
         }
     }
 }
@@ -207,5 +187,6 @@ private fun TvSeriesScreenPreview() {
             tvSeries = items,
             selectedCategory = selected,
             onCategorySelected = { selected = it },
+            onSeriesClick = {},
             contentPadding = PaddingValues()) }
 }

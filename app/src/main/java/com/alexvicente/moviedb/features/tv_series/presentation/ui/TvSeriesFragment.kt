@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 
 class TvSeriesFragment: Fragment() {
@@ -20,7 +22,18 @@ class TvSeriesFragment: Fragment() {
             ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
         )
         setContent {
-            MovieDbTheme { TvSeriesRoute() }
+            MovieDbTheme {
+                TvSeriesRoute(
+                    onSeriesClick = { seriesId ->
+                        val navController = findNavController()
+                        if (navController.currentDestination?.id == R.id.tvSeriesFragment) {
+                            navController.navigate(
+                                TvSeriesFragmentDirections.actionTvSeriesToTvSeriesDetails(seriesId)
+                            )
+                        }
+                    }
+                )
+            }
         }
     }
 }
