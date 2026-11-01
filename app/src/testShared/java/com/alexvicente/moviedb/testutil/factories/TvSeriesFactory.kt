@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.testutil.factories
 
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeriesDto
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonSummary
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesDetails
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesStatus
@@ -40,5 +41,10 @@ object TvSeriesFactory {
         backdropPath = null, voteAverage = 8.5, voteCount = 100, firstAirDate = "2020-01-15",
         status = TvSeriesStatus.ENDED, numberOfSeasons = 1, numberOfEpisodes = 10,
         genres = emptyList(), seasons = emptyList()
+    )
+
+    fun createTvSeasonSummary(id: Int = 1, seasonNumber: Int = 1) = TvSeasonSummary(
+        id = id, name = "Season $seasonNumber", overview = "", posterPath = null,
+        airDate = "2020-01-15", episodeCount = 10, seasonNumber = seasonNumber, voteAverage = 8.0
     )
 }

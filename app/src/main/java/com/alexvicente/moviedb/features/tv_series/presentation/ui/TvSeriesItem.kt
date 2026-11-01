@@ -1,27 +1,19 @@
 package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
-import com.alexvicente.moviedb.core.presentation.util.TmdbImage
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
 
 @Composable
@@ -37,16 +29,7 @@ fun TvSeriesItem(
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        AsyncImage(
-            model = TmdbImage.poster(series.posterPath),
-            contentDescription = null, // decorativa: el nombre va en el texto contiguo
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .width(90.dp)
-                .aspectRatio(2f / 3f)
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.surface)
-        )
+        PosterImage(path = series.posterPath, width = 90.dp)
 
         Column(verticalArrangement = Arrangement.spacedBy(4.dp)) {
             Text(

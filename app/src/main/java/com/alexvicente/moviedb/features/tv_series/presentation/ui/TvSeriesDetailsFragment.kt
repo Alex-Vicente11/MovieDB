@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
+import androidx.navigation.findNavController
+import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +24,15 @@ class TvSeriesDetailsFragment : Fragment() {
             ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
         )
         setContent {
-            MovieDbTheme { TvSeriesDetailsRoute() }
+            MovieDbTheme {
+                TvSeriesDetailsRoute(
+                    onBackClick = {
+                        val navController = findNavController()
+                        if (navController.currentDestination?.id == R.id.tvSeriesDetailsFragment)
+                            navController.navigateUp()
+                    }
+                )
+            }
         }
     }
 }

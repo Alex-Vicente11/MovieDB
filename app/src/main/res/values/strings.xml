@@ -31,4 +31,20 @@
     <string name="tv_series_category_popular">Populares</string>
     <string name="tv_series_category_top_rated">Mejor valoradas</string>
 
+    <string name="tv_series_details_back">Volver</string>
+    <string name="tv_series_details_overview_empty">Sin sinopsis disponible</string>
+    <string name="tv_series_details_seasons">Temporadas</string>
+
+    <string name="tv_series_status_returning">En emisión</string>
+    <string name="tv_series_status_in_production">En producción</string>
+    <string name="tv_series_status_planned">Planeada</string>
+    <string name="tv_series_status_pilot">Piloto</string>
+    <string name="tv_series_status_ended">Finalizada</string>
+    <string name="tv_series_status_canceled">Cancelada</string>
+
+    <plurals name="tv_series_episode_count">
+        <item quantity="one">%d episodio</item>
+        <item quantity="other">%d episodios</item>
+    </plurals>
+
 </resources>
