@@ -4,10 +4,14 @@ import android.R.attr.name
 import com.alexvicente.moviedb.core.data.mapper.GenreMapper.toDomain
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.CastMemberDto
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvCreditsDto
+import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvEpisodeDto
+import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeasonDetailsDto
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeasonSummaryDto
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeriesDetailsDto
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeriesDto
 import com.alexvicente.moviedb.features.tv_series.domain.model.CastMember
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvEpisode
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonDetails
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonSummary
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesDetails
@@ -74,4 +78,28 @@ object TvSeriesMapper {
     )
 
     fun TvCreditsDto.toCast(): List<CastMember> = cast.orEmpty().map { it.toDomain() }
+
+
+    fun TvSeasonDetailsDto.toDomain(): TvSeasonDetails = TvSeasonDetails(
+        id = id,
+        seasonNumber = seasonNumber,
+        name = name.trim(),
+        overview = overview?.trim().orEmpty(),
+        posterPath = posterPath?.trim()?.takeIf { it.isNotEmpty() },
+        airDate = airDate?.trim()?.takeIf { it.isNotEmpty() },
+        voteAverage = voteAverage,
+        episodes = episodes.orEmpty().map { it.toDomain() }
+    )
+
+    fun TvEpisodeDto.toDomain(): TvEpisode = TvEpisode(
+        id = id,
+        episodeNumber = episodeNumber,
+        name = name.trim(),
+        overview = overview?.trim().orEmpty(),
+        airDate = airDate?.trim()?.takeIf { it.isNotEmpty() },
+        runtimeMinutes = runtime?.takeIf { it > 0 },   // 0 minutos no es una duración
+        stillPath = stillPath?.trim()?.takeIf { it.isNotEmpty() },
+        voteAverage = voteAverage,
+        voteCount = voteCount
+    )
 }

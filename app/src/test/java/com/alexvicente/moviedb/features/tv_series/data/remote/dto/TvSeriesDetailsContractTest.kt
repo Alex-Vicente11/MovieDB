@@ -20,7 +20,7 @@ class TvSeriesDetailsContractTest {
     @Test
     fun returningSeries_greysAnatomy_parsesAndMapsToDomain() {
         val dto = gson.fromJson(
-            Fixtures.read("tv_series_details_1416.json"),
+            Fixtures.read("tv_series/tv_series_details_1416.json"),
             TvSeriesDetailsDto::class.java
         )
 
@@ -44,7 +44,7 @@ class TvSeriesDetailsContractTest {
     @Test
     fun endedMiniseries_chernobyl_parsesAndMapsToDomain() {
         val dto = gson.fromJson(
-            Fixtures.read("tv_series_details_87108.json"),
+            Fixtures.read("tv_series/tv_series_details_87108.json"),
             TvSeriesDetailsDto::class.java
         )
 

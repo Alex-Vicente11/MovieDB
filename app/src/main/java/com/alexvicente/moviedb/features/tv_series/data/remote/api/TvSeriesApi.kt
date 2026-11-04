@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.features.tv_series.data.remote.api
 
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvCreditsDto
+import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeasonDetailsDto
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeriesDetailsDto
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeriesResponseDto
 import retrofit2.http.GET
@@ -32,4 +33,11 @@ interface TvSeriesApi {
         @Path("series_id") seriesId: Int,
         @Query("language") language: String
     ): TvCreditsDto
+
+    @GET("tv/{series_id}/season/{season_number}")
+    suspend fun getTvSeasonDetails(
+        @Path("series_id") series: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Query("language") language: String
+    ): TvSeasonDetailsDto
 }

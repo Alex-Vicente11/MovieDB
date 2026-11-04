@@ -23,7 +23,7 @@ class TvSeriesCreditsContractTest {
 
     @Test
     fun greysAnatomy_castParsesAndMapsToDomain() {
-        val cast = creditsOf("tv_series_details_1416.json").toCast()
+        val cast = creditsOf("tv_series/tv_series_details_1416.json").toCast()
 
         assertThat(cast).hasSize(13)
         with(cast.first()) {
@@ -37,7 +37,7 @@ class TvSeriesCreditsContractTest {
 
     @Test
     fun chernobyl_castParses_andCrewIsIgnored() {
-        val cast = creditsOf("tv_series_details_87108.json").toCast()
+        val cast = creditsOf("tv_series/tv_series_details_87108.json").toCast()
 
         assertThat(cast).hasSize(2)
         assertThat(cast.first().name).isEqualTo("Jared Harris")

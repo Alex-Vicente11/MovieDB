@@ -1,9 +1,11 @@
 package com.alexvicente.moviedb.features.tv_series.di
 
 import com.alexvicente.moviedb.features.tv_series.data.remote.api.TvSeriesApi
+import com.alexvicente.moviedb.features.tv_series.data.repository.TvSeasonRepositoryImpl
 import com.alexvicente.moviedb.features.tv_series.data.repository.TvSeriesCastRepositoryImpl
 import com.alexvicente.moviedb.features.tv_series.data.repository.TvSeriesDetailsRepositoryImpl
 import com.alexvicente.moviedb.features.tv_series.data.repository.TvSeriesRepositoryImpl
+import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeasonRepository
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesCastRepository
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesDetailsRepository
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesRepository
@@ -36,6 +38,12 @@ abstract class TvSeriesModule {
     abstract fun bindTvSeriesCastRepository(
         impl: TvSeriesCastRepositoryImpl
     ): TvSeriesCastRepository
+
+    @Binds
+    @Singleton
+    abstract fun bindTvSeasonRepository(
+        impl: TvSeasonRepositoryImpl
+    ): TvSeasonRepository
 
     companion object {
 
