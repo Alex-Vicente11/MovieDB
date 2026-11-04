@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.flowOf
 class FakeTvSeriesRepository : TvSeriesRepository {
 
     var seriesByCategory: Map<TvSeriesCategory, List<TvSeries>> = emptyMap()
+
+    /** Registra qué categorías se consultaron, en orden. */
     val requestedCategories = mutableListOf<TvSeriesCategory>()
 
     override fun getTvSeries(

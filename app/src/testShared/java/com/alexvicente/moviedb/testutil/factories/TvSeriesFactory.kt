@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.testutil.factories
 
 import com.alexvicente.moviedb.features.tv_series.data.remote.dto.TvSeriesDto
+import com.alexvicente.moviedb.features.tv_series.domain.model.CastMember
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonSummary
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesDetails
@@ -47,4 +48,22 @@ object TvSeriesFactory {
         id = id, name = "Season $seasonNumber", overview = "", posterPath = null,
         airDate = "2020-01-15", episodeCount = 10, seasonNumber = seasonNumber, voteAverage = 8.0
     )
+
+
+    // ── Reparto ──────────────────────────────────────────────────────────────
+
+    fun createCastMember(
+        id: Int = 1,
+        name: String = "Actor $id",
+        creditId: String = "credit-$id"
+    ) = CastMember(
+        id = id,
+        creditId = creditId,
+        name = name,
+        character = "Personaje $id",
+        profilePath = "/profile$id.jpg"
+    )
+
+    fun createCastMemberList(size: Int): List<CastMember> =
+        (1..size).map { createCastMember(id = it) }
 }

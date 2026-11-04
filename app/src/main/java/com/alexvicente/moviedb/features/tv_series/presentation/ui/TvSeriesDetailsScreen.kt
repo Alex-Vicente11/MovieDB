@@ -47,6 +47,7 @@ import com.alexvicente.moviedb.core.presentation.util.TmdbImage
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonSummary
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesDetails
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesStatus
+import com.alexvicente.moviedb.features.tv_series.presentation.CastUiState
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsUiState
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsViewModel
 
@@ -57,10 +58,13 @@ fun TvSeriesDetailsRoute(
     viewModel: TvSeriesDetailsViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val castState by viewModel.castState.collectAsStateWithLifecycle()
 
     TvSeriesDetailsScreen(
         uiState = uiState,
+        castState = castState,
         onRetry = viewModel::retry,
+        onCastRetry = viewModel::retryCast,
         onBackClick = onBackClick,
         modifier = modifier.statusBarsPadding()
     )
@@ -69,7 +73,9 @@ fun TvSeriesDetailsRoute(
 @Composable
 fun TvSeriesDetailsScreen(
     uiState: TvSeriesDetailsUiState,
+    castState: CastUiState,
     onRetry: () -> Unit,
+    onCastRetry: () -> Unit,
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -77,7 +83,7 @@ fun TvSeriesDetailsScreen(
         when (uiState) {
             is TvSeriesDetailsUiState.Loading -> FullScreenLoading()
             is TvSeriesDetailsUiState.Error -> FullScreenError(onRetry = onRetry)
-            is TvSeriesDetailsUiState.Success -> TvSeriesDetailsContent(uiState.details)
+            is TvSeriesDetailsUiState.Success -> TvSeriesDetailsContent(uiState.details, castState, onCastRetry)
         }
 
         BackButton(
@@ -92,6 +98,8 @@ fun TvSeriesDetailsScreen(
 @Composable
 private fun TvSeriesDetailsContent(
     details: TvSeriesDetails,
+    castState: CastUiState,
+    onCastRetry: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val seasons = remember(details.seasons) { details.seasons.specialsLast() }
@@ -102,6 +110,7 @@ private fun TvSeriesDetailsContent(
     ) {
         item(key = "header") { DetailsHeader(details) }
         item(key = "overview") { OverviewSection(details.overview) }
+        item(key = "cast") { CastSection(castState = castState, onRetry = onCastRetry)}
         item(key = "seasons-title") {
             SectionTitle(stringResource(R.string.tv_series_details_seasons))
         }
@@ -282,7 +291,9 @@ private fun TvSeriesDetailsScreenPreview() {
     MovieDbTheme {
         TvSeriesDetailsScreen(
             uiState = TvSeriesDetailsUiState.Success(previewDetails),
+            castState = CastUiState.Loading,
             onRetry =  {},
+            onCastRetry = {},
             onBackClick = {}
         )
     }

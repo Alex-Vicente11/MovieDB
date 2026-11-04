@@ -5,18 +5,24 @@ import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesStatus
 import com.google.common.truth.Truth.assertThat
 import com.google.gson.GsonBuilder
 import org.junit.Test
+import com.alexvicente.moviedb.testutil.Fixtures
+import kotlin.jvm.java
 
+/**
+ * Prueba de contrato: parsea respuestas reales de TMDB (src/test/resources)
+ * con el mismo Gson de NetworkModule y verifica el mapeo a dominio.
+ * Detecta regresiones del DTO y del mapper; no cambios futuros de la API.
+ */
 class TvSeriesDetailsContractTest {
 
     private val gson = GsonBuilder().create()
 
-    private fun fixture(name: String): String =
-        checkNotNull(javaClass.classLoader?.getResource(name)) { "Falta el fixture $name" }
-            .readText()
-
     @Test
     fun returningSeries_greysAnatomy_parsesAndMapsToDomain() {
-        val dto = gson.fromJson(fixture("tv_series_details_1416.json"), TvSeriesDetailsDto::class.java)
+        val dto = gson.fromJson(
+            Fixtures.read("tv_series_details_1416.json"),
+            TvSeriesDetailsDto::class.java
+        )
 
         val details = dto.toDomain()
 
@@ -37,7 +43,10 @@ class TvSeriesDetailsContractTest {
 
     @Test
     fun endedMiniseries_chernobyl_parsesAndMapsToDomain() {
-        val dto = gson.fromJson(fixture("tv_series_details_87108.json"), TvSeriesDetailsDto::class.java)
+        val dto = gson.fromJson(
+            Fixtures.read("tv_series_details_87108.json"),
+            TvSeriesDetailsDto::class.java
+        )
 
         val details = dto.toDomain()
 

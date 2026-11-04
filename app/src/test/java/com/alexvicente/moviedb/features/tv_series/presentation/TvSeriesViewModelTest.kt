@@ -7,6 +7,7 @@ import com.alexvicente.moviedb.testutil.factories.TvSeriesFactory
 import com.alexvicente.moviedb.testutil.fakes.FakeTvSeriesRepository
 import com.alexvicente.moviedb.testutil.rules.MainDispatcherRule
 import com.google.common.truth.Truth.assertThat
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -15,6 +16,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TvSeriesViewModelTest {
 
     @get:Rule

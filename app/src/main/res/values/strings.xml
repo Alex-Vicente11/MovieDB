@@ -47,4 +47,8 @@
         <item quantity="other">%d episodios</item>
     </plurals>
 
+    <!-- Credits Cast Compose -->
+    <string name="tv_series_details_cast">Reparto</string>
+    <string name="tv_series_cast_error">No se pudo cargar el reparto</string>
+
 </resources>
