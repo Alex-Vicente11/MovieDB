@@ -8,12 +8,15 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.navArgs
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class TvSeriesDetailsFragment : Fragment() {
+
+    private val args: TvSeriesDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,8 +31,20 @@ class TvSeriesDetailsFragment : Fragment() {
                 TvSeriesDetailsRoute(
                     onBackClick = {
                         val navController = findNavController()
-                        if (navController.currentDestination?.id == R.id.tvSeriesDetailsFragment)
+                        if (navController.currentDestination?.id == R.id.tvSeriesDetailsFragment) {
                             navController.navigateUp()
+                        }
+                    },
+                    onSeasonClick = { seasonNumber ->
+                        val navController = findNavController()
+                        if (navController.currentDestination?.id == R.id.tvSeriesDetailsFragment) {
+                            navController.navigate(
+                                TvSeriesDetailsFragmentDirections.actionTvSeriesDetailsToTvSeason(
+                                    seriesId = args.seriesId,
+                                    seasonNumber = seasonNumber
+                                )
+                            )
+                        }
                     }
                 )
             }

@@ -2,6 +2,7 @@
 package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -54,6 +55,7 @@ import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsVi
 @Composable
 fun TvSeriesDetailsRoute(
     onBackClick: () -> Unit,
+    onSeasonClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: TvSeriesDetailsViewModel = hiltViewModel()
 ) {
@@ -66,6 +68,7 @@ fun TvSeriesDetailsRoute(
         onRetry = viewModel::retry,
         onCastRetry = viewModel::retryCast,
         onBackClick = onBackClick,
+        onSeasonClick = onSeasonClick,
         modifier = modifier.statusBarsPadding()
     )
 }
@@ -77,13 +80,14 @@ fun TvSeriesDetailsScreen(
     onRetry: () -> Unit,
     onCastRetry: () -> Unit,
     onBackClick: () -> Unit,
+    onSeasonClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.fillMaxSize()) {
         when (uiState) {
             is TvSeriesDetailsUiState.Loading -> FullScreenLoading()
             is TvSeriesDetailsUiState.Error -> FullScreenError(onRetry = onRetry)
-            is TvSeriesDetailsUiState.Success -> TvSeriesDetailsContent(uiState.details, castState, onCastRetry)
+            is TvSeriesDetailsUiState.Success -> TvSeriesDetailsContent(uiState.details, castState, onCastRetry, onSeasonClick)
         }
 
         BackButton(
@@ -100,6 +104,7 @@ private fun TvSeriesDetailsContent(
     details: TvSeriesDetails,
     castState: CastUiState,
     onCastRetry: () -> Unit,
+    onSeasonClick: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val seasons = remember(details.seasons) { details.seasons.specialsLast() }
@@ -114,7 +119,9 @@ private fun TvSeriesDetailsContent(
         item(key = "seasons-title") {
             SectionTitle(stringResource(R.string.tv_series_details_seasons))
         }
-        items(seasons, key = { it.id }) { season -> TvSeasonItem(season) }
+        items(seasons, key = { it.id }) { season ->
+            TvSeasonItem(season = season, onClick = { onSeasonClick(season.seasonNumber) })
+        }
     }
 }
 
@@ -209,7 +216,11 @@ private fun SectionTitle(text: String) {
 }
 
 @Composable
-private fun TvSeasonItem(season: TvSeasonSummary, modifier: Modifier = Modifier) {
+private fun TvSeasonItem(
+    season: TvSeasonSummary,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val episodes = pluralStringResource(
         R.plurals.tv_series_episode_count, season.episodeCount, season.episodeCount
     )
@@ -218,6 +229,7 @@ private fun TvSeasonItem(season: TvSeasonSummary, modifier: Modifier = Modifier)
     Row(
         modifier = modifier
             .fillMaxWidth()
+            .clickable(onClick = onClick)
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
@@ -248,7 +260,7 @@ private fun TvSeasonItem(season: TvSeasonSummary, modifier: Modifier = Modifier)
 }
 
 @Composable
-private fun BackButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
+internal fun BackButton(onClick: () -> Unit, modifier: Modifier = Modifier) {
     IconButton(
         onClick = onClick,
         modifier = modifier
@@ -294,7 +306,8 @@ private fun TvSeriesDetailsScreenPreview() {
             castState = CastUiState.Loading,
             onRetry =  {},
             onCastRetry = {},
-            onBackClick = {}
+            onBackClick = {},
+            onSeasonClick = {}
         )
     }
 }
