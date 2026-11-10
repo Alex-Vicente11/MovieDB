@@ -51,4 +51,11 @@
     <string name="tv_series_details_cast">Reparto</string>
     <string name="tv_series_cast_error">No se pudo cargar el reparto</string>
 
+    <!-- expandable overviews -->
+    <string name="tv_series_runtime_minutes">%d min</string>
+    <string name="tv_series_episode_short">Ep. %d</string>
+    <string name="tv_series_episode_see_more">Ver más</string>
+    <string name="tv_series_episode_see_less">Ver menos</string>
+    <string name="tv_series_season_no_episodes">Esta temporada aún no tiene episodios</string>
+
 </resources>
