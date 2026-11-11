@@ -138,8 +138,9 @@ private fun SeasonHeader(season: TvSeasonDetails) {
                 color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.7f)
             )
             if (season.overview.isNotEmpty()) {
-                Text(
+                ExpandableText(
                     text = season.overview,
+                    collapsedMaxLines = 5,
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onBackground
                 )

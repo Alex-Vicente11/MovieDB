@@ -93,4 +93,11 @@ class TvSeriesUiExtTest {
         assertThat(formatted).contains("2026")
         assertThat(formatted).contains("5")
     }
+
+    @Test
+    fun formatAirDate_usesTheContentLanguageByDefault_notTheDeviceLanguage() {
+        // Si el idioma por defecto fuera el del dispositivo, el resultado coincidiría con el de otro Locale
+        assertThat(formatAirDate("2026-11-05"))
+            .isNotEqualTo(formatAirDate("2026-11-05", Locale.US))
+    }
 }

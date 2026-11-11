@@ -15,6 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 private const val SPECIALS_SEASON_NUMBER = 0
+private val ContentLocale: Locale = Locale.forLanguageTag("es-MX")
 
 internal fun Double.toRatingText(): String = String.format(Locale.getDefault(), "%.1f", this)
 internal fun TvSeries.firstAirYear(): String? = firstAirDate?.take(4)
@@ -48,7 +49,7 @@ internal fun TvSeriesStatus.labelRes(): Int? = when (this) {
 internal fun List<TvSeasonSummary>.specialsLast(): List<TvSeasonSummary> =
     sortedBy { if (it.seasonNumber == SPECIALS_SEASON_NUMBER) Int.MAX_VALUE else it.seasonNumber }
 
-internal fun formatAirDate(isoDate: String?, locale: Locale = Locale.getDefault()): String? {
+internal fun formatAirDate(isoDate: String?, locale: Locale = ContentLocale): String? {
     if (isoDate.isNullOrBlank()) return null
     return try {
         val parser = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply { isLenient = false }

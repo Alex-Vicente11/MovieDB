@@ -133,7 +133,7 @@ private fun DetailsHeader(details: TvSeriesDetails) {
         statusLabel,
         "★ ${details.voteAverage.toRatingText()}"
     ).joinToString("  ·  ")
-    val genres = details.genres.joinToString(" · ") { it.name }
+    val genres = details.genres.joinToString("  ·  ") { it.name }
 
     val background = MaterialTheme.colorScheme.background
     val scrim = Brush.verticalGradient(
@@ -224,7 +224,7 @@ private fun TvSeasonItem(
     val episodes = pluralStringResource(
         R.plurals.tv_series_episode_count, season.episodeCount, season.episodeCount
     )
-    val meta = listOfNotNull(episodes, season.airYear()).joinToString("  .  ")
+    val meta = listOfNotNull(episodes, season.airYear()).joinToString("  ·  ")
 
     Row(
         modifier = modifier
