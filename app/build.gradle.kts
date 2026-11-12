@@ -144,8 +144,19 @@ dependencies {
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.fragment.ktx)
     implementation(libs.material)
-    implementation(libs.androidx.material3)
     implementation(libs.glide)
+
+    // ── Compose ───────────────────────────────────────────────────────────────
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.lifecycle.runtime.compose)
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.paging.compose)
+    implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
 
     // ── Lifecycle ─────────────────────────────────────────────────────────────
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -201,9 +212,11 @@ dependencies {
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.paging.testing)
+
     // Hilt — permite @HiltAndroidTest y @BindValue en tests instrumentados
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.compiler)
+
     // Navigation — provee TestNavHostController para verificar navegación
     androidTestImplementation(libs.androidx.navigation.testing)
 

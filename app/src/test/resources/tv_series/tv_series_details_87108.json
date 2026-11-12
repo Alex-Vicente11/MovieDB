@@ -1,0 +1,199 @@
+{
+  "adult": false,
+  "backdrop_path": "/900tHlUYUkp7Ol04XFSoAaEIXcT.jpg",
+  "created_by": [
+    {
+      "id": 35796,
+      "credit_id": "5ca7a5990e0a264c69f04ea8",
+      "name": "Craig Mazin",
+      "original_name": "Craig Mazin",
+      "gender": 2,
+      "profile_path": "/uEhna6qcMuyU5TP7irpTUZ2ZsZc.jpg"
+    }
+  ],
+  "episode_run_time": [],
+  "first_air_date": "2019-05-06",
+  "genres": [
+    {
+      "id": 18,
+      "name": "Drama"
+    }
+  ],
+  "homepage": "https://www.hbo.com/chernobyl",
+  "id": 87108,
+  "in_production": false,
+  "languages": [
+    "en"
+  ],
+  "last_air_date": "2019-06-03",
+  "last_episode_to_air": {
+    "id": 1747127,
+    "name": "Vichnaya Pamyat",
+    "overview": "Valery Legasov, Boris Shcherbina y Ulana Khomyuk arriesgan sus vidas y reputaciones para exponer la verdad sobre Chernobyl.",
+    "vote_average": 9.3,
+    "vote_count": 267,
+    "air_date": "2019-06-03",
+    "episode_number": 5,
+    "episode_type": "finale",
+    "production_code": "",
+    "runtime": 73,
+    "season_number": 1,
+    "show_id": 87108,
+    "still_path": "/mgXm2Y6SOFDHtD5thi2LmS7uQBj.jpg"
+  },
+  "name": "Chernobyl",
+  "next_episode_to_air": null,
+  "networks": [
+    {
+      "id": 49,
+      "logo_path": "/tuomPhY2UtuPTqqFnKMVHvSb724.png",
+      "name": "HBO",
+      "origin_country": "US"
+    }
+  ],
+  "number_of_episodes": 5,
+  "number_of_seasons": 1,
+  "origin_country": [
+    "US"
+  ],
+  "original_language": "en",
+  "original_name": "Chernobyl",
+  "overview": "Sigue \"la verdadera historia\" de una de las peores catástrofes provocadas por el hombre y habla de los valientes hombres y mujeres que se sacrificaron para salvar a Europa de un desastre inimaginable. La miniserie se centra en el desgarrador alcance del desastre de la planta nuclear que ocurrió en Ucrania en abril de 1986, revelando cómo y por qué ocurrió, además contando las sorprendentes y notables historias de los héroes que lucharon y cayeron.",
+  "popularity": 36.537,
+  "poster_path": "/hlLXt2tOPT6RRnjiUmoxyG1LTFi.jpg",
+  "production_companies": [
+    {
+      "id": 112447,
+      "logo_path": "/kL6jD0jB836NqSfBusvjmYX1wAB.png",
+      "name": "SISTER",
+      "origin_country": "GB"
+    },
+    {
+      "id": 115241,
+      "logo_path": null,
+      "name": "The Mighty Mint",
+      "origin_country": "US"
+    },
+    {
+      "id": 119645,
+      "logo_path": null,
+      "name": "Word Games",
+      "origin_country": "US"
+    },
+    {
+      "id": 3268,
+      "logo_path": "/tuomPhY2UtuPTqqFnKMVHvSb724.png",
+      "name": "HBO",
+      "origin_country": "US"
+    }
+  ],
+  "production_countries": [
+    {
+      "iso_3166_1": "GB",
+      "name": "United Kingdom"
+    },
+    {
+      "iso_3166_1": "US",
+      "name": "United States of America"
+    }
+  ],
+  "seasons": [
+    {
+      "air_date": "2019-05-06",
+      "episode_count": 5,
+      "id": 119454,
+      "name": "Miniseries",
+      "overview": "",
+      "poster_path": "/hlLXt2tOPT6RRnjiUmoxyG1LTFi.jpg",
+      "season_number": 1,
+      "vote_average": 9.0
+    }
+  ],
+  "softcore": false,
+  "spoken_languages": [
+    {
+      "english_name": "English",
+      "iso_639_1": "en",
+      "name": "English"
+    }
+  ],
+  "status": "Ended",
+  "tagline": "¿Cuál es el costo de las mentiras?",
+  "type": "Miniseries",
+  "vote_average": 8.73,
+  "vote_count": 8471,
+  "credits": {
+    "cast": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 15440,
+        "known_for_department": "Acting",
+        "name": "Jared Harris",
+        "original_name": "Jared Harris",
+        "popularity": 3.076,
+        "profile_path": "/r9nIq0jPz1oBm4WwtlZhqlsX8p0.jpg",
+        "character": "Valery Legasov",
+        "credit_id": "5c73c35ec3a3685a3518e63e",
+        "order": 0
+      },
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1640,
+        "known_for_department": "Acting",
+        "name": "Stellan Skarsgård",
+        "original_name": "Stellan Skarsgård",
+        "popularity": 3.8577,
+        "profile_path": "/mW7xmtGV4y79kQGn0zkKVGDMAmw.jpg",
+        "character": "Boris Shcherbina",
+        "credit_id": "5c73c54492514119e1b0e213",
+        "order": 1
+      }
+    ],
+    "crew": [
+      {
+        "adult": false,
+        "gender": 2,
+        "id": 1495142,
+        "known_for_department": "Production",
+        "name": "Chris Fry",
+        "original_name": "Chris Fry",
+        "popularity": 0.7141,
+        "profile_path": null,
+        "credit_id": "5c73c3d1c3a3685a3218863b",
+        "department": "Production",
+        "job": "Co-Executive Producer"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1213459,
+        "known_for_department": "Production",
+        "name": "Sanne Wohlenberg",
+        "original_name": "Sanne Wohlenberg",
+        "popularity": 0.4816,
+        "profile_path": "/eHwHwjxS6xH8lPiZ1h0fko5lMZq.jpg",
+        "credit_id": "5c73c4dc9251415ee8b61c55",
+        "department": "Production",
+        "job": "Producer"
+      },
+      {
+        "adult": false,
+        "gender": 1,
+        "id": 1223797,
+        "known_for_department": "Production",
+        "name": "Carolyn Strauss",
+        "original_name": "Carolyn Strauss",
+        "popularity": 0.7357,
+        "profile_path": "/o88ISZv7ILrPMHutX1XVr7trmkF.jpg",
+        "credit_id": "5c73c38bc3a3685a4018d0dc",
+        "department": "Production",
+        "job": "Executive Producer"
+      }
+    ]
+  },
+  "videos": {
+    "results": []
+  }
+}

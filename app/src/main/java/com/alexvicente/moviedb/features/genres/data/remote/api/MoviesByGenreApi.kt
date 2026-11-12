@@ -10,7 +10,7 @@ interface MoviesByGenreApi {
     suspend fun getMoviesByGenre(
         @Query("with_genres") genreId: Int,
         @Query("page") page: Int,
-        @Query("language") language: String,
+        @Query("language") language: String = "es-MX",
         @Query("sort_by") sortBy: String = "popularity.desc"
     ): MovieResponseDto
 }

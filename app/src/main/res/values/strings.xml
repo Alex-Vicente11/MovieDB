@@ -24,4 +24,38 @@
 
     <!-- GenresFragment -->
     <string name="error_loading_movies">Error al cargar películas</string>
+
+    <!-- Compose -->
+    <string name="tv_series_load_error">No se pudo cargar el contenido</string>
+    <string name="tv_series_retry">Reintentar</string>
+    <string name="tv_series_category_popular">Populares</string>
+    <string name="tv_series_category_top_rated">Mejor valoradas</string>
+
+    <string name="tv_series_details_back">Volver</string>
+    <string name="tv_series_details_overview_empty">Sin sinopsis disponible</string>
+    <string name="tv_series_details_seasons">Temporadas</string>
+
+    <string name="tv_series_status_returning">En emisión</string>
+    <string name="tv_series_status_in_production">En producción</string>
+    <string name="tv_series_status_planned">Planeada</string>
+    <string name="tv_series_status_pilot">Piloto</string>
+    <string name="tv_series_status_ended">Finalizada</string>
+    <string name="tv_series_status_canceled">Cancelada</string>
+
+    <plurals name="tv_series_episode_count">
+        <item quantity="one">%d episodio</item>
+        <item quantity="other">%d episodios</item>
+    </plurals>
+
+    <!-- Credits Cast Compose -->
+    <string name="tv_series_details_cast">Reparto</string>
+    <string name="tv_series_cast_error">No se pudo cargar el reparto</string>
+
+    <!-- expandable overviews -->
+    <string name="tv_series_runtime_minutes">%d min</string>
+    <string name="tv_series_episode_short">Ep. %d</string>
+    <string name="tv_series_episode_see_more">Ver más</string>
+    <string name="tv_series_episode_see_less">Ver menos</string>
+    <string name="tv_series_season_no_episodes">Esta temporada aún no tiene episodios</string>
+
 </resources>

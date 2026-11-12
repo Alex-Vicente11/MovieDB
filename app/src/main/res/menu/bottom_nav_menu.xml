@@ -18,4 +18,9 @@
         android:icon="@drawable/ic_favorite"
         android:title="Favoritos" />
 
+    <item
+        android:id="@+id/tvSeriesFragment"
+        android:icon="@drawable/ic_tv"
+        android:title="Series" />
+
 </menu>

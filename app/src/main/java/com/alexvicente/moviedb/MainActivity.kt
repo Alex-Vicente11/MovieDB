@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
             setOf(
                 R.id.popularMoviesFragment,
                 R.id.genresFragment,
-                R.id.favoritesFragment
+                R.id.favoritesFragment,
+                R.id.tvSeriesFragment
             )
         )
         /**
@@ -53,9 +54,11 @@ class MainActivity : AppCompatActivity() {
             when (destination.id) {
                 R.id.popularMoviesFragment,
                 R.id.genresFragment,
+                R.id.tvSeriesFragment,
                 R.id.favoritesFragment -> {
                     binding.bottomNavigationView.visibility = View.VISIBLE
                 }
+
 
                 else -> {
                     binding.bottomNavigationView.visibility = View.GONE
