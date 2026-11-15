@@ -1,13 +1,12 @@
 package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
 import android.app.Application
-import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.test.core.app.ApplicationProvider
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvEpisode
@@ -25,10 +24,8 @@ import org.robolectric.annotation.GraphicsMode
 class TvEpisodeItemTest {
 
     @get:Rule
-    val composeRule = createComposeRule()
-
-    private val context: Context = ApplicationProvider.getApplicationContext()
-    private fun str(@StringRes id: Int): String = context.getString(id)
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
+    private fun str(@StringRes id: Int): String = composeRule.activity.getString(id)
 
     // Sinopsis larga: en el ancho disponible ocupa bastante más de 3 líneas
     private val longOverview = "palabra ".repeat(80).trim()

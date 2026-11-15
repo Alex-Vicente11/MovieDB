@@ -1,14 +1,13 @@
 package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
 import android.app.Application
-import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.test.core.app.ApplicationProvider
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.presentation.CastUiState
@@ -31,10 +30,8 @@ import org.robolectric.annotation.Config
 class TvSeriesDetailsScreenTest {
 
     @get:Rule
-    val composeRule = createComposeRule()
-
-    private val context: Context = ApplicationProvider.getApplicationContext()
-    private fun str(@StringRes id: Int): String = context.getString(id)
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
+    private fun str(@StringRes id: Int): String = composeRule.activity.getString(id)
 
     // HELPER: el Screen es stateless, no necesita Hilt ni ViewModel
     private fun setScreen(

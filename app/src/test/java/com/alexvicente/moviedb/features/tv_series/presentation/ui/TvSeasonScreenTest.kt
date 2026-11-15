@@ -2,11 +2,12 @@ package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
 import android.app.Application
 import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasProgressBarRangeInfo
-import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -31,10 +32,9 @@ import org.robolectric.annotation.Config
 class TvSeasonScreenTest {
 
     @get:Rule
-    val composeRule = createComposeRule()
-
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
     private val context: Context = ApplicationProvider.getApplicationContext()
-    private fun str(@StringRes id: Int): String = context.getString(id)
+    private fun str(@StringRes id: Int): String = composeRule.activity.getString(id)
 
     private fun setScreen(
         uiState: TvSeasonUiState = TvSeasonUiState.Success(TvFactory.createSeasonDetails()),

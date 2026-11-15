@@ -1,7 +1,7 @@
 package com.alexvicente.moviedb.features.tv_series.presentation.ui
 
 import android.app.Application
-import android.content.Context
+import androidx.activity.ComponentActivity
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.semantics.ProgressBarRangeInfo
@@ -9,15 +9,14 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotSelected
 import androidx.compose.ui.test.assertIsSelected
 import androidx.compose.ui.test.hasProgressBarRangeInfo
-import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.runtime.remember
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
 import androidx.paging.PagingData
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.test.core.app.ApplicationProvider
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
@@ -36,10 +35,8 @@ import org.robolectric.annotation.Config
 class TvSeriesScreenTest {
 
     @get:Rule
-    val composeRule = createComposeRule()
-
-    private val context: Context = ApplicationProvider.getApplicationContext()
-    private fun str(@StringRes id: Int): String = context.getString(id)
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
+    private fun str(@StringRes id: Int): String = composeRule.activity.getString(id)
 
     // HELPERS
     /** Estados de carga de Paging. prepend siempre completo: no hay página anterior. */
