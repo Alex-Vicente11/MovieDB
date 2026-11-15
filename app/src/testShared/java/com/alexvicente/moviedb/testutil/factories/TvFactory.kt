@@ -2,7 +2,10 @@ package com.alexvicente.moviedb.testutil.factories
 
 import com.alexvicente.moviedb.core.domain.model.Genre
 import com.alexvicente.moviedb.features.tv_series.domain.model.CastMember
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvEpisode
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonDetails
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonSummary
+import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesDetails
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesStatus
 
@@ -45,4 +48,36 @@ object TvFactory {
         name: String = "Ellen Pompeo",
         character: String = "Meredith Grey"
     ) = CastMember(id, creditId, name, character, null)
+
+    fun createSeries(id: Int = 1, name: String = "Serie $id") = TvSeries(
+        id = id, name = name, overview = "", posterPath = null, backdropPath = null,
+        voteAverage = 8.0, voteCount = 100, firstAirDate = "2021-03-14", popularity = 10.0
+    )
+
+    // ids únicos desde 1: la lista usa key = { it.id } y repetirlos lanzaría "Key was already used"
+    fun createSeriesList(count: Int) = List(count) { createSeries(id = it + 1) }
+
+    fun createEpisode(
+        id: Int = 1,
+        episodeNumber: Int = 1,
+        name: String = "Episodio $episodeNumber",
+        overview: String = "",
+        airDate: String? = "2005-03-27",
+        runtimeMinutes: Int? = 44,
+        voteAverage: Double = 7.8,
+        voteCount: Int = 120
+    ) = TvEpisode(
+        id, episodeNumber, name, overview, airDate, runtimeMinutes, null, voteAverage, voteCount
+    )
+
+    fun createSeasonDetails(
+        id: Int = 1,
+        seasonNumber: Int = 1,
+        name: String = "Temporada 1",
+        overview: String = "",
+        episodes: List<TvEpisode> = listOf(
+            createEpisode(id = 1, episodeNumber = 1),
+            createEpisode(id = 2, episodeNumber = 2)
+        )
+    ) = TvSeasonDetails(id, seasonNumber, name, overview, null, "2005-03-27", 7.9, episodes)
 }
