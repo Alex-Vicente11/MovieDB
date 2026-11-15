@@ -212,6 +212,8 @@ dependencies {
     androidTestImplementation(libs.turbine)
     androidTestImplementation(libs.kotlinx.coroutines.test)
     androidTestImplementation(libs.androidx.paging.testing)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
 
     // ── Compose tests ─────────────────────────────────────────────
     testImplementation(platform(libs.androidx.compose.bom))
