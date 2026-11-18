@@ -42,10 +42,10 @@ import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesRepo
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeasonViewModel
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsViewModel
 import com.alexvicente.moviedb.testutil.factories.MovieFactory
-import com.alexvicente.moviedb.testutil.fakes.FakeTvSeasonRepository
-import com.alexvicente.moviedb.testutil.fakes.FakeTvSeriesCastRepository
-import com.alexvicente.moviedb.testutil.fakes.FakeTvSeriesDetailsRepository
-import com.alexvicente.moviedb.testutil.fakes.FakeTvSeriesRepository
+import com.alexvicente.moviedb.testutil.fakes.CannedTvSeasonRepository
+import com.alexvicente.moviedb.testutil.fakes.CannedTvSeriesCastRepository
+import com.alexvicente.moviedb.testutil.fakes.CannedTvSeriesDetailsRepository
+import com.alexvicente.moviedb.testutil.fakes.CannedTvSeriesRepository
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -80,10 +80,10 @@ class TvSeriesNavigationTest {
     val composeRule = createEmptyComposeRule()
 
     // FAKES DE TV SERIES
-    private val fakeSeries = FakeTvSeriesRepository()
-    private val fakeDetails = FakeTvSeriesDetailsRepository()
-    private val fakeCast = FakeTvSeriesCastRepository()
-    private val fakeSeason = FakeTvSeasonRepository()
+    private val fakeSeries = CannedTvSeriesRepository()
+    private val fakeDetails = CannedTvSeriesDetailsRepository()
+    private val fakeCast = CannedTvSeriesCastRepository()
+    private val fakeSeason = CannedTvSeasonRepository()
 
     @BindValue @JvmField
     val tvSeriesRepository: TvSeriesRepository = fakeSeries

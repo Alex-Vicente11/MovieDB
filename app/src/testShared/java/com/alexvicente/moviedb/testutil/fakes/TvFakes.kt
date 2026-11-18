@@ -18,8 +18,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.util.concurrent.CopyOnWriteArrayList
 
+// Fakes de datos fijos para tests de navegación (androidTest). Los Fake* de src/test son
+// otros: los configura cada test con result/requested. Los nombres no deben coincidir.
+
 /** Listas con nombres distintos por categoria para saber cual se esta mostrando */
-class FakeTvSeriesRepository : TvSeriesRepository {
+class CannedTvSeriesRepository : TvSeriesRepository {
     var popular: List<TvSeries> =
         List(3) { TvFactory.createSeries(id = it + 1, name = "Serie ${it + 1}") }
     var topRated: List<TvSeries> =
@@ -47,7 +50,7 @@ class FakeTvSeriesRepository : TvSeriesRepository {
 }
 
 /** El nombre incluye el id pedido: si el titulo correcto aparece en pantalla, el id viajo bien */
-class FakeTvSeriesDetailsRepository : TvSeriesDetailsRepository {
+class CannedTvSeriesDetailsRepository : TvSeriesDetailsRepository {
     val requestedIds = CopyOnWriteArrayList<Int>()
 
     override suspend fun getTvSeriesDetails(
@@ -61,7 +64,7 @@ class FakeTvSeriesDetailsRepository : TvSeriesDetailsRepository {
     }
 }
 
-class FakeTvSeriesCastRepository : TvSeriesCastRepository {
+class CannedTvSeriesCastRepository : TvSeriesCastRepository {
     override suspend fun getTvSeriesCast(
         seriesId: Int,
         language: String
@@ -69,7 +72,7 @@ class FakeTvSeriesCastRepository : TvSeriesCastRepository {
 }
 
 /** Registra (seriesId, seasonNumber) y devuelve una temporada cuyo nombre depende del número */
-class FakeTvSeasonRepository : TvSeasonRepository {
+class CannedTvSeasonRepository : TvSeasonRepository {
     val requests = CopyOnWriteArrayList<Pair<Int, Int>>()
     private val longOverview = "palabra ".repeat(80).trim()
 
