@@ -140,6 +140,7 @@ dependencies {
 
     // ── UI ────────────────────────────────────────────────────────────────────
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.paging.common)
     implementation(libs.androidx.recyclerview)
     implementation(libs.androidx.cardview)
     implementation(libs.androidx.fragment.ktx)
