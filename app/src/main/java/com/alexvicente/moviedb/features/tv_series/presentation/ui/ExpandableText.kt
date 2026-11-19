@@ -30,15 +30,18 @@ internal fun ExpandableText(
     var canExpand by remember { mutableStateOf(false) }
     val toggleable = canExpand || expanded
 
-    Column(modifier = modifier.animateContentSize()) {
+    Column(
+        modifier = modifier
+            .animateContentSize()
+            .clickable(enabled = toggleable) { expanded = !expanded }
+    ) {
         Text(
             text = text,
             style = style,
             color = color,
             maxLines = if (expanded) Int.MAX_VALUE else collapsedMaxLines,
             overflow = TextOverflow.Ellipsis,
-            onTextLayout = { result -> if (!expanded) canExpand = result.hasVisualOverflow },
-            modifier = Modifier.clickable(enabled = toggleable) { expanded = !expanded }
+            onTextLayout = { result -> if (!expanded) canExpand = result.hasVisualOverflow }
         )
         if (toggleable) {
             Text(

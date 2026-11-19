@@ -1,6 +1,9 @@
 package com.alexvicente.moviedb.navigation
 
 import androidx.navigation.fragment.NavHostFragment
+import androidx.paging.LoadState
+import androidx.paging.LoadStates
+import androidx.paging.PagingData
 import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso
 import androidx.test.espresso.Espresso.onView
@@ -13,6 +16,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.alexvicente.moviedb.MainActivity
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.data.util.Resource
+import com.alexvicente.moviedb.core.domain.model.Genre
 import com.alexvicente.moviedb.features.favorites.di.FavoritesModule
 import com.alexvicente.moviedb.features.favorites.domain.repository.FavoritesRepository
 import com.alexvicente.moviedb.features.genres.di.GenresModule
@@ -23,12 +27,14 @@ import com.alexvicente.moviedb.features.popular_movies.domain.repository.Popular
 import com.alexvicente.moviedb.features.popular_movies.presentation.adapter.MovieAdapter
 import com.alexvicente.moviedb.features.search.di.SearchModule
 import com.alexvicente.moviedb.features.search.domain.repository.SearchRepository
+import com.alexvicente.moviedb.testutil.factories.FavoriteFactory
 import com.alexvicente.moviedb.testutil.factories.MovieFactory
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
+import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.flowOf
@@ -85,6 +91,25 @@ class NavigationTest {
             Resource.Success(MovieFactory.createMovieList(3))
         )
 
+        // getGenres es suspend: coEvery. Un mock relajado devolvería un mock de Resource (clase
+        // sellada), que no es Success, Error ni Loading, y el when del ViewModel lanzaría
+        // NoWhenBranchMatchedException
+        coEvery { genresRepository.getGenres() } returns Resource.Success(
+            listOf(Genre(id = 28, name = "Acción"), Genre(id = 18, name = "Drama"))
+        )
+
+        // GenresViewModel selecciona el primer género y pide sus películas (flatMapLatest).
+        // La firma lleva dos parámetros (genreId, language), por eso any() dos veces.
+        every { moviesByGenreRepository.getMoviesByGenre(any(), any()) } returns flowOf(
+            PagingData.from(
+                data = MovieFactory.createMovieList(3),
+                sourceLoadStates = LoadStates(
+                    refresh = LoadState.NotLoading(endOfPaginationReached = false),
+                    prepend = LoadState.NotLoading(endOfPaginationReached = true),
+                    append = LoadState.NotLoading(endOfPaginationReached = true)
+                )
+            )
+        )
         every { favoritesRepository.getAllFavoritesRepo() } returns flowOf(
             emptyList()
         )
@@ -124,30 +149,34 @@ class NavigationTest {
     // TESTS DE NAVEGACIÓN POR BOTTOMNAVIGATIONVIEW
 
     @Test
-    fun whenFavoritesTabClicked_navigatesToFavoritesFragment() {
-        // Given
+    fun whenFavoritesTabClicked_andThereAreFavorites_listIsShown() {
+        // Given: hay favoritos, así que se muestra la lista y no el estado vacío
+        // (el último stub gana: sobrescribe el flowOf(emptyList()) del setUp)
+        every { favoritesRepository.getAllFavoritesRepo() } returns flowOf(
+            FavoriteFactory.createFavoriteList(2)
+        )
         launchMainActivity()
 
-        // When - click en la pestaña de favoritos del BottomNav
+        // When
         onView(withId(R.id.favoritesFragment)).perform(click())
 
-        // Then - el Fragment de favoritos es visible
-        // Verificamos con un View que solo existe en fragment_favorites.xml
+        // Then
         onView(withId(R.id.recyclerViewFavorites)).check(matches(isDisplayed()))
+        onView(withId(R.id.emptyState)).check(matches(not(isDisplayed())))
     }
 
-    // REVISAR ESTE TEST!!
     @Test
-    fun whenFavoritesTabClicked_navigatesToFavoritesFragmentEmpty() {
-        // Given
+    fun whenFavoritesTabClicked_andThereAreNoFavorites_emptyStateIsShown() {
+        // Given: el setUp ya devuelve una lista vacía
         launchMainActivity()
 
+        // When
         onView(withId(R.id.favoritesFragment)).perform(click())
 
-        // emptyState es predecible - favoritesRepository retorna lista vacía
+        // Then
         onView(withId(R.id.emptyState)).check(matches(isDisplayed()))
+        onView(withId(R.id.recyclerViewFavorites)).check(matches(not(isDisplayed())))
     }
-
     @Test
     fun whenGenresTabClicked_navigatesToGenresFragment() {
         val scenario = launchMainActivity()
