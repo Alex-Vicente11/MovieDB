@@ -57,27 +57,4 @@ object TvFactory {
     // ids únicos desde 1: la lista usa key = { it.id } y repetirlos lanzaría "Key was already used"
     fun createSeriesList(count: Int) = List(count) { createSeries(id = it + 1) }
 
-    fun createEpisode(
-        id: Int = 1,
-        episodeNumber: Int = 1,
-        name: String = "Episodio $episodeNumber",
-        overview: String = "",
-        airDate: String? = "2005-03-27",
-        runtimeMinutes: Int? = 44,
-        voteAverage: Double = 7.8,
-        voteCount: Int = 120
-    ) = TvEpisode(
-        id, episodeNumber, name, overview, airDate, runtimeMinutes, null, voteAverage, voteCount
-    )
-
-    fun createSeasonDetails(
-        id: Int = 1,
-        seasonNumber: Int = 1,
-        name: String = "Temporada 1",
-        overview: String = "",
-        episodes: List<TvEpisode> = listOf(
-            createEpisode(id = 1, episodeNumber = 1),
-            createEpisode(id = 2, episodeNumber = 2)
-        )
-    ) = TvSeasonDetails(id, seasonNumber, name, overview, null, "2005-03-27", 7.9, episodes)
 }

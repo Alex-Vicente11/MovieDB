@@ -14,6 +14,7 @@ import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesCast
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesDetailsRepository
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesRepository
 import com.alexvicente.moviedb.testutil.factories.TvFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeasonFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.util.concurrent.CopyOnWriteArrayList
@@ -80,12 +81,12 @@ class CannedTvSeasonRepository : TvSeasonRepository {
     ): Resource<TvSeasonDetails> {
         requests += seriesId to seasonNumber
         return Resource.Success(
-            TvFactory.createSeasonDetails(
+            TvSeasonFactory.createTvSeasonDetails(
                 seasonNumber = seasonNumber,
                 name = if (seasonNumber == 0) "Especiales" else "Temporada $seasonNumber",
                 episodes = listOf(
-                    TvFactory.createEpisode(id = 1, episodeNumber = 1, overview = longOverview),
-                    TvFactory.createEpisode(id = 2, episodeNumber = 2)
+                    TvSeasonFactory.createTvEpisode(id = 1, episodeNumber = 1, overview = longOverview),
+                    TvSeasonFactory.createTvEpisode(id = 2, episodeNumber = 2)
                 )
             )
         )

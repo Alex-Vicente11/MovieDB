@@ -15,6 +15,7 @@ import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeasonUiState
 import com.alexvicente.moviedb.testutil.factories.TvFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeasonFactory
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,7 +44,7 @@ class TvSeriesStateRestorationTest {
         // Given
         val restorationTester = StateRestorationTester(composeRule)
         restorationTester.setContent {
-            MovieDbTheme { TvEpisodeItem(TvFactory.createEpisode(overview = longOverview)) }
+            MovieDbTheme { TvEpisodeItem(TvSeasonFactory.createTvEpisode(overview = longOverview)) }
         }
         composeRule.onNodeWithText(str(R.string.tv_series_episode_see_more)).performClick()
 
@@ -61,7 +62,7 @@ class TvSeriesStateRestorationTest {
             MovieDbTheme {
                 TvSeasonScreen(
                     uiState = TvSeasonUiState.Success(
-                        TvFactory.createSeasonDetails(overview = longOverview)
+                        TvSeasonFactory.createTvSeasonDetails(overview = longOverview)
                     ),
                     onRetry = {},
                     onBackClick = {}
@@ -81,7 +82,7 @@ class TvSeriesStateRestorationTest {
     fun expandedEpisode_survivesScrollingOutAndBackIn() {
         // Solo el episodio 1 tiene sinopsis larga: hay un único "Ver más" en pantalla
         val episodes = List(40) {
-            TvFactory.createEpisode(
+            TvSeasonFactory.createTvEpisode(
                 id = it + 1,
                 episodeNumber = it + 1,
                 overview = if (it == 0) longOverview else ""
@@ -91,7 +92,7 @@ class TvSeriesStateRestorationTest {
             MovieDbTheme {
                 TvSeasonScreen(
                     uiState = TvSeasonUiState.Success(
-                        TvFactory.createSeasonDetails(episodes = episodes)
+                        TvSeasonFactory.createTvSeasonDetails(episodes = episodes)
                     ),
                     onRetry = {},
                     onBackClick = {}

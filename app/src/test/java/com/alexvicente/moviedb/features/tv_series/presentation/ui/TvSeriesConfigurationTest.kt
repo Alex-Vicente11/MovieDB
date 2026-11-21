@@ -21,6 +21,7 @@ import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.presentation.CastUiState
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsUiState
 import com.alexvicente.moviedb.testutil.factories.TvFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeasonFactory
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -129,7 +130,7 @@ class TvSeriesConfigurationTest {
         composeRule.setContent {
             DeviceConfigurationOverride(DeviceConfigurationOverride.FontScale(2f)) {
                 MovieDbTheme {
-                    TvEpisodeItem(TvFactory.createEpisode(overview = "palabra ".repeat(80).trim()))
+                    TvEpisodeItem(TvSeasonFactory.createTvEpisode(overview = "palabra ".repeat(80).trim()))
                 }
             }
         }
