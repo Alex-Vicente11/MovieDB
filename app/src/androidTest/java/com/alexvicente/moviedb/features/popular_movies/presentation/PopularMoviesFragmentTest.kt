@@ -24,7 +24,7 @@ import com.alexvicente.moviedb.features.popular_movies.presentation.ui.PopularMo
 import com.alexvicente.moviedb.features.search.di.SearchModule
 import com.alexvicente.moviedb.features.search.domain.repository.SearchRepository
 import com.alexvicente.moviedb.testutil.factories.MovieFactory
-import com.alexvicente.moviedb.util.launchFragmentInHiltContainer
+import com.alexvicente.moviedb.testutil.hilt.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

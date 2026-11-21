@@ -23,8 +23,8 @@ import com.alexvicente.moviedb.features.genres.domain.repository.GenresRepositor
 import com.alexvicente.moviedb.features.genres.domain.repository.MoviesByGenreRepository
 import com.alexvicente.moviedb.features.genres.presentation.GenresFragment
 import com.alexvicente.moviedb.testutil.factories.MovieFactory
-import com.alexvicente.moviedb.util.waitForView
-import com.alexvicente.moviedb.util.launchFragmentInHiltContainer
+import com.alexvicente.moviedb.testutil.espresso.waitForView
+import com.alexvicente.moviedb.testutil.hilt.launchFragmentInHiltContainer
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
