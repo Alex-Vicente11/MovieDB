@@ -1,4 +1,4 @@
-package com.alexvicente.moviedb.testutil.fakes
+package com.alexvicente.moviedb.testutil.canned
 
 import androidx.paging.LoadState
 import androidx.paging.LoadStates
@@ -17,9 +17,6 @@ import com.alexvicente.moviedb.testutil.factories.TvFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import java.util.concurrent.CopyOnWriteArrayList
-
-// Fakes de datos fijos para tests de navegación (androidTest). Los Fake* de src/test son
-// otros: los configura cada test con result/requested. Los nombres no deben coincidir.
 
 /** Listas con nombres distintos por categoria para saber cual se esta mostrando */
 class CannedTvSeriesRepository : TvSeriesRepository {
