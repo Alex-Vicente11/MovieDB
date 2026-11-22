@@ -14,7 +14,6 @@ import androidx.compose.ui.test.performScrollToNode
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeasonUiState
-import com.alexvicente.moviedb.testutil.factories.TvFactory
 import com.alexvicente.moviedb.testutil.factories.TvSeasonFactory
 import org.junit.Rule
 import org.junit.Test

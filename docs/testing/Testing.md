@@ -59,7 +59,7 @@ librerías presentes en ambos classpaths.
   (`Resource`) devuelve un mock que no coincide con ninguna rama del `when` y rompe lejos del origen.
 - **Nombres de fakes:** `Fake*` (en `src/test`) son los que cada test configura con `result`/`requested`;
   `Canned*` (en `testShared`) devuelven datos fijos y registran los argumentos recibidos.
-- **Fábricas** (`MovieFactory`, `TvFactory`, `FavoriteFactory`): un parámetro con valor por defecto por campo,
+- **Fábricas** (`MovieFactory`, `TvSeriesFactory`, `TvSeasonFactory`, `FavoriteFactory`): un parámetro con valor por defecto por campo,
   ids únicos en las listas (las listas Compose usan `key = { it.id }`).
 - **Textos en los tests:** se leen de `R.string` con `composeRule.activity.getString(...)`, no se escriben literales.
 - **Estilo:** nombres `whenX_thenY` y comentarios Given/When/Then.

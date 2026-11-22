@@ -13,7 +13,6 @@ import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeasonRepo
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesCastRepository
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesDetailsRepository
 import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesRepository
-import com.alexvicente.moviedb.testutil.factories.TvFactory
 import com.alexvicente.moviedb.testutil.factories.TvSeasonFactory
 import com.alexvicente.moviedb.testutil.factories.TvSeriesFactory
 import kotlinx.coroutines.flow.Flow
@@ -23,10 +22,20 @@ import java.util.concurrent.CopyOnWriteArrayList
 /** Listas con nombres distintos por categoria para saber cual se esta mostrando */
 class CannedTvSeriesRepository : TvSeriesRepository {
     var popular: List<TvSeries> = List(3) {
-        TvSeriesFactory.createTvSeries(id = it + 1, name = "Serie ${it + 1}", posterPath = null, backdropPath = null)
+        TvSeriesFactory.createTvSeries(
+            id = it + 1,
+            name = "Serie ${it + 1}",
+            posterPath = null,
+            backdropPath = null
+        )
     }
     var topRated: List<TvSeries> = List(3) {
-        TvSeriesFactory.createTvSeries(id = it + 101, name = "Top ${it + 1}", posterPath = null, backdropPath = null)
+        TvSeriesFactory.createTvSeries(
+            id = it + 101,
+            name = "Top ${it + 1}",
+            posterPath = null,
+            backdropPath = null
+        )
     }
 
     // Sin sourceLoadStates, LazyPagingItems se queda en refresh = Loading y la lista nunca aparece
@@ -60,7 +69,7 @@ class CannedTvSeriesDetailsRepository : TvSeriesDetailsRepository {
     ): Resource<TvSeriesDetails> {
         requestedIds += seriesId
         return Resource.Success(
-            TvFactory.createSeriesDetails(id = seriesId, name = "Detalle $seriesId")
+            TvSeriesFactory.createGreysAnatomyDetails(id = seriesId, name = "Detalle $seriesId")
         )
     }
 }
@@ -88,7 +97,11 @@ class CannedTvSeasonRepository : TvSeasonRepository {
                 seasonNumber = seasonNumber,
                 name = if (seasonNumber == 0) "Especiales" else "Temporada $seasonNumber",
                 episodes = listOf(
-                    TvSeasonFactory.createTvEpisode(id = 1, episodeNumber = 1, overview = longOverview),
+                    TvSeasonFactory.createTvEpisode(
+                        id = 1,
+                        episodeNumber = 1,
+                        overview = longOverview
+                    ),
                     TvSeasonFactory.createTvEpisode(id = 2, episodeNumber = 2)
                 )
             )
