@@ -21,7 +21,7 @@ import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeries
 import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeriesCategory
-import com.alexvicente.moviedb.testutil.factories.TvFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeriesFactory
 import com.google.common.truth.Truth.assertThat
 import kotlinx.coroutines.flow.flowOf
 import org.junit.Rule
@@ -50,7 +50,9 @@ class TvSeriesScreenTest {
     )
 
     private fun setScreen(
-        series: List<TvSeries> = TvFactory.createSeriesList(3),
+        series: List<TvSeries> = TvSeriesFactory.createTvSeriesList(
+            size = 3, namePrefix = "Serie", posterPath = null, backdropPath = null
+        ),
         states: LoadStates = loadStates(),
         selectedCategory: TvSeriesCategory = TvSeriesCategory.POPULAR,
         onCategorySelected: (TvSeriesCategory) -> Unit = {},
@@ -76,7 +78,7 @@ class TvSeriesScreenTest {
     // ESTADOS DE LA LISTA (refresh)
     @Test
     fun whenRefreshSucceeds_seriesNamesAreShown() {
-        setScreen(series = TvFactory.createSeriesList(3))
+        setScreen(series = TvSeriesFactory.createTvSeriesList(3, namePrefix = "Serie", posterPath = null, backdropPath = null))
 
         composeRule.onNodeWithText("Serie 1").assertIsDisplayed()
         composeRule.onNodeWithText("Serie 3").assertIsDisplayed()

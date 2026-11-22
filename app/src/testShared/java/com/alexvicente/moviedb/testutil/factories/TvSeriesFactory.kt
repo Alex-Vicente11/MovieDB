@@ -28,20 +28,50 @@ object TvSeriesFactory {
     fun createTvSeriesDtoList(size: Int): List<TvSeriesDto> =
         (1..size).map { createTvSeriesDto(id = it, name = "Series $it") }
 
-    fun createTvSeries(id: Int = 1, name: String = "Series 1") = TvSeries(
-        id = id, name = name, overview = "Overview", posterPath = "/poster.jpg",
-        backdropPath = "/backdrop.jpg", voteAverage = 8.5, voteCount = 100,
-        firstAirDate = "2020-01-15", popularity = 50.0
+    fun createTvSeries(
+        id: Int = 1,
+        name: String = "Series 1",
+        posterPath: String? = "/poster.jpg",
+        backdropPath: String? = "/backdrop.jpg"
+    ) = TvSeries(
+        id = id,
+        name = name,
+        overview = "Overview",
+        posterPath = posterPath,
+        backdropPath = backdropPath,
+        voteAverage = 8.5,
+        voteCount = 100,
+        firstAirDate = "2020-01-15",
+        popularity = 50.0
     )
 
-    fun createTvSeriesList(size: Int): List<TvSeries> =
-        (1..size).map { createTvSeries(id = it, name = "Series $it") }
+    fun createTvSeriesList(
+        size: Int,
+        namePrefix: String = "Series",
+        posterPath: String? = "/poster.jpg",
+        backdropPath: String? = "/backdrop.jpg"
+    ): List<TvSeries> =
+        (1..size).map {
+            createTvSeries(id = it, name = "$namePrefix $it", posterPath = posterPath, backdropPath = backdropPath)
+        }
 
-    fun createTvSeriesDetails(id: Int = 1, name: String = "Series 1") = TvSeriesDetails(
-        id = id, name = name, tagline = "", overview = "Overview", posterPath = null,
-        backdropPath = null, voteAverage = 8.5, voteCount = 100, firstAirDate = "2020-01-15",
-        status = TvSeriesStatus.ENDED, numberOfSeasons = 1, numberOfEpisodes = 10,
-        genres = emptyList(), seasons = emptyList()
+    fun createTvSeriesDetails(
+        id: Int = 1, name: String = "Series 1"
+    ) = TvSeriesDetails(
+        id = id,
+        name = name,
+        tagline = "",
+        overview = "Overview",
+        posterPath = null,
+        backdropPath = null,
+        voteAverage = 8.5,
+        voteCount = 100,
+        firstAirDate = "2020-01-15",
+        status = TvSeriesStatus.ENDED,
+        numberOfSeasons = 1,
+        numberOfEpisodes = 10,
+        genres = emptyList(),
+        seasons = emptyList()
     )
 
     fun createTvSeasonSummary(id: Int = 1, seasonNumber: Int = 1) = TvSeasonSummary(
