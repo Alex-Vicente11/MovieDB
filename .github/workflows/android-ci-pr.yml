@@ -32,6 +32,9 @@ jobs:
       - name: Unit Tests + Coverage
         run: ./gradlew jacocoTestReport
 
+      - name: Compile instrumented tests
+        run: ./gradlew :app:compileDebugAndroidTestKotlin
+
       - name: Build APK
         run: ./gradlew assembleDebug
 
