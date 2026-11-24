@@ -49,10 +49,14 @@ Navegación: `NavGraphArgsContractTest` (JVM), `NavigationTest` y `TvSeriesNavig
 | Solo unitarios | `src/test/java` |
 | Solo instrumentados | `src/androidTest/java` |
 
-Dentro de cada carpeta, los helpers se agrupan por package: `testutil.factories`, `testutil.canned`,
-`testutil.fakes` (en `testShared` y `src/test`), `testutil.espresso` (helpers de Espresso) y
-`testutil.hilt` (`launchFragmentInHiltContainer`, `HiltTestActivity`), estos dos en `androidTest`
-y `debug`. `HiltTestActivity` vive en `src/debug` porque se declara en el manifest de debug.
+Los helpers viven bajo el package `com.alexvicente.moviedb.testutil`, agrupados por subpackage:
+
+- `src/testShared/java`: `extensions`, `factories` y `canned`.
+- `src/test/java`: `Fixtures`, `fakes` y `rules`.
+- `src/androidTest/java`: `CustomTestRunner`, `espresso` (`WaitForView`, `RecyclerViewActions`) y `hilt`
+  (`launchFragmentInHiltContainer`).
+- `src/debug/java`: `HiltTestActivity` (package `testutil.hilt`). Vive en `debug` porque se declara en el
+  manifest de debug.
 
 `testShared` se compila dentro de `test` y de `androidTest`. Por eso **un nombre de clase no puede repetirse**
 entre `testShared` y `src/test` (daría `Redeclaration`), y un archivo de `testShared` solo puede depender de
@@ -119,10 +123,12 @@ CI (workflow de PR) ejecuta `jacocoTestReport` y publica el reporte como artefac
 
 Cómo leer el reporte:
 
-- **Solo incluye unit tests.** Fragments, adapters y `MainActivity` salen en 0 % aunque los cubran los tests
-  instrumentados. El `include` de `outputs/code_coverage/**/*.ec` los suma en local si antes corriste
-  `connectedDebugAndroidTest`; en CI no existen, así que el número de CI es solo de unit tests.
-  Borra `app\build\outputs\code_coverage` antes de medir la línea base.
+- **Por defecto solo incluye unit tests.** Si existe `app/build/outputs/code_coverage/**/coverage.ec`
+  (lo genera `connectedDebugAndroidTest`), el reporte también suma lo que ejecutó esa corrida. Esa carpeta
+  se sobrescribe en cada ejecución: el resultado depende de qué clases instrumentadas corrieron la última
+  vez. Para la línea base, borra `app\build\outputs\code_coverage` antes de medir. Para una medición
+  combinada, corre `connectedDebugAndroidTest` sin filtro de clase. En CI no existen estos datos, así que
+  el número de CI es solo de unit tests.
 - **El código generado queda fuera del total:** Apollo, módulos de Hilt, Room, Safe Args y ViewBinding.
   La lista está en `exclusiones` de `jacocoTestReport`.
 - **En Compose, el porcentaje de ramas no es una meta útil.** Incluye código que genera el compilador
