@@ -15,7 +15,7 @@ import androidx.test.core.app.ApplicationProvider
 import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeasonUiState
-import com.alexvicente.moviedb.testutil.factories.TvFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeasonFactory
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -37,7 +37,13 @@ class TvSeasonScreenTest {
     private fun str(@StringRes id: Int): String = composeRule.activity.getString(id)
 
     private fun setScreen(
-        uiState: TvSeasonUiState = TvSeasonUiState.Success(TvFactory.createSeasonDetails()),
+        uiState: TvSeasonUiState = TvSeasonUiState.Success(
+            TvSeasonFactory.createTvSeasonDetails(
+                seasonNumber = 1,
+                name = "Temporada 1",
+                episodeCount = 2
+            )
+        ),
         onRetry: () -> Unit = {},
         onBackClick: () -> Unit = {}
     ) = composeRule.setContent {
@@ -84,14 +90,15 @@ class TvSeasonScreenTest {
     fun whenStateIsSuccess_headerShowsEpisodeCountWithPlural() {
         setScreen()
 
-        val twoEpisodes = context.resources.getQuantityString(R.plurals.tv_series_episode_count, 2, 2)
+        val twoEpisodes =
+            context.resources.getQuantityString(R.plurals.tv_series_episode_count, 2, 2)
         composeRule.onNodeWithText(twoEpisodes, substring = true).assertIsDisplayed()
     }
 
     // LISTA DE EPISODIOS VACIA
     @Test
     fun whenSeasonHasNoEpisodes_emptyMessageIsShown() {
-        setScreen(TvSeasonUiState.Success(TvFactory.createSeasonDetails(episodes = emptyList())))
+        setScreen(TvSeasonUiState.Success(TvSeasonFactory.createTvSeasonDetails(episodeCount = 0)))
 
         composeRule.onNodeWithText(str(R.string.tv_series_season_no_episodes)).assertIsDisplayed()
     }
@@ -110,7 +117,8 @@ class TvSeasonScreenTest {
         var backs = 0
         setScreen(onBackClick = { backs++ })
 
-        composeRule.onNodeWithContentDescription(str(R.string.tv_series_details_back)).performClick()
+        composeRule.onNodeWithContentDescription(str(R.string.tv_series_details_back))
+            .performClick()
 
         assertThat(backs).isEqualTo(1)
     }

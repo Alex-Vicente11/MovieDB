@@ -49,6 +49,15 @@ Navegación: `NavGraphArgsContractTest` (JVM), `NavigationTest` y `TvSeriesNavig
 | Solo unitarios | `src/test/java` |
 | Solo instrumentados | `src/androidTest/java` |
 
+Los helpers viven bajo el package `com.alexvicente.moviedb.testutil`, agrupados por subpackage:
+
+- `src/testShared/java`: `extensions`, `factories` y `canned`.
+- `src/test/java`: `Fixtures`, `fakes` y `rules`.
+- `src/androidTest/java`: `CustomTestRunner`, `espresso` (`WaitForView`, `RecyclerViewActions`) y `hilt`
+  (`launchFragmentInHiltContainer`).
+- `src/debug/java`: `HiltTestActivity` (package `testutil.hilt`). Vive en `debug` porque se declara en el
+  manifest de debug.
+
 `testShared` se compila dentro de `test` y de `androidTest`. Por eso **un nombre de clase no puede repetirse**
 entre `testShared` y `src/test` (daría `Redeclaration`), y un archivo de `testShared` solo puede depender de
 librerías presentes en ambos classpaths.
@@ -58,8 +67,9 @@ librerías presentes en ambos classpaths.
 - **Fakes antes que mocks.** Un `mockk(relaxed = true)` sobre un método que devuelve una clase sellada
   (`Resource`) devuelve un mock que no coincide con ninguna rama del `when` y rompe lejos del origen.
 - **Nombres de fakes:** `Fake*` (en `src/test`) son los que cada test configura con `result`/`requested`;
-  `Canned*` (en `testShared`) devuelven datos fijos y registran los argumentos recibidos.
-- **Fábricas** (`MovieFactory`, `TvFactory`, `FavoriteFactory`): un parámetro con valor por defecto por campo,
+  `Canned*` (en `testShared`, package `testutil.canned`) devuelven datos fijos y registran los argumentos
+  recibidos. El package distingue unos de otros; no hace falta recordar la diferencia.
+- **Fábricas** (`MovieFactory`, `TvSeriesFactory`, `TvSeasonFactory`, `FavoriteFactory`): un parámetro con valor por defecto por campo,
   ids únicos en las listas (las listas Compose usan `key = { it.id }`).
 - **Textos en los tests:** se leen de `R.string` con `composeRule.activity.getString(...)`, no se escriben literales.
 - **Estilo:** nombres `whenX_thenY` y comentarios Given/When/Then.
@@ -102,19 +112,32 @@ Un test que nunca se ha visto fallar no demuestra nada. Antes de dar por bueno u
 
 ## Cobertura
 
-Línea base (18-nov-2026, solo unit tests de `debug`): **51 % de instrucciones** (12.113 de 24.893 sin cubrir) y
-**39 % de ramas** (1.234 de 2.030 sin cubrir).
+Línea base (22-nov-2026, solo unit tests de `debug`, sin código generado ni DI/GraphQL/debug):
+**53 % de instrucciones** (10.884 de 23.619 sin cubrir) y **40 % de ramas** (1.194 de 1.990 sin cubrir).
+
+Esta medición excluye Apollo (`graphql`), los módulos de Hilt (`di`, `*_GeneratedInjector`) y
+`core/debug`, así que **no es comparable con mediciones anteriores** (el denominador es otro).
+Las futuras se comparan contra esta línea base.
+
+CI (workflow de PR) ejecuta `jacocoTestReport` y publica el reporte como artefacto `jacoco-report`.
 
 Cómo leer el reporte:
 
-- **Solo incluye unit tests.** Fragments, adapters y `MainActivity` salen en 0 % aunque los cubran los tests
-  instrumentados, cuya cobertura no se fusiona todavía en el reporte.
-- **El código generado cuenta en el total:** Apollo (`graphql.*`) y los módulos de Hilt (`*.di`).
+- **Por defecto solo incluye unit tests.** Si existe `app/build/outputs/code_coverage/**/coverage.ec`
+  (lo genera `connectedDebugAndroidTest`), el reporte también suma lo que ejecutó esa corrida. Esa carpeta
+  se sobrescribe en cada ejecución: el resultado depende de qué clases instrumentadas corrieron la última
+  vez. Para la línea base, borra `app\build\outputs\code_coverage` antes de medir. Para una medición
+  combinada, corre `connectedDebugAndroidTest` sin filtro de clase. En CI no existen estos datos, así que
+  el número de CI es solo de unit tests.
+- **El código generado queda fuera del total:** Apollo, módulos de Hilt, Room, Safe Args y ViewBinding.
+  La lista está en `exclusiones` de `jacocoTestReport`.
 - **En Compose, el porcentaje de ramas no es una meta útil.** Incluye código que genera el compilador
   (comprobaciones `$changed` y `$default`) y las funciones `@Preview`. Se revisan las líneas sin cubrir de
   cada clase, no el porcentaje del paquete.
 - **Capas de lógica de Series ya altas:** `tv_series.presentation` 96 %, `data.repository` 96 %,
   `data.paging` 98 % y `domain.usecase` 100 %.
+- **Si cambias las exclusiones,** borra `app\build\reports\jacoco` antes de regenerar: el reporte no limpia
+  las carpetas de paquetes que dejaron de incluirse.
 
 ## Pendiente
 

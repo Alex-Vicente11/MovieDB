@@ -17,9 +17,9 @@ import com.alexvicente.moviedb.features.genres.domain.repository.GenresRepositor
 import com.alexvicente.moviedb.features.genres.domain.repository.MoviesByGenreRepository
 import com.alexvicente.moviedb.features.genres.presentation.GenresFragment
 import com.alexvicente.moviedb.testutil.factories.MovieFactory
-import com.alexvicente.moviedb.util.genres.hasExactChildCount
-import com.alexvicente.moviedb.util.genres.isChipChecked
-import com.alexvicente.moviedb.util.launchFragmentInHiltContainer
+import com.alexvicente.moviedb.testutil.espresso.hasExactChildCount
+import com.alexvicente.moviedb.testutil.espresso.isChipChecked
+import com.alexvicente.moviedb.testutil.hilt.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest

@@ -42,10 +42,10 @@ import com.alexvicente.moviedb.features.tv_series.domain.repository.TvSeriesRepo
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeasonViewModel
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsViewModel
 import com.alexvicente.moviedb.testutil.factories.MovieFactory
-import com.alexvicente.moviedb.testutil.fakes.CannedTvSeasonRepository
-import com.alexvicente.moviedb.testutil.fakes.CannedTvSeriesCastRepository
-import com.alexvicente.moviedb.testutil.fakes.CannedTvSeriesDetailsRepository
-import com.alexvicente.moviedb.testutil.fakes.CannedTvSeriesRepository
+import com.alexvicente.moviedb.testutil.canned.CannedTvSeasonRepository
+import com.alexvicente.moviedb.testutil.canned.CannedTvSeriesCastRepository
+import com.alexvicente.moviedb.testutil.canned.CannedTvSeriesDetailsRepository
+import com.alexvicente.moviedb.testutil.canned.CannedTvSeriesRepository
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule

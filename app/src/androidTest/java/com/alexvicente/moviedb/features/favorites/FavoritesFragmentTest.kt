@@ -18,9 +18,9 @@ import com.alexvicente.moviedb.features.favorites.di.FavoritesModule
 import com.alexvicente.moviedb.features.favorites.domain.model.Favorite
 import com.alexvicente.moviedb.features.favorites.domain.repository.FavoritesRepository
 import com.alexvicente.moviedb.features.favorites.presentation.FavoritesFragment
-import com.alexvicente.moviedb.util.favorites.clickChildViewWithId
-import com.alexvicente.moviedb.util.waitForView
-import com.alexvicente.moviedb.util.launchFragmentInHiltContainer
+import com.alexvicente.moviedb.testutil.espresso.clickChildViewWithId
+import com.alexvicente.moviedb.testutil.espresso.waitForView
+import com.alexvicente.moviedb.testutil.hilt.launchFragmentInHiltContainer
 import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule

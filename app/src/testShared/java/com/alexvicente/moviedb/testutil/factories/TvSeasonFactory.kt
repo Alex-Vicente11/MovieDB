@@ -5,30 +5,42 @@ import com.alexvicente.moviedb.features.tv_series.domain.model.TvSeasonDetails
 
 object TvSeasonFactory {
 
-    fun createTvEpisode(id: Int = 1, episodeNumber: Int = id) = TvEpisode(
+    fun createTvEpisode(
+        id: Int = 1,
+        episodeNumber: Int = id,
+        name: String = "Episodio $episodeNumber",
+        overview: String = "",
+        airDate: String? = "2020-01-15",
+        runtimeMinutes: Int? = 44,
+        voteAverage: Double = 0.0,
+        voteCount: Int = 0
+    ) = TvEpisode(
         id = id,
         episodeNumber = episodeNumber,
-        name = "Episodio $episodeNumber",
-        overview = "",
-        airDate = "2020-01-15",
-        runtimeMinutes = 44,
+        name = name,
+        overview = overview,
+        airDate = airDate,
+        runtimeMinutes = runtimeMinutes,
         stillPath = null,
-        voteAverage = 0.0,
-        voteCount = 0
+        voteAverage = voteAverage,
+        voteCount = voteCount
     )
 
     fun createTvSeasonDetails(
         seasonNumber: Int = 1,
         name: String = "Temporada $seasonNumber",
-        episodeCount: Int = 3
+        episodeCount: Int = 3,
+        id: Int = seasonNumber + 100,
+        overview: String = "",
+        episodes: List<TvEpisode> = (1..episodeCount).map { createTvEpisode(id = it) }
     ) = TvSeasonDetails(
-        id = seasonNumber + 100,
+        id = id,
         seasonNumber = seasonNumber,
         name = name,
-        overview = "",
+        overview = overview,
         posterPath = null,
         airDate = "2020-01-15",
         voteAverage = 0.0,
-        episodes = (1..episodeCount).map { createTvEpisode(id = it) }
+        episodes = episodes
     )
 }

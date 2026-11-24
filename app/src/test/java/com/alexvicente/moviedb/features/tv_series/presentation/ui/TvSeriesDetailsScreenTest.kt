@@ -12,7 +12,7 @@ import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.presentation.CastUiState
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsUiState
-import com.alexvicente.moviedb.testutil.factories.TvFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeriesFactory
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -23,7 +23,8 @@ import org.robolectric.annotation.Config
 @RunWith(RobolectricTestRunner::class)
 // sdk 34: Robolectric 4.14.1 llega hasta API 35 y el proyecto compila con 36
 // pantalla alta: el LazyColumn compone todoo y assertDoesNotExist() es fiable
-@Config(sdk = [34],
+@Config(
+    sdk = [34],
     qualifiers = "w360dp-h1600dp",
     application = Application::class   // evita MovieDbApplication (Firebase, Timber, Hilt)
 )
@@ -35,7 +36,7 @@ class TvSeriesDetailsScreenTest {
 
     // HELPER: el Screen es stateless, no necesita Hilt ni ViewModel
     private fun setScreen(
-        uiState: TvSeriesDetailsUiState = TvSeriesDetailsUiState.Success(TvFactory.createSeriesDetails()),
+        uiState: TvSeriesDetailsUiState = TvSeriesDetailsUiState.Success(TvSeriesFactory.createGreysAnatomyDetails()),
         castState: CastUiState = CastUiState.Success(emptyList()),
         onRetry: () -> Unit = {},
         onCastRetry: () -> Unit = {},
@@ -78,9 +79,10 @@ class TvSeriesDetailsScreenTest {
 
     @Test
     fun whenOverviewIsEmpty_placeholderIsShown() {
-        setScreen(TvSeriesDetailsUiState.Success(TvFactory.createSeriesDetails(overview = "")))
+        setScreen(TvSeriesDetailsUiState.Success(TvSeriesFactory.createGreysAnatomyDetails(overview = "")))
 
-        composeRule.onNodeWithText(str(R.string.tv_series_details_overview_empty)).assertIsDisplayed()
+        composeRule.onNodeWithText(str(R.string.tv_series_details_overview_empty))
+            .assertIsDisplayed()
     }
 
     // NAVEGACIÓN POR LAMBDAS
@@ -110,7 +112,8 @@ class TvSeriesDetailsScreenTest {
         var backs = 0
         setScreen(onBackClick = { backs++ })
 
-        composeRule.onNodeWithContentDescription(str(R.string.tv_series_details_back)).performClick()
+        composeRule.onNodeWithContentDescription(str(R.string.tv_series_details_back))
+            .performClick()
 
         assertThat(backs).isEqualTo(1)
     }
@@ -135,8 +138,16 @@ class TvSeriesDetailsScreenTest {
         setScreen(
             castState = CastUiState.Success(
                 listOf(
-                    TvFactory.createCastMember(id = 1, name = "Ellen Pompeo"),
-                    TvFactory.createCastMember(id = 2, name = "Chandra Wilson")
+                    TvSeriesFactory.createCastMember(
+                        id = 1,
+                        name = "Ellen Pompeo",
+                        profilePath = null
+                    ),
+                    TvSeriesFactory.createCastMember(
+                        id = 2,
+                        name = "Chandra Wilson",
+                        profilePath = null
+                    )
                 )
             )
         )

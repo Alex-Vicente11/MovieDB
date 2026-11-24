@@ -279,7 +279,12 @@ tasks.register("jacocoTestReport") {
             "**/*Binding.class",
             "**/*BindingImpl*.class",
             // Android internals
-            "android/**/*.*"
+            "android/**/*.*",
+            // Código generado / sin lógica propia
+            "**/graphql/**",     // Apollo genera estas clases
+            "**/di/**",          // módulos de Hilt
+            "**/core/debug/**",  // DebugActionsImpl (source set debug)
+            "**/*_GeneratedInjector*"
         )
 
         val kotlinClasses = fileTree("${layout.buildDirectory.get()}/tmp/kotlin-classes/debug") {
@@ -292,7 +297,8 @@ tasks.register("jacocoTestReport") {
         val executionData = fileTree(layout.buildDirectory.get()) {
             include(
                 "outputs/unit_test_code_coverage/**/*.exec",
-                "jacoco/testDebugUnitTest.exec"
+                "jacoco/testDebugUnitTest.exec",
+                "outputs/code_coverage/**/*.ec"   // instrumentados: solo existen tras connectedDebugAndroidTest
             )
         }
 

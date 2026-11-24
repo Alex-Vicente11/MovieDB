@@ -1,5 +1,6 @@
-package com.alexvicente.moviedb.util
+package com.alexvicente.moviedb.testutil.hilt
 
+import android.R
 import android.content.ComponentName
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +12,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.testing.TestNavHostController
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import debug.java.com.alexvicente.apptest.HiltTestActivity
 
 /**
  * Lanza un Fragment @AndroidEntryPoint dentro de una Activity de test con Hilt.
@@ -67,7 +67,7 @@ inline fun <reified T : Fragment> launchFragmentInHiltContainer(
         // 5. Añade el Fragment a la Activity y ejecuta la transacción de inmediato
         activity.supportFragmentManager
             .beginTransaction()
-            .add(android.R.id.content, fragment, "")
+            .add(R.id.content, fragment, "")
             .commitNow()
 
         // 6. Permite al test ejecutar código sobre el Fragment ya creado

@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application>
         <activity
-            android:name="debug.java.com.alexvicente.apptest.HiltTestActivity"
+            android:name=".testutil.hilt.HiltTestActivity"
             android:exported="false" />
     </application>
 </manifest>

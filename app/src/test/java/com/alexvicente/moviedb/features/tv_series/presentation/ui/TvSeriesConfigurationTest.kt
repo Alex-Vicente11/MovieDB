@@ -20,7 +20,8 @@ import com.alexvicente.moviedb.R
 import com.alexvicente.moviedb.core.presentation.theme.MovieDbTheme
 import com.alexvicente.moviedb.features.tv_series.presentation.CastUiState
 import com.alexvicente.moviedb.features.tv_series.presentation.TvSeriesDetailsUiState
-import com.alexvicente.moviedb.testutil.factories.TvFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeasonFactory
+import com.alexvicente.moviedb.testutil.factories.TvSeriesFactory
 import com.google.common.truth.Truth.assertThat
 import org.junit.Rule
 import org.junit.Test
@@ -28,7 +29,6 @@ import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
-import kotlin.collections.emptyList
 
 @RunWith(RobolectricTestRunner::class)
 @GraphicsMode(GraphicsMode.Mode.NATIVE)  // el font scale solo tiene efecto si el texto se mide de verdad
@@ -52,7 +52,7 @@ class TvSeriesConfigurationTest {
     private fun setDetails(
         override: DeviceConfigurationOverride,
         uiState: TvSeriesDetailsUiState =
-            TvSeriesDetailsUiState.Success(TvFactory.createSeriesDetails()),
+            TvSeriesDetailsUiState.Success(TvSeriesFactory.createGreysAnatomyDetails()),
         onRetry: () -> Unit = {},
         onSeasonClick: (Int) -> Unit = {}
     ) = composeRule.setContent {
@@ -113,7 +113,7 @@ class TvSeriesConfigurationTest {
         var clicked: Int? = null
         setDetails(
             override = DeviceConfigurationOverride.ForcedSize(compact) then
-                DeviceConfigurationOverride.FontScale(2f),
+                    DeviceConfigurationOverride.FontScale(2f),
             onSeasonClick = { clicked = it }
         )
 
@@ -129,7 +129,11 @@ class TvSeriesConfigurationTest {
         composeRule.setContent {
             DeviceConfigurationOverride(DeviceConfigurationOverride.FontScale(2f)) {
                 MovieDbTheme {
-                    TvEpisodeItem(TvFactory.createEpisode(overview = "palabra ".repeat(80).trim()))
+                    TvEpisodeItem(
+                        TvSeasonFactory.createTvEpisode(
+                            overview = "palabra ".repeat(80).trim()
+                        )
+                    )
                 }
             }
         }
