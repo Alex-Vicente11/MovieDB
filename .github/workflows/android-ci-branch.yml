@@ -20,6 +20,13 @@ jobs:
           java-version: '21'
           cache: 'gradle'
 
+      - name: Cache Robolectric jars
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2/repository/org/robolectric
+          key: robolectric-${{ hashFiles('gradle/libs.versions.toml') }}
+          restore-keys: robolectric-
+
       - name: Prepare SDK
         run: |
           echo "sdk.dir=$ANDROID_HOME" > local.properties
