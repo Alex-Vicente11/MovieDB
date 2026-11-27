@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.clearText
 import androidx.test.espresso.action.ViewActions.click
+import androidx.test.espresso.action.ViewActions.replaceText
 import androidx.test.espresso.action.ViewActions.typeText
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
@@ -23,22 +24,23 @@ import com.alexvicente.moviedb.features.popular_movies.presentation.adapter.Movi
 import com.alexvicente.moviedb.features.popular_movies.presentation.ui.PopularMoviesFragment
 import com.alexvicente.moviedb.features.search.di.SearchModule
 import com.alexvicente.moviedb.features.search.domain.repository.SearchRepository
+import com.alexvicente.moviedb.testutil.espresso.waitForView
 import com.alexvicente.moviedb.testutil.factories.MovieFactory
 import com.alexvicente.moviedb.testutil.hilt.launchFragmentInHiltContainer
+import com.google.common.truth.Truth.assertThat
 import dagger.hilt.android.testing.BindValue
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import kotlinx.coroutines.flow.flowOf
 import org.hamcrest.Matchers.not
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import com.google.common.truth.Truth.assertThat
-import io.mockk.verify
 
 @HiltAndroidTest
 @UninstallModules(SearchModule::class, PopularMoviesModule::class)
@@ -167,18 +169,15 @@ class PopularMoviesFragmentTest {
         // When
         launchFragment()
 
-        // Espresso escribe en el campo de búsqueda para disparar searchMovies()
+        // El texto se escribe de una vez: este test comprueba el estado vacío, no la escritura
+        // (eso lo cubren los tests con "Batman"). Con typeText("xy") el texto de 2 caracteres
+        // no producía la búsqueda en API 36 (causa sin determinar).
         // El UseCase valida mínimo 2 caracteres antes de llamar al repositorio
-        onView(withId(R.id.etSearch)).perform(
-            click(),
-            typeText("xy")
-        )
+        onView(withId(R.id.etSearch)).perform(click(), replaceText("xy"))
 
-        // Espera a que el debounce (500ms) y la coroutine terminen
-        Thread.sleep(700)
-
-        // Then — tvEmpty visible porque searchMovies retornó lista vacía
-        onView(withId(R.id.tvEmpty)).check(matches(isDisplayed()))
+        // Then — tvEmpty visible porque searchMovies retornó lista vacía.
+        // waitForView espera al debounce (500 ms) y a la corrutina sin dormir un tiempo fijo
+        waitForView(withId(R.id.tvEmpty))
         onView(withId(R.id.recyclerView)).check(matches(not(isDisplayed())))
     }
 
