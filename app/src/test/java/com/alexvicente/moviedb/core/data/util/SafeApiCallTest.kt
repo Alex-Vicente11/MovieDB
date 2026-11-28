@@ -1,5 +1,6 @@
 package com.alexvicente.moviedb.core.data.util
 
+import com.alexvicente.moviedb.core.util.Constants
 import com.google.common.truth.Truth.assertThat
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Test
@@ -18,21 +19,44 @@ class SafeApiCallTest {
     }
 
     @Test
-    fun whenBlockThrowsHttpException_returnsError() {
+    fun whenBlockThrowsHttpException_returnsErrorWithMappedServerError() {
         val http = HttpException(Response.error<Any>(500, "Server error".toResponseBody()))
 
         val result = safeApiCall<Int> { throw http }
 
-        assertThat(result).isInstanceOf(Resource.Error::class.java)
+        assertThat(result).isEqualTo(
+            Resource.Error<Int>(
+                message = Constants.ERROR_SERVER,
+                error = AppError.Server(500, Constants.ERROR_SERVER)
+            )
+        )
     }
 
     @Test
-    fun whenBlockThrowsIOException_returnsError() {
+    fun whenBlockThrowsIOException_returnsErrorWithNetworkError() {
         val result = safeApiCall<Int> { throw IOException("No network") }
 
-        assertThat(result).isInstanceOf(Resource.Error::class.java)
+        assertThat(result).isEqualTo(
+            Resource.Error<Int>(
+                message = Constants.ERROR_NETWORK,
+                error = AppError.Network(Constants.ERROR_NETWORK)
+            )
+        )
     }
 
+    @Test
+    fun whenBlockThrowsUnexpectedException_returnsErrorWithUnknownError() {
+        val result = safeApiCall<Int> { throw IllegalStateException("boom") }
+
+        assertThat(result).isEqualTo(
+            Resource.Error<Int>(
+                message = Constants.ERROR_UNKNOWN,
+                error = AppError.Unknown(Constants.ERROR_UNKNOWN)
+            )
+        )
+    }
+
+    // Si se quita el catch de CancellationException, el catch genérico la atrapa y devuelve Error.
     @Test
     fun whenBlockIsCancelled_cancellationIsRethrown() {
         val outcome = runCatching { safeApiCall<Int> { throw CancellationException("cancelled") } }
