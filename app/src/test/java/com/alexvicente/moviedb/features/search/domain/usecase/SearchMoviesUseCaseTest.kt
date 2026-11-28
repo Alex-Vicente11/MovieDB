@@ -2,9 +2,9 @@ package com.alexvicente.moviedb.features.search.domain.usecase
 
 import app.cash.turbine.test
 import com.alexvicente.moviedb.core.data.util.Resource
-import com.alexvicente.moviedb.core.domain.model.Movie
 import com.alexvicente.moviedb.core.util.Constants
 import com.alexvicente.moviedb.features.search.domain.repository.SearchRepository
+import com.alexvicente.moviedb.testutil.factories.MovieFactory
 import com.google.common.truth.Truth.assertThat
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -26,28 +26,6 @@ class SearchMoviesUseCaseTest {
         useCase = SearchMoviesUseCase(mockRepository)
     }
 
-    private fun createTestMovie(
-        id: Int = 1,
-        title: String = "Test Movie",
-        overview: String = "Test overview",
-        posterPath: String? = null,
-        backdropPath: String? = null,
-        voteAverage: Double = 7.5,
-        voteCount: Int = 1000,
-        releaseDate: String = "2024-01-01",
-        popularity: Double = 50.0
-    ) = Movie(
-        id = id,
-        title = title,
-        overview = overview,
-        posterPath = posterPath,
-        backdropPath = backdropPath,
-        voteAverage = voteAverage,
-        voteCount = voteCount,
-        releaseDate = releaseDate,
-        popularity = popularity
-    )
-
     // ── Tests de validación ───────────────────────────────────────────────────
 
     @Test
@@ -56,7 +34,7 @@ class SearchMoviesUseCaseTest {
             val item = awaitItem()
             assertThat(item).isInstanceOf(Resource.Error::class.java)
             assertThat((item as Resource.Error).message)
-                .isEqualTo(Constants.ERROR_EMPTY_QUERY)  // ← actualizado
+                .isEqualTo(Constants.ERROR_EMPTY_QUERY)
             awaitComplete()
         }
         coVerify(exactly = 0) { mockRepository.searchMovies(any()) }
@@ -68,7 +46,7 @@ class SearchMoviesUseCaseTest {
             val item = awaitItem()
             assertThat(item).isInstanceOf(Resource.Error::class.java)
             assertThat((item as Resource.Error).message)
-                .isEqualTo(Constants.ERROR_EMPTY_QUERY)  // ← actualizado
+                .isEqualTo(Constants.ERROR_EMPTY_QUERY)
             awaitComplete()
         }
         coVerify(exactly = 0) { mockRepository.searchMovies(any()) }
@@ -76,13 +54,12 @@ class SearchMoviesUseCaseTest {
 
     @Test
     fun whenQueryIsSingleChar_emitsErrorAndSkipsRepository() = runTest {
-        // La validación isBlank() || length < MIN_SEARCH_LENGTH cubre ambos casos
-        // con el mismo mensaje — ya no hay mensaje distinto para un solo carácter
+        // isBlank() || length < MIN_SEARCH_LENGTH: vacío y un solo carácter comparten mensaje
         useCase("a").test {
             val item = awaitItem()
             assertThat(item).isInstanceOf(Resource.Error::class.java)
             assertThat((item as Resource.Error).message)
-                .isEqualTo(Constants.ERROR_EMPTY_QUERY)  // ← actualizado
+                .isEqualTo(Constants.ERROR_EMPTY_QUERY)
             awaitComplete()
         }
         coVerify(exactly = 0) { mockRepository.searchMovies(any()) }
@@ -92,7 +69,7 @@ class SearchMoviesUseCaseTest {
     fun whenQueryHasExactlyTwoChars_callsRepository() = runTest {
         val validQuery = "ab"
         coEvery { mockRepository.searchMovies(validQuery) } returns
-                flowOf(Resource.Success(listOf(createTestMovie())))
+                flowOf(Resource.Success(listOf(MovieFactory.createMovie())))
 
         useCase(validQuery).test {
             assertThat(awaitItem()).isInstanceOf(Resource.Success::class.java)
@@ -108,7 +85,7 @@ class SearchMoviesUseCaseTest {
         val queryWithSpaces = "  batman  "
         val trimmedQuery = "batman"
         coEvery { mockRepository.searchMovies(trimmedQuery) } returns
-                flowOf(Resource.Success(listOf(createTestMovie(title = "Batman"))))
+                flowOf(Resource.Success(listOf(MovieFactory.createMovie(title = "Batman"))))
 
         useCase(queryWithSpaces).test {
             awaitItem()
@@ -123,7 +100,7 @@ class SearchMoviesUseCaseTest {
     fun whenQueryHasUppercase_doesNotNormalizeCasing() = runTest {
         val uppercaseQuery = "BATMAN"
         coEvery { mockRepository.searchMovies(uppercaseQuery) } returns
-                flowOf(Resource.Success(listOf(createTestMovie(title = "Batman"))))
+                flowOf(Resource.Success(listOf(MovieFactory.createMovie(title = "Batman"))))
 
         useCase(uppercaseQuery).test {
             assertThat(awaitItem()).isInstanceOf(Resource.Success::class.java)
@@ -140,8 +117,8 @@ class SearchMoviesUseCaseTest {
     fun whenRepositoryEmitsSuccess_useCasePropagatesData() = runTest {
         val query = "avengers"
         val expectedMovies = listOf(
-            createTestMovie(id = 1, title = "Avengers", voteAverage = 8.0),
-            createTestMovie(id = 2, title = "Avengers: Age of Ultron", voteAverage = 7.3)
+            MovieFactory.createMovie(id = 1, title = "Avengers", voteAverage = 8.0),
+            MovieFactory.createMovie(id = 2, title = "Avengers: Age of Ultron", voteAverage = 7.3)
         )
         coEvery { mockRepository.searchMovies(query) } returns
                 flowOf(Resource.Success(expectedMovies))
@@ -173,7 +150,7 @@ class SearchMoviesUseCaseTest {
     @Test
     fun whenRepositoryEmitsLoadingThenSuccess_useCasePropagatesBothStates() = runTest {
         val query = "spider-man"
-        val expectedMovies = listOf(createTestMovie(title = "Spider-Man"))
+        val expectedMovies = listOf(MovieFactory.createMovie(title = "Spider-Man"))
         coEvery { mockRepository.searchMovies(query) } returns
                 flowOf(Resource.Loading(), Resource.Success(expectedMovies))
 
@@ -205,7 +182,7 @@ class SearchMoviesUseCaseTest {
     fun whenQueryHasSpecialCharacters_callsRepositoryNormally() = runTest {
         val specialQuery = "avengers: endgame"
         coEvery { mockRepository.searchMovies(specialQuery) } returns
-                flowOf(Resource.Success(listOf(createTestMovie(title = "Avengers: Endgame"))))
+                flowOf(Resource.Success(listOf(MovieFactory.createMovie(title = "Avengers: Endgame"))))
 
         useCase(specialQuery).test {
             assertThat(awaitItem()).isInstanceOf(Resource.Success::class.java)
@@ -218,7 +195,7 @@ class SearchMoviesUseCaseTest {
     fun whenQueryHasNumbers_callsRepositoryNormally() = runTest {
         val queryWithNumbers = "blade runner 2049"
         coEvery { mockRepository.searchMovies(queryWithNumbers) } returns
-                flowOf(Resource.Success(listOf(createTestMovie(title = "Blade Runner 2049"))))
+                flowOf(Resource.Success(listOf(MovieFactory.createMovie(title = "Blade Runner 2049"))))
 
         useCase(queryWithNumbers).test {
             assertThat(awaitItem()).isInstanceOf(Resource.Success::class.java)

@@ -3,8 +3,8 @@ package com.alexvicente.moviedb.core.data.mapper
 import com.alexvicente.moviedb.core.data.mapper.GenreMapper.toDomain
 import com.alexvicente.moviedb.core.data.mapper.MovieMapper.toDomain
 import com.alexvicente.moviedb.core.data.remote.dto.GenreDto
-import com.alexvicente.moviedb.core.data.remote.dto.MovieDto
 import com.alexvicente.moviedb.features.movie_details.data.remote.dto.MovieDetailsDto
+import com.alexvicente.moviedb.testutil.factories.MovieFactory
 import org.junit.Assert
 import org.junit.Test
 
@@ -13,38 +13,6 @@ class MovieMapperTest {
     // ═══════════════════════════════════════════════════════
     // HELPER FUNCTIONS
     // ═══════════════════════════════════════════════════════
-
-    private fun createTestMovieDto(
-        id: Int = 1,
-        title: String = "Test Movie",
-        overview: String? = "Test overview",
-        posterPath: String? = "/poster.jpg",
-        backdropPath: String? = "/backdrop.jpg",
-        voteAverage: Double = 7.5,
-        voteCount: Int = 1000,
-        releaseDate: String? = "2024-01-01",
-        popularity: Double = 50.0,
-        adult: Boolean = false,
-        originalLanguage: String = "en",
-        originalTitle: String = "Test Movie",
-        video: Boolean = false,
-        genreIds: List<Int>? = listOf(28, 12)
-    ) = MovieDto(
-        id = id,
-        title = title,
-        overview = overview,
-        posterPath = posterPath,
-        backdropPath = backdropPath,
-        voteAverage = voteAverage,
-        voteCount = voteCount,
-        releaseDate = releaseDate,
-        popularity = popularity,
-        adult = adult,
-        originalLanguage = originalLanguage,
-        originalTitle = originalTitle,
-        video = video,
-        genreIds = genreIds
-    )
 
     private fun createTestMovieDetailsDto(
         id: Int = 1,
@@ -101,7 +69,7 @@ class MovieMapperTest {
 
     @Test
     fun `map MovieDto to Movie with all fields correctly`() {
-        val dto = createTestMovieDto(
+        val dto = MovieFactory.createMovieDto(
             id = 1,
             title = "Avengers",
             overview = "Earth's mightiest heroes",
@@ -128,61 +96,61 @@ class MovieMapperTest {
 
     @Test
     fun `map MovieDto with null overview returns default message`() {
-        val movie = createTestMovieDto(overview = null).toDomain()
+        val movie = MovieFactory.createMovieDto(overview = null).toDomain()
         Assert.assertEquals("Sin descripción disponible", movie.overview)
     }
 
     @Test
     fun `map MovieDto with null posterPath returns null`() {
-        val movie = createTestMovieDto(posterPath = null).toDomain()
+        val movie = MovieFactory.createMovieDto(posterPath = null).toDomain()
         Assert.assertNull(movie.posterPath)
     }
 
     @Test
     fun `map MovieDto with null backdropPath returns null`() {
-        val movie = createTestMovieDto(backdropPath = null).toDomain()
+        val movie = MovieFactory.createMovieDto(backdropPath = null).toDomain()
         Assert.assertNull(movie.backdropPath)
     }
 
     @Test
     fun `map MovieDto with null releaseDate returns empty string`() {
-        val movie = createTestMovieDto(releaseDate = null).toDomain()
+        val movie = MovieFactory.createMovieDto(releaseDate = null).toDomain()
         Assert.assertEquals("", movie.releaseDate)
     }
 
     @Test
     fun `map MovieDto trims title with leading and trailing spaces`() {
-        val movie = createTestMovieDto(title = "  Batman  ").toDomain()
+        val movie = MovieFactory.createMovieDto(title = "  Batman  ").toDomain()
         Assert.assertEquals("Batman", movie.title)
     }
 
     @Test
     fun `map MovieDto trims overview with leading and trailing spaces`() {
-        val movie = createTestMovieDto(overview = "  Great movie  ").toDomain()
+        val movie = MovieFactory.createMovieDto(overview = "  Great movie  ").toDomain()
         Assert.assertEquals("Great movie", movie.overview)
     }
 
     @Test
     fun `map MovieDto trims posterPath with spaces`() {
-        val movie = createTestMovieDto(posterPath = "  /poster.jpg  ").toDomain()
+        val movie = MovieFactory.createMovieDto(posterPath = "  /poster.jpg  ").toDomain()
         Assert.assertEquals("/poster.jpg", movie.posterPath)
     }
 
     @Test
     fun `map MovieDto trims backdropPath with spaces`() {
-        val movie = createTestMovieDto(backdropPath = "  /backdrop.jpg  ").toDomain()
+        val movie = MovieFactory.createMovieDto(backdropPath = "  /backdrop.jpg  ").toDomain()
         Assert.assertEquals("/backdrop.jpg", movie.backdropPath)
     }
 
     @Test
     fun `map MovieDto trims releaseDate with spaces`() {
-        val movie = createTestMovieDto(releaseDate = "  2024-01-01  ").toDomain()
+        val movie = MovieFactory.createMovieDto(releaseDate = "  2024-01-01  ").toDomain()
         Assert.assertEquals("2024-01-01", movie.releaseDate)
     }
 
     @Test
     fun `map MovieDto with zero values maps correctly`() {
-        val movie = createTestMovieDto(voteAverage = 0.0, voteCount = 0, popularity = 0.0).toDomain()
+        val movie = MovieFactory.createMovieDto(voteAverage = 0.0, voteCount = 0, popularity = 0.0).toDomain()
         Assert.assertEquals(0.0, movie.voteAverage, 0.001)
         Assert.assertEquals(0, movie.voteCount)
         Assert.assertEquals(0.0, movie.popularity, 0.001)
@@ -195,9 +163,9 @@ class MovieMapperTest {
     @Test
     fun `map list of MovieDto to list of Movie`() {
         val dtoList = listOf(
-            createTestMovieDto(id = 1, overview = "Has overview", posterPath = "/p1.jpg"),
-            createTestMovieDto(id = 2, overview = null, posterPath = null),
-            createTestMovieDto(id = 3, overview = "Another overview", posterPath = "/p3.jpg")
+            MovieFactory.createMovieDto(id = 1, overview = "Has overview", posterPath = "/p1.jpg"),
+            MovieFactory.createMovieDto(id = 2, overview = null, posterPath = null),
+            MovieFactory.createMovieDto(id = 3, overview = "Another overview", posterPath = "/p3.jpg")
         )
 
         val movies = dtoList.toDomain()
