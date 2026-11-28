@@ -1,6 +1,7 @@
 package com.alexvicente.moviedb.features.movie_details.domain.model
 
 import com.alexvicente.moviedb.core.domain.model.Genre
+import java.util.Locale
 
 data class MovieDetails(
     val id: Int,
@@ -42,11 +43,15 @@ data class MovieDetails(
     }
 
     fun getReleaseYear(): String {
-        return releaseDate.split("-").firstOrNull() ?: "N/A"
+        return releaseDate.substringBefore("-").ifBlank { "N/A" }
     }
 
     fun getFormattedRating(): String {
-        return String.format("⭐ %.1f/10", voteAverage)
+        return String.format(Locale.US, "⭐ %.1f/10", voteAverage)
+    }
+
+    fun getFormattedPopularity(): String {
+        return String.format(Locale.US, "🔥 %.1f", popularity)
     }
 
     fun getFormattedRuntime(): String {
@@ -70,7 +75,7 @@ data class MovieDetails(
     fun getFormattedBudget(): String {
         return if (budget != null && budget > 0) {
             val millions = budget / 1_000_000.0
-            "$${String.format("%.1f", millions)}M"
+            "$${String.format(Locale.US, "%.1f", millions)}M"
         } else {
             "N/A"
         }
@@ -79,7 +84,7 @@ data class MovieDetails(
     fun getFormattedRevenue(): String {
         return if (revenue != null && revenue > 0) {
             val millions = revenue / 1_000_000.0
-            "$${String.format("%.1f", millions)}M"
+            "$${String.format(Locale.US, "%.1f", millions)}M"
         } else {
             "N/A"
         }

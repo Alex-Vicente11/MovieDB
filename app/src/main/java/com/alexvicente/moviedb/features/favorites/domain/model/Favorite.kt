@@ -1,5 +1,7 @@
 package com.alexvicente.moviedb.features.favorites.domain.model
 
+import java.util.Locale
+
 data class Favorite(
     val id: Int,
     val title: String,
@@ -17,8 +19,8 @@ data class Favorite(
         if (posterPath != null) "$IMAGE_BASE_URL$posterPath" else "N/A"
 
     fun getReleaseYear(): String =
-        releaseDate.split("-").firstOrNull() ?: "N/A"
+        releaseDate.substringBefore("-").ifBlank { "N/A" }
 
     fun getFormattedRating(): String =
-        String.format("⭐ %.1f/10", voteAverage)
+        String.format(Locale.US, "⭐ %.1f/10", voteAverage)
 }

@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.alexvicente.moviedb.R
 import com.google.android.material.snackbar.Snackbar
+import java.util.Locale
 
 // ── ImageView ────────────────────────────────────────────────────────────────
 fun ImageView.loadUrl(
@@ -37,4 +38,4 @@ fun View.showSnackbarWithAction(
 }
 
 // ── Double ───────────────────────────────────────────────────────────────────
-fun Double.toRatingString(): String = String.format("⭐ %.1f/10", this)
+fun Double.toRatingString(): String = String.format(Locale.US, "⭐ %.1f/10", this)

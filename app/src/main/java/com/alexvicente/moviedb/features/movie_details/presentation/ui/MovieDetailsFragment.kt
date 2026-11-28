@@ -155,7 +155,7 @@ class MovieDetailsFragment : Fragment() {
         binding.tvRatingDetail.text      = movie.getFormattedRating()
         binding.tvVotesDetail.text       = "${movie.voteCount} votos"
         binding.tvReleaseDetail.text     = movie.getReleaseYear()
-        binding.tvPopularityDetail.text  = String.format("🔥 %.1f", movie.popularity)
+        binding.tvPopularityDetail.text  = movie.getFormattedPopularity()
         binding.tvRuntimeDetail?.text    = movie.getFormattedRuntime()
         binding.tvBudgetDetail?.text     = movie.getFormattedBudget()
         binding.tvRevenueDetail?.text    = movie.getFormattedRevenue()

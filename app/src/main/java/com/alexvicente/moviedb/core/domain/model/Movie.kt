@@ -1,5 +1,7 @@
 package com.alexvicente.moviedb.core.domain.model
 
+import java.util.Locale
+
 data class Movie(
     val id: Int,
     val title: String,
@@ -34,10 +36,10 @@ data class Movie(
     }
 
     fun getReleaseYear(): String {
-        return releaseDate.split("-").firstOrNull() ?: "N/A"
+        return releaseDate.substringBefore("-").ifBlank { "N/A" }
     }
 
     fun getFormattedRating(): String {
-        return String.format("⭐ %.1f/10", voteAverage)
+        return String.format(Locale.US, "⭐ %.1f/10", voteAverage)
     }
 }
